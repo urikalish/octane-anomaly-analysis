@@ -1,0 +1,22 @@
+{
+  "name": "octane-anomaly-analysis",
+  "version": "0.0.1",
+  "description": "Octane Anomaly Analysis",
+  "keywords": [
+    "ALM",
+    "Octane",
+    "Anomaly",
+    "Analysis"
+  ],
+  "author": "Micro Focus",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "request": "^2.85.0",
+    "tough-cookie": "^2.3.4",
+    "url": "^0.11.0"
+  }
+}
