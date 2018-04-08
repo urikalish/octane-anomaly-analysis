@@ -2,16 +2,17 @@
 //const config = require('./config');
 const apiService = require('./api-service');
 const dataProvider = require('./data-provider');
-const anomalyChecker = require('./anomaly-checker');
+const defectUnusualOwner = require('./checkers/defect-unusual-owner');
 
 function run() {
 	apiService.authenticate().then(
 		(/*result*/) => {
-			console.log('Authenticated OK');
+			console.log('Authenticated - OK');
 
-			dataProvider.getDefects(100).then(
+			dataProvider.getDefects(1000).then(
 				(result) => {
-					anomalyChecker.checkUnusualOwner(result.data);
+					console.log('Get defects - OK');
+					defectUnusualOwner.check(result.data);
 				}
 			);
 		},

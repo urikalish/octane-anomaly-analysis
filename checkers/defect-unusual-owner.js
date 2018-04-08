@@ -1,9 +1,16 @@
 const _ = require('lodash');
 
-function checkUnusualOwner(defects) {
+const defaultOptions = {
+	phasesBlackList: ['closed', 'fixed', 'rejected'],
+	suspiciousMaxCount: 1
+};
+
+function check(defects, options) {
 	let owners = {};
+	options = options || {};
+	_.defaults(options, defaultOptions);
 	defects.forEach(d => {
-		if (d.owner) {
+		if ((options.phasesBlackList.indexOf(d.phase.name.toLowerCase()) === -1) && d.owner) {
 			let ownerName = d.owner.full_name || d.owner.name;
 			if (owners[ownerName]) {
 				owners[ownerName].count++;
@@ -16,12 +23,12 @@ function checkUnusualOwner(defects) {
 		}
 	});
 	_.keys(owners).forEach(o => {
-		if (owners[o].count === 1) {
+		if (owners[o].count <= options.suspiciousMaxCount) {
 			console.log(`Defect with an unusual owner | ${o} | ${owners[o].firstDefect.phase.name} | #${owners[o].firstDefect.id} | ${owners[o].firstDefect.name}`);
 		}
 	});
 }
 
 module.exports = {
-	checkUnusualOwner: checkUnusualOwner
+	check: check
 };
