@@ -24,7 +24,7 @@ function check(defects, options) {
 	});
 	_.keys(owners).forEach(o => {
 		if (owners[o].count <= options.suspiciousMaxCount) {
-			console.log(`Defect with an unusual owner | ${o} | ${owners[o].firstDefect.phase.name} | #${owners[o].firstDefect.id} | ${owners[o].firstDefect.name}`);
+			console.log(`Defect with an unusual owner (${o}) | ${owners[o].firstDefect.phase.name} | #${owners[o].firstDefect.id} | ${owners[o].firstDefect.name}`);
 		}
 	});
 }

@@ -1,8 +1,8 @@
 'use strict';
-//const config = require('./config');
 const apiService = require('./api-service');
 const dataProvider = require('./data-provider');
 const defectUnusualOwner = require('./checkers/defect-unusual-owner');
+const defectCommentsNumber = require('./checkers/defect-comments-number');
 
 function run() {
 	apiService.authenticate().then(
@@ -12,7 +12,9 @@ function run() {
 			dataProvider.getDefects(1000).then(
 				(result) => {
 					console.log('Get defects - OK');
+					//console.log(result.data[0]);
 					defectUnusualOwner.check(result.data);
+					defectCommentsNumber.check(result.data);
 				}
 			);
 		},
