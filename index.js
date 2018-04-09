@@ -9,16 +9,13 @@ function run() {
 	apiService.authenticate().then(
 		(/*result*/) => {
 			console.log('Authenticated - OK');
-			let defectsLimit = 100;
-
-			dataProvider.getDefects(defectsLimit).then(
-				(result) => {
-					//console.log(result.data[0]);
-					defectUnusualOwner.check(result.data);
-					defectCommentsNumber.check(result.data);
-					defectManyOwners.check(result.data);
-				}
-			);
+			console.log('--------------------------------------------------------------------------------');
+			dataProvider.getDefects(100).then(
+				(data) => {
+					defectUnusualOwner.check(data);
+					defectCommentsNumber.check(data);
+					defectManyOwners.check(data);
+				});
 		},
 		(reason) => {
 			console.log('Authenticated Error - ' + reason);
