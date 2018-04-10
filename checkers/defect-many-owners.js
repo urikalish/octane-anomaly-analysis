@@ -2,7 +2,7 @@ const _ = require('lodash');
 const dataProvider = require('../data-provider');
 
 const defaultOptions = {
-	phasesBlackList: ['closed'],
+	phasesToIgnore: ['closed'],
 	manyOwnersCount: 5
 };
 
@@ -11,7 +11,7 @@ function check(defects, options) {
 	_.defaults(options, defaultOptions);
 	let defectsWithManyOwners = [];
 	defects.forEach(d => {
-		if (options.phasesBlackList.indexOf(d.phase.name.toLowerCase()) === -1) {
+		if (options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1) {
 			dataProvider.getHistory(d.id).then(
 			(result) => {
 				let owners = [];
