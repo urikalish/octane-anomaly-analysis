@@ -9,6 +9,7 @@ const defaultOptions = {
 function check(defects, options) {
 	options = options || {};
 	_.defaults(options, defaultOptions);
+	let defectsWithManyOwners = [];
 	defects.forEach(d => {
 		if (options.phasesBlackList.indexOf(d.phase.name.toLowerCase()) === -1) {
 			dataProvider.getHistory(d.id).then(
@@ -31,6 +32,9 @@ function check(defects, options) {
 			}
 			);
 		}
+	});
+	defectsWithManyOwners.forEach(obj => {
+		console.log(`Defect with many owners (${obj.owners}) | ${obj.defect.phase.name} | #${obj.defect.id} | ${obj.defect.name}`);
 	});
 }
 

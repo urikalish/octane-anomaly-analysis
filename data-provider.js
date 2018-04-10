@@ -46,7 +46,7 @@ function getDefectsBatch(offset, limit) {
 function getDefects(needed) {
 	return new Promise((resolve /*, reject*/) => {
 		let offset = 0;
-		let batch = 100;
+		let batch = 500;
 		let promises = [];
 		while (needed > offset) {
 			promises.push(getDefectsBatch(offset, batch));

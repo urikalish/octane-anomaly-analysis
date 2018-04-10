@@ -12,8 +12,8 @@ function run() {
 			console.log('--------------------------------------------------------------------------------');
 			dataProvider.getDefects(3000).then(
 				(data) => {
-					defectUnusualOwner.check(data);
 					defectManyComments.check(data);
+					defectUnusualOwner.check(data);
 					defectManyOwners.check(data);
 				});
 		},

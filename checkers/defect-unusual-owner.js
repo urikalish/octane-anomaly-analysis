@@ -5,25 +5,25 @@ const defaultOptions = {
 };
 
 function check(defects, options) {
-	let owners = {};
 	options = options || {};
 	_.defaults(options, defaultOptions);
+	let unusualOwners = {};
 	defects.forEach(d => {
 		if (d.owner) {
 			let ownerName = d.owner.full_name || d.owner.name;
-			if (owners[ownerName]) {
-				owners[ownerName].count++;
+			if (unusualOwners[ownerName]) {
+				unusualOwners[ownerName].count++;
 			} else {
-				owners[ownerName] = {
+				unusualOwners[ownerName] = {
 					count: 1,
 					firstDefect: d
 				};
 			}
 		}
 	});
-	_.keys(owners).forEach(o => {
-		if ((owners[o].count === 1) && (options.phasesBlackList.indexOf(owners[o].firstDefect.phase.name.toLowerCase()) === -1)) {
-			console.log(`Defect with an unusual owner (${o}) | ${owners[o].firstDefect.phase.name} | #${owners[o].firstDefect.id} | ${owners[o].firstDefect.name}`);
+	_.keys(unusualOwners).forEach(o => {
+		if ((unusualOwners[o].count === 1) && (options.phasesBlackList.indexOf(unusualOwners[o].firstDefect.phase.name.toLowerCase()) === -1)) {
+			console.log(`Defect with an unusual owner (${o}) | ${unusualOwners[o].firstDefect.phase.name} | #${unusualOwners[o].firstDefect.id} | ${unusualOwners[o].firstDefect.name}`);
 		}
 	});
 }
