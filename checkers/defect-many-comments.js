@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 const defaultOptions = {
 	phasesBlackList: ['closed', 'fixed'],
-	suspiciousMinCount: 7
+	suspiciousMinCount: 8
 };
 
 function check(defects, options) {
