@@ -3,7 +3,7 @@ const dataProvider = require('../data-provider');
 
 const defaultOptions = {
 	phasesBlackList: ['closed'],
-	ownersMinCount: 5
+	manyOwnersCount: 5
 };
 
 function check(defects, options) {
@@ -26,7 +26,7 @@ function check(defects, options) {
 						}
 					}
 				});
-				if (ownerCount >= options.ownersMinCount) {
+				if (ownerCount >= options.manyOwnersCount) {
 					console.log(`Defect with many owners (${ownerCount}: ${owners}) | ${d.phase.name} | #${d.id} | ${d.name}`);
 				}
 			}
