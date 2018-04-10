@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const defaultOptions = {
-	phasesBlackList: ['closed']
+	phasesBlackList: ['closed', 'fixed'],
 };
 
 function check(defects, options) {
