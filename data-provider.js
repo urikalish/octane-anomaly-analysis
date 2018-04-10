@@ -46,10 +46,11 @@ function getDefectsBatch(offset, limit) {
 function getDefects(needed) {
 	return new Promise((resolve /*, reject*/) => {
 		let offset = 0;
-		let batch = 500;
+		let batch = 100;
 		let promises = [];
 		while (needed > offset) {
-			promises.push(getDefectsBatch(offset, batch));
+			let limit = ((needed - offset) >  batch) ? batch : needed - offset;
+			promises.push(getDefectsBatch(offset, limit));
 			offset += batch;
 		}
 		Promise.all(promises).then(
