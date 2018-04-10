@@ -27,7 +27,7 @@ function check(defects, options) {
 					}
 				});
 				if (ownerCount >= options.ownersMinCount) {
-					console.log(`Defect with many owners (${owners}) | ${d.phase.name} | #${d.id} | ${d.name}`);
+					console.log(`Defect with many owners (${ownerCount}: ${owners}) | ${d.phase.name} | #${d.id} | ${d.name}`);
 				}
 			}
 			);

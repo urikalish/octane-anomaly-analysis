@@ -11,10 +11,10 @@ function run() {
 			console.log('Authenticated - OK');
 			console.log('--------------------------------------------------------------------------------');
 			dataProvider.getDefects(3000).then(
-				(data) => {
-					defectManyComments.check(data);
-					defectUnusualOwner.check(data);
-					defectManyOwners.check(data);
+				(defects) => {
+					defectManyComments.check(defects);
+					defectUnusualOwner.check(defects);
+					defectManyOwners.check(defects);
 				});
 		},
 		(reason) => {
