@@ -1,9 +1,10 @@
 'use strict';
 const apiService = require('./api-service');
 const dataProvider = require('./data-provider');
-const defectUnusualOwner = require('./checkers/defect-unusual-owner');
+const defectLargeAttachments = require('./checkers/defect-large-attachments');
 const defectManyComments = require('./checkers/defect-many-comments');
 const defectManyOwners = require('./checkers/defect-many-owners');
+const defectUnusualOwner = require('./checkers/defect-unusual-owner');
 
 function run() {
 	apiService.authenticate().then(
@@ -15,6 +16,7 @@ function run() {
 					defectManyComments.check(defects);
 					defectUnusualOwner.check(defects);
 					defectManyOwners.check(defects);
+					defectLargeAttachments.check(defects);
 				});
 		},
 		(reason) => {

@@ -19,6 +19,24 @@ function getHistory(entityId) {
 	});
 }
 
+function getAttachmentUri(entityId) {
+	return config.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
+}
+
+function getAttachment(entityId) {
+	return new Promise((resolve /*, reject*/) => {
+		let uri = getAttachmentUri(entityId);
+		apiService.getEntity(uri).then(
+		(result) => {
+			resolve(result);
+		},
+		(reason) => {
+			console.log('Error on getAttachment() ' + reason);
+		}
+		);
+	});
+}
+
 function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 	return config.api_url +
 	`/work_items` +
@@ -75,5 +93,6 @@ function getDefects(needed) {
 
 module.exports = {
 	getDefects: getDefects,
-	getHistory: getHistory
+	getHistory: getHistory,
+	getAttachment: getAttachment
 };
