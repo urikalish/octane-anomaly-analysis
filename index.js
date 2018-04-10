@@ -14,9 +14,9 @@ function run() {
 			dataProvider.getDefects(3000).then(
 				(defects) => {
 					defectManyComments.check(defects);
+					defectLargeAttachments.check(defects);
 					defectUnusualOwner.check(defects);
 					defectManyOwners.check(defects);
-					defectLargeAttachments.check(defects);
 				});
 		},
 		(reason) => {

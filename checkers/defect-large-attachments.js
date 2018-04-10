@@ -3,8 +3,8 @@ const dataProvider = require('../data-provider');
 
 const defaultOptions = {
 	phasesToIgnore: ['closed'],
-	fileExtensionsToIgnore: ['.png','.jpg'],
-	attachmentMaxSizeMB: 5,
+	fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
+	attachmentsMaxSizeMB: 10,
 };
 
 function check(defects, options) {
@@ -12,25 +12,25 @@ function check(defects, options) {
 	_.defaults(options, defaultOptions);
 	defects.forEach(d => {
 		if ((options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1) && d.attachments && d.attachments['total_count'] && d.attachments['total_count'] > 0) {
+			let promises = [];
 			d.attachments.data.forEach(a => {
-				if (a.type === 'attachment') {
-					let ignore = false;
-					options.fileExtensionsToIgnore.forEach(e => {
-						if (_.endsWith(a.name.toLowerCase(), e)) {
-							ignore = true;
-						}
-					});
-					if (!ignore) {
-						dataProvider.getAttachment(a.id).then(
-						(result) => {
-							if (result.data && result.data && result.data.length > 0 && Math.round(result.data[0].size/1048576) > options.attachmentMaxSizeMB) {
-								console.log(`Defect with a large attachment (${Math.round(result.data[0].size/1048576)}MB) | ${d.phase.name} | #${d.id} | ${d.name}`);
-							}
-						}
-						);
-					}
+				if (a.type === 'attachment' && !options.fileExtensionsToIgnoreRegex.test(a.name.toLowerCase())) {
+					promises.push(dataProvider.getAttachment(a.id));
 				}
 			});
+			let totalSizeMB = 0;
+			Promise.all(promises).then(
+				(results) => {
+					results.forEach(result => {
+						if (result.data && result.data && result.data.length > 0) {
+							totalSizeMB += result.data[0].size/1048576;
+						}
+					});
+					if (totalSizeMB > options.attachmentsMaxSizeMB) {
+						console.log(`Defect with large attachments (${Math.round(totalSizeMB)}MB) | ${d.phase.name} | #${d.id} | ${d.name}`);
+					}
+				}
+			);
 		}
 	});
 }
