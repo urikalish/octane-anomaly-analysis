@@ -1,8 +1,8 @@
 const _ = require('lodash');
 
 const defaultOptions = {
-	phasesBlackList: ['closed', 'fixed', 'rejected'],
-	suspiciousMinCount: 6
+	phasesBlackList: ['closed'],
+	suspiciousMinCount: 7
 };
 
 function check(defects, options) {

@@ -2,7 +2,7 @@ const _ = require('lodash');
 const dataProvider = require('../data-provider');
 
 const defaultOptions = {
-	phasesBlackList: ['closed', 'fixed', 'rejected'],
+	phasesBlackList: ['closed'],
 	ownersMinCount: 5
 };
 
