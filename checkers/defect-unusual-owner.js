@@ -23,7 +23,7 @@ function check(defects, options) {
 	});
 	_.keys(unusualOwners).forEach(o => {
 		if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.name.toLowerCase()) === -1)) {
-			console.log(`Defect with an unusual owner (${o}) | ${unusualOwners[o].firstDefect.phase.name} | #${unusualOwners[o].firstDefect.id} | ${unusualOwners[o].firstDefect.name}`);
+			console.log(`Defect with an unusual owner (${o}) | #${unusualOwners[o].firstDefect.id} | ${unusualOwners[o].firstDefect.phase.name} | ${unusualOwners[o].firstDefect.name}`);
 		}
 	});
 }
