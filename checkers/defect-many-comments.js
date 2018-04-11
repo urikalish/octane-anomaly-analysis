@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const defaultOptions = {
-	phasesToIgnore: ['closed', 'fixed'],
+	phasesToIgnore: ['closed','rejected','duplicate','fixed'],
 	manyCommentsCount: 8
 };
 

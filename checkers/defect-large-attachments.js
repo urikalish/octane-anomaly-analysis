@@ -2,7 +2,7 @@ const _ = require('lodash');
 const dataProvider = require('../data-provider');
 
 const defaultOptions = {
-	phasesToIgnore: ['closed'],
+	phasesToIgnore: ['closed','rejected','duplicate'],
 	fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 	attachmentsMaxSizeMB: 10,
 };
