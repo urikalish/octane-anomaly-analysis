@@ -2,14 +2,17 @@ const _ = require('lodash');
 
 const defaultOptions = {
 	phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+	dataSetSize: 3000
 };
 
 function check(defects, options) {
 	options = options || {};
 	_.defaults(options, defaultOptions);
 	let unusualOwners = {};
+	let count = 0;
 	defects.forEach(d => {
-		if (d.owner) {
+		count++;
+		if (count <= options.dataSetSize && d.owner) {
 			let ownerName = d.owner.full_name || d.owner.name;
 			if (unusualOwners[ownerName]) {
 				unusualOwners[ownerName].count++;

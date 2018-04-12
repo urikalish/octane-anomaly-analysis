@@ -4,6 +4,7 @@ const dataProvider = require('./data-provider');
 const defectLargeAttachments = require('./checkers/defect-large-attachments');
 const defectManyComments = require('./checkers/defect-many-comments');
 const defectManyOwners = require('./checkers/defect-many-owners');
+const defectStuckPhase = require('./checkers/defect-stuck-phase');
 const defectUnusualOwner = require('./checkers/defect-unusual-owner');
 
 function run() {
@@ -11,11 +12,12 @@ function run() {
 		(/*result*/) => {
 			console.log('Authenticated - OK');
 			console.log('--------------------------------------------------------------------------------');
-			dataProvider.getDefects(3000).then(
+			dataProvider.getDefects(10000).then(
 				(defects) => {
+					defectStuckPhase.check(defects);
+					defectManyComments.check(defects);
 					defectUnusualOwner.check(defects);
 					defectManyOwners.check(defects);
-					defectManyComments.check(defects);
 					defectLargeAttachments.check(defects);
 				});
 		},
