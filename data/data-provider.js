@@ -1,5 +1,116 @@
-const config = require('./config');
-const apiService = require('./api-service');
+'use strict';
+const config = require('../config/config-environment');
+let request = require('request');
+if (config.proxy) {
+	request = request.defaults({'proxy': config.proxy});
+}
+const url = require('url');
+const tough = require('tough-cookie');
+const Cookie = tough.Cookie;
+const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
+
+function authenticate() {
+	let uri = url.resolve(config.server_address, '/authentication/sign_in');
+	let body = {
+		client_id: config.client_id,
+		client_secret: config.client_secret
+	};
+	console.log('Authenticating...');
+	return postData(uri, body);
+}
+
+function getEntity(uri) {
+	return new Promise((resolve, reject) => {
+		request({
+			method: 'GET',
+			url: uri,
+			headers: getHeaders()
+		},
+		function (err, response, body) {
+			if (err) {
+				return reject(err);
+			}
+
+			if (response.statusCode < 200 || response.statusCode > 299) {
+				return reject({
+					statusCode: response.statusCode,
+					message: JSON.parse(response.body).description,
+					description: JSON.parse(response.body)
+				});
+			}
+
+			try {
+				resolve(JSON.parse(body));
+			} catch (e) {
+				resolve(body);
+			}
+		});
+	});
+}
+
+function postData(uri, body, formData) {
+	return new Promise((resolve, reject) => {
+		let options = {
+			method: 'POST',
+			url: uri,
+			headers: getHeaders()
+		};
+
+		if (formData) {
+			options.formData = formData;
+		}
+		if (body) {
+			options.body = JSON.stringify(body);
+		}
+
+		request(options, (err, response, body) => {
+			if (err) {
+				return reject(err);
+			}
+
+			console.log(response);
+
+			if (response.statusCode < 200 || response.statusCode > 299) {
+				return reject({
+					statusCode: response.statusCode,
+					message: JSON.parse(response.body).description,
+					description: JSON.parse(response.body)
+				});
+			}
+
+			if (response.headers['set-cookie']) {
+				response.headers['set-cookie'].forEach((cookie) => {
+					cookieJar.setCookie(Cookie.parse(cookie), config.domain_name, {}, (error) => {
+						if (error) {
+							console.log(error);
+							return reject(error);
+						}
+					});
+				});
+			}
+
+			try {
+				resolve({response: response, body: JSON.parse(body)});
+			} catch (e) {
+				resolve(body);
+			}
+		});
+	});
+}
+
+function getHeaders() {
+	let headers = {
+		"Content-Type": "application/json",
+		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
+	};
+	cookieJar.getCookieString(config.domain_name, {allPaths: true}, function (err, cookies) {
+		if (cookies) {
+			headers['Cookie'] = cookies;
+		}
+	});
+
+	return headers;
+}
 
 function getHistoryUri(entityId, entityType) {
 	return config.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
@@ -8,7 +119,7 @@ function getHistoryUri(entityId, entityType) {
 function getHistory(entityId) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getHistoryUri(entityId);
-		apiService.getEntity(uri).then(
+		getEntity(uri).then(
 		(result) => {
 			resolve(result);
 		},
@@ -26,7 +137,7 @@ function getAttachmentUri(entityId) {
 function getAttachment(entityId) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getAttachmentUri(entityId);
-		apiService.getEntity(uri).then(
+		getEntity(uri).then(
 		(result) => {
 			resolve(result);
 		},
@@ -51,7 +162,7 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 function getDefectsBatch(offset, limit) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getDefectsUri(false, offset, limit, '', '');
-		apiService.getEntity(uri).then(
+		getEntity(uri).then(
 			(result) => {
 				resolve(result);
 			},
@@ -92,6 +203,9 @@ function getDefects(needed) {
 }
 
 module.exports = {
+	authenticate: authenticate,
+	getEntity: getEntity,
+	postData: postData,
 	getDefects: getDefects,
 	getHistory: getHistory,
 	getAttachment: getAttachment

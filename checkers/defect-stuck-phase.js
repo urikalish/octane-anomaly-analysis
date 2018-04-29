@@ -1,5 +1,5 @@
+'use strict';
 const _ = require('lodash');
-
 const defaultOptions = {
 	phasesToIgnore: ['closed','rejected','duplicate'],
 	phasesMaxDays: {

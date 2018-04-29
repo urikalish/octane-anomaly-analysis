@@ -1,6 +1,6 @@
+'use strict';
 const _ = require('lodash');
-const dataProvider = require('../data-provider');
-
+const dataProvider = require('../data/data-provider');
 const defaultOptions = {
 	phasesToIgnore: ['closed','rejected','duplicate'],
 	manyOwnersCount: 5
