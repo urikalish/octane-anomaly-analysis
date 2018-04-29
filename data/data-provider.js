@@ -1,23 +1,12 @@
 'use strict';
-const config = require('../config/config-environment');
+const configEnv = require('../config/config-environment');
 let request = require('request');
-if (config.proxy) {
-	request = request.defaults({'proxy': config.proxy});
+if (configEnv.proxy) {
+	request = request.defaults({'proxy': configEnv.proxy});
 }
-const url = require('url');
 const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
 const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
-
-function authenticate() {
-	let uri = url.resolve(config.server_address, '/authentication/sign_in');
-	let body = {
-		client_id: config.client_id,
-		client_secret: config.client_secret
-	};
-	console.log('Authenticating...');
-	return postData(uri, body);
-}
 
 function getEntity(uri) {
 	return new Promise((resolve, reject) => {
@@ -80,7 +69,7 @@ function postData(uri, body, formData) {
 
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), config.domain_name, {}, (error) => {
+					cookieJar.setCookie(Cookie.parse(cookie), configEnv.domain_name, {}, (error) => {
 						if (error) {
 							console.log(error);
 							return reject(error);
@@ -103,7 +92,7 @@ function getHeaders() {
 		"Content-Type": "application/json",
 		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
 	};
-	cookieJar.getCookieString(config.domain_name, {allPaths: true}, function (err, cookies) {
+	cookieJar.getCookieString(configEnv.domain_name, {allPaths: true}, function (err, cookies) {
 		if (cookies) {
 			headers['Cookie'] = cookies;
 		}
@@ -113,7 +102,7 @@ function getHeaders() {
 }
 
 function getHistoryUri(entityId, entityType) {
-	return config.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
+	return configEnv.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
 }
 
 function getHistory(entityId) {
@@ -131,7 +120,7 @@ function getHistory(entityId) {
 }
 
 function getAttachmentUri(entityId) {
-	return config.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
+	return configEnv.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
 }
 
 function getAttachment(entityId) {
@@ -149,7 +138,7 @@ function getAttachment(entityId) {
 }
 
 function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
-	return config.api_url +
+	return configEnv.api_url +
 	`/work_items` +
 	`?order_by=${isAsc ? '' : '-'}id` +
 	`&offset=${offset || 0}` +
@@ -203,8 +192,7 @@ function getDefects(needed) {
 }
 
 module.exports = {
-	authenticate: authenticate,
-	getEntity: getEntity,
+	//getEntity: getEntity,
 	postData: postData,
 	getDefects: getDefects,
 	getHistory: getHistory,
