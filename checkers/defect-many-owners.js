@@ -1,5 +1,4 @@
 'use strict';
-//const _ = require('lodash');
 const helper = require('../helper/helper');
 const dataProvider = require('../data/data-provider');
 
@@ -21,7 +20,7 @@ function check(defects, options) {
 					}
 				});
 				if (ownerCount >= options.manyOwnersCount) {
-					console.log(`Defect with many owners (${ownerCount}) | ${owners} | ${helper.getDefectDetailsStr(d)}`);
+					console.log(`Defect with many owners (${ownerCount} - ${owners}) | ${helper.getDefectDetailsStr(d)}`);
 				}
 			}
 			);

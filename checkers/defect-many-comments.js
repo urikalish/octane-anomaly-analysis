@@ -1,5 +1,4 @@
 'use strict';
-//const _ = require('lodash');
 const helper = require('../helper/helper');
 
 function check(defects, options) {
