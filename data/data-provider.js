@@ -1,5 +1,6 @@
 'use strict';
 const envConfig = require('../config/environment-config');
+const apiUrl = `${envConfig.serverAddress}/api/shared_spaces/${envConfig.sharedspaceId}/workspaces/${envConfig.workspaceId}`;
 let request = require('request');
 if (envConfig.proxy) {
 	request = request.defaults({'proxy': envConfig.proxy});
@@ -69,7 +70,7 @@ function postData(uri, body, formData) {
 
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domain_name, {}, (error) => {
+					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
 						if (error) {
 							console.log(error);
 							return reject(error);
@@ -92,7 +93,7 @@ function getHeaders() {
 		"Content-Type": "application/json",
 		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
 	};
-	cookieJar.getCookieString(envConfig.domain_name, {allPaths: true}, function (err, cookies) {
+	cookieJar.getCookieString(envConfig.domainName, {allPaths: true}, function (err, cookies) {
 		if (cookies) {
 			headers['Cookie'] = cookies;
 		}
@@ -102,7 +103,7 @@ function getHeaders() {
 }
 
 function getHistoryUri(entityId, entityType) {
-	return envConfig.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
+	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
 }
 
 function getHistory(entityId) {
@@ -120,7 +121,7 @@ function getHistory(entityId) {
 }
 
 function getAttachmentUri(entityId) {
-	return envConfig.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
+	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
 }
 
 function getAttachment(entityId) {
@@ -138,7 +139,7 @@ function getAttachment(entityId) {
 }
 
 function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
-	return envConfig.api_url +
+	return apiUrl +
 	`/work_items` +
 	`?order_by=${isAsc ? '' : '-'}id` +
 	`&offset=${offset || 0}` +

@@ -1,13 +1,24 @@
 'use strict';
 let envConfig = {
-	server_address: process.env.SERVER_ADDRESS,
-	domain_name: process.env.SERVER_DOMAIN,
-	client_id: process.env.CLIENT_ID,
-	client_secret: process.env.CLIENT_SECRET,
-	sharedspace_id: process.env.SHAREDSPACE_ID,
-	workspace_id: process.env.WORKSPACE_ID,
+	//serverAddress: 'https://alm-octane.saas.acme.com',
+	serverAddress: process.env.SERVER_ADDRESS,
+
+	//domainName: 'http://saas.acme.com',
+	domainName: process.env.SERVER_DOMAIN,
+
+	//sharedspaceId: '1001',
+	sharedspaceId: process.env.SHAREDSPACE_ID,
+
+	//workspaceId: '1002',
+	workspaceId: process.env.WORKSPACE_ID,
+
+	/* Use an empty string if no proxy */
+	//proxy: 'http://42.42.42.42:8080',
 	proxy: process.env.PROXY,
-	api_url: process.env.SERVER_ADDRESS + '/api/shared_spaces/' + process.env.SHAREDSPACE_ID + '/workspaces/' + process.env.WORKSPACE_ID
+
+	clientId: process.env.CLIENT_ID,
+
+	clientSecret: process.env.CLIENT_SECRET,
 };
 
 module.exports = envConfig;
