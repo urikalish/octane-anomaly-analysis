@@ -1,14 +1,8 @@
 'use strict';
 const _ = require('lodash');
 const dataProvider = require('../data/data-provider');
-const defaultOptions = {
-	phasesToIgnore: ['closed','rejected','duplicate'],
-	manyOwnersCount: 5
-};
 
 function check(defects, options) {
-	options = options || {};
-	_.defaults(options, defaultOptions);
 	defects.forEach(d => {
 		if (options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1) {
 			dataProvider.getHistory(d.id).then(

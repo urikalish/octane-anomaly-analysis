@@ -1,18 +1,17 @@
 'use strict';
-const configEnv = require('../config/config-environment');
+const envConfig = require('../config/environment-config');
 const dataProvider = require('./data-provider');
 let request = require('request');
-if (configEnv.proxy) {
-	request = request.defaults({'proxy': configEnv.proxy});
+if (envConfig.proxy) {
+	request = request.defaults({'proxy': envConfig.proxy});
 }
 const url = require('url');
-const tough = require('tough-cookie');
 
 function authenticate() {
-	let uri = url.resolve(configEnv.server_address, '/authentication/sign_in');
+	let uri = url.resolve(envConfig.server_address, '/authentication/sign_in');
 	let body = {
-		client_id: configEnv.client_id,
-		client_secret: configEnv.client_secret
+		client_id: envConfig.client_id,
+		client_secret: envConfig.client_secret
 	};
 	console.log('Authenticating...');
 	return dataProvider.postData(uri, body);

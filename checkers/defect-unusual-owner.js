@@ -1,13 +1,7 @@
 'use strict';
 const _ = require('lodash');
-const defaultOptions = {
-	phasesToIgnore: ['closed','rejected','duplicate','fixed'],
-	dataSetSize: 3000
-};
 
 function check(defects, options) {
-	options = options || {};
-	_.defaults(options, defaultOptions);
 	let unusualOwners = {};
 	let count = 0;
 	defects.forEach(d => {

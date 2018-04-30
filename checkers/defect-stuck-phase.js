@@ -1,18 +1,7 @@
 'use strict';
 const _ = require('lodash');
-const defaultOptions = {
-	phasesToIgnore: ['closed','rejected','duplicate'],
-	phasesMaxDays: {
-		'_DEFAULT': 90,
-		'new': 90,
-		'opened': 90,
-		'fixed': 90
-	}
-};
 
 function check(defects, options) {
-	options = options || {};
-	_.defaults(options, defaultOptions);
 	defects.forEach(d => {
 		if (options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1 && d['time_in_current_phase']) {
 			let days = Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);

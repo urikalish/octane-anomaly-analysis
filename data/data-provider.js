@@ -1,8 +1,8 @@
 'use strict';
-const configEnv = require('../config/config-environment');
+const envConfig = require('../config/environment-config');
 let request = require('request');
-if (configEnv.proxy) {
-	request = request.defaults({'proxy': configEnv.proxy});
+if (envConfig.proxy) {
+	request = request.defaults({'proxy': envConfig.proxy});
 }
 const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
@@ -69,7 +69,7 @@ function postData(uri, body, formData) {
 
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), configEnv.domain_name, {}, (error) => {
+					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domain_name, {}, (error) => {
 						if (error) {
 							console.log(error);
 							return reject(error);
@@ -92,7 +92,7 @@ function getHeaders() {
 		"Content-Type": "application/json",
 		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
 	};
-	cookieJar.getCookieString(configEnv.domain_name, {allPaths: true}, function (err, cookies) {
+	cookieJar.getCookieString(envConfig.domain_name, {allPaths: true}, function (err, cookies) {
 		if (cookies) {
 			headers['Cookie'] = cookies;
 		}
@@ -102,7 +102,7 @@ function getHeaders() {
 }
 
 function getHistoryUri(entityId, entityType) {
-	return configEnv.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
+	return envConfig.api_url +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
 }
 
 function getHistory(entityId) {
@@ -120,7 +120,7 @@ function getHistory(entityId) {
 }
 
 function getAttachmentUri(entityId) {
-	return configEnv.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
+	return envConfig.api_url +	`/attachments?query="id=${entityId}"&fields=id,name,size`
 }
 
 function getAttachment(entityId) {
@@ -138,7 +138,7 @@ function getAttachment(entityId) {
 }
 
 function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
-	return configEnv.api_url +
+	return envConfig.api_url +
 	`/work_items` +
 	`?order_by=${isAsc ? '' : '-'}id` +
 	`&offset=${offset || 0}` +

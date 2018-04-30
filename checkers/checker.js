@@ -1,19 +1,17 @@
 'use strict';
+const _ = require('lodash');
+const checkersConfig = require('../config/checkers-config');
 const dataProvider = require('../data/data-provider');
-const defectLargeAttachments = require('./defect-large-attachments');
-const defectManyComments = require('./defect-many-comments');
-const defectManyOwners = require('./defect-many-owners');
-const defectStuckPhase = require('./defect-stuck-phase');
-const defectUnusualOwner = require('./defect-unusual-owner');
 
 function check() {
-	dataProvider.getDefects(100).then(
+	dataProvider.getDefects(checkersConfig.defectsDataSetSize).then(
 	(defects) => {
-		defectStuckPhase.check(defects);
-		defectUnusualOwner.check(defects);
-		defectManyOwners.check(defects);
-		defectManyComments.check(defects);
-		defectLargeAttachments.check(defects);
+		checkersConfig.checkers.forEach(c => {
+			if (_.isUndefined(c.enabled) || c.enabled) {
+				let checker = require(`./${c.name}`);
+				checker.check(defects, c.options);
+			}
+		});
 	});
 }
 
