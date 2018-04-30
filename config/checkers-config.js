@@ -4,7 +4,7 @@ let checkersConfig = {
 	checkers: [
 		{
 			name: 'defect-large-attachments',
-			enabled: true,
+			//enabled: false,
 			options: {
 				phasesToIgnore: ['closed', 'rejected', 'duplicate'],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
@@ -13,7 +13,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-many-comments',
-			enabled: true,
+			//enabled: false,
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
 				manyCommentsCount: 8
@@ -21,7 +21,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-many-owners',
-			enabled: true,
+			//enabled: false,
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate'],
 				manyOwnersCount: 5
@@ -29,7 +29,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-stuck-phase',
-			enabled: true,
+			//enabled: false,
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate'],
 				phasesMaxDays: {
@@ -42,10 +42,10 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-unusual-owner',
-			enabled: true,
+			//enabled: false,
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
-				dataSetSize: 3000
+				maxDataSetSize: 3000
 			}
 		}
 	]

@@ -6,7 +6,7 @@ function check(defects, options) {
 	let count = 0;
 	defects.forEach(d => {
 		count++;
-		if (count <= options.dataSetSize && d.owner) {
+		if (count <= options.maxDataSetSize && d.owner) {
 			let ownerName = d.owner.full_name || d.owner.name;
 			if (unusualOwners[ownerName]) {
 				unusualOwners[ownerName].count++;
