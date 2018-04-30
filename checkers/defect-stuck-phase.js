@@ -29,9 +29,9 @@ function check(defects, options) {
 	});
 	stuckDefects.sort((a, b) => {
 		if (a.phase.name === b.phase.name) {
-			return 0;
+			return getDaysInCurrentPhase(b) - getDaysInCurrentPhase(a);
 		}
-		return a.phase.name > b.phase.name ? -1 : 1;
+		return a.phase.name < b.phase.name ? -1 : 1;
 	});
 	stuckDefects.forEach(d => {
 		console.log(`Defect stuck in phase (${d.phase.name} - ${getDaysInCurrentPhase(d)} days) | ${getOwnerStr(d)} | #${d.id} | ${d.name}`);

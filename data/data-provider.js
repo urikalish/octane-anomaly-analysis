@@ -58,7 +58,7 @@ function postData(uri, body, formData) {
 				return reject(err);
 			}
 
-			console.log(response);
+			//console.log(response);
 
 			if (response.statusCode < 200 || response.statusCode > 299) {
 				return reject({

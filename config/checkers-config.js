@@ -8,27 +8,11 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate'],
 				phasesMaxDays: {
-					'_DEFAULT': 90,
 					'new': 90,
-					'opened': 90,
-					'fixed': 90
+					'opened': 60,
+					'fixed': 30,
+					'_DEFAULT': 30 //every other non-specified phase
 				}
-			}
-		},
-		{
-			name: 'defect-many-comments',
-			//enabled: false,
-			options: {
-				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
-				manyCommentsCount: 8
-			}
-		},
-		{
-			name: 'defect-many-owners',
-			//enabled: false,
-			options: {
-				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
-				manyOwnersCount: 5
 			}
 		},
 		{
@@ -37,6 +21,22 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
 				maxDataSetSize: 3000
+			}
+		},
+		{
+			name: 'defect-many-comments',
+			//enabled: false,
+			options: {
+				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+				manyCommentsCount: 7
+			}
+		},
+		{
+			name: 'defect-many-owners',
+			//enabled: false,
+			options: {
+				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+				manyOwnersCount: 5
 			}
 		},
 		{
