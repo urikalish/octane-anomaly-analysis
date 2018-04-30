@@ -1,5 +1,5 @@
 'use strict';
-const _ = require('lodash');
+//const _ = require('lodash');
 const dataProvider = require('../data/data-provider');
 
 function check(defects, options) {

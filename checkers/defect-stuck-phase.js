@@ -1,5 +1,5 @@
 'use strict';
-const _ = require('lodash');
+//const _ = require('lodash');
 
 function getOwnerStr(d) {
 	let owner = d.owner && (d.owner.full_name || d.owner.name);
