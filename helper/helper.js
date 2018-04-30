@@ -13,9 +13,20 @@ function getDefectOwnersStr(d) {
 }
 
 function getDefectDetailsStr(d) {
-	return `${d.severity.name} | ${d.phase.name} | ${getDefectOwnersStr(d)} | #${d.id} | ${d.name}`;
+	return `#${d.id} | ${d.severity.name} | ${d.phase.name} | ${getDefectOwnersStr(d)} | ${d.name}`;
+}
+
+function compareDefects(a, b) {
+	if (a.severity.name === b.severity.name) {
+		if (a.phase.name === b.phase.name) {
+			return 0;
+		}
+		return a.phase.name < b.phase.name ? -1 : 1;
+	}
+	return a.severity.name < b.severity.name ? -1 : 1;
 }
 
 module.exports = {
-	getDefectDetailsStr: getDefectDetailsStr
+	getDefectDetailsStr: getDefectDetailsStr,
+	compareDefects: compareDefects
 };

@@ -17,13 +17,11 @@ function check(defects, options) {
 		}
 	});
 	stuckDefects.sort((a, b) => {
-		if (a.phase.name === b.phase.name) {
-			return getDaysInCurrentPhase(b) - getDaysInCurrentPhase(a);
-		}
-		return a.phase.name < b.phase.name ? -1 : 1;
+		let compare = helper.compareDefects(a, b);
+		return (compare !== 0) ? compare : getDaysInCurrentPhase(b) - getDaysInCurrentPhase(a);
 	});
 	stuckDefects.forEach(d => {
-		console.log(`Defect stuck in phase (${d.phase.name} - ${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`);
+		console.log(`Defect stuck in phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`);
 	});
 }
 
