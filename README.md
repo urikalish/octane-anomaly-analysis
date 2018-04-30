@@ -6,7 +6,7 @@ This is just a small experiment - checking for anomalies in ALM Octane defect en
 
 ## Prerequisites
 
-* [NodeJs](https://nodejs.org/en/)
+* [NodeJs](https://nodejs.org/en/) installed on the local machine.
 
 ## How to Install
 
