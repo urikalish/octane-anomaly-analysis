@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('lodash');
+const helper = require('../helper/helper');
 
 function check(defects, options) {
 	let unusualOwners = {};
@@ -21,7 +22,7 @@ function check(defects, options) {
 	_.keys(unusualOwners).forEach(o => {
 		if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.name.toLowerCase()) === -1)) {
 			let d = unusualOwners[o].firstDefect;
-			console.log(`Defect with an unusual owner (${o}) | ${d.severity.name} | ${d.phase.name} | #${d.id} | ${d.name}`);
+			console.log(`Defect with an unusual owner (${o}) | ${helper.getDefectDetailsStr(d)}`);
 		}
 	});
 }
