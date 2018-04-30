@@ -5,8 +5,13 @@
   "keywords": [
     "ALM",
     "Octane",
+    "Defect",
+    "Defects",
     "Anomaly",
-    "Analysis"
+    "Anomalies",
+    "Detection",
+    "Analysis",
+    "Report"
   ],
   "author": "Uri Kalish",
   "license": "MIT",
