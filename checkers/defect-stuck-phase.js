@@ -34,7 +34,7 @@ function check(defects, options) {
 		return a.phase.name < b.phase.name ? -1 : 1;
 	});
 	stuckDefects.forEach(d => {
-		console.log(`Defect stuck in phase (${d.phase.name} - ${getDaysInCurrentPhase(d)} days) | ${getOwnerStr(d)} | #${d.id} | ${d.name}`);
+		console.log(`Defect stuck in phase (${d.phase.name} - ${getDaysInCurrentPhase(d)} days) | ${d.severity.name} | ${d.phase.name} | ${getOwnerStr(d)} | #${d.id} | ${d.name}`);
 	});
 }
 
