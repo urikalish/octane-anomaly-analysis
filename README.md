@@ -8,7 +8,7 @@ This is just a small experiment - checking for anomalies in ALM Octane defect en
 
 * [NodeJs](https://nodejs.org/en/)
 
-## Installation
+## Installing
 
 * Clone the GitHub repository to a local directory (e.g. c:\octane-anomaly-analysis\)
 
