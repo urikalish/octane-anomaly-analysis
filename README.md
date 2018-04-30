@@ -1,6 +1,6 @@
 # octane-anomaly-analysis
 
-## Description
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 This is just a small experiment - checking for anomalies in ALM Octane defect entities.
 
