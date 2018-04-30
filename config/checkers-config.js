@@ -23,7 +23,7 @@ let checkersConfig = {
 			name: 'defect-many-owners',
 			//enabled: false,
 			options: {
-				phasesToIgnore: ['closed','rejected','duplicate'],
+				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
 				manyOwnersCount: 5
 			}
 		},
