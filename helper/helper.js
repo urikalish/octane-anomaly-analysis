@@ -16,14 +16,26 @@ function getDefectDetailsStr(d) {
 	return `#${d.id} | ${d.severity.name} | ${d.phase.name} | ${getDefectOwnersStr(d)} | ${d.name}`;
 }
 
+function getSeverityOrder(severity) {
+	let order = {
+		'list_node.severity.urgent': 1,
+		'list_node.severity.very_high': 2,
+		'list_node.severity.high': 3,
+		'list_node.severity.medium': 4,
+		'list_node.severity.low': 5,
+		'_DEFAULT': 6,
+	};
+	return order[severity.logical_name] || order['_DEFAULT'];
+}
+
 function compareDefects(a, b) {
-	if (a.severity.name === b.severity.name) {
+	if (a.severity.logical_name === b.severity.logical_name) {
 		if (a.phase.name === b.phase.name) {
 			return 0;
 		}
 		return a.phase.name < b.phase.name ? -1 : 1;
 	}
-	return a.severity.name < b.severity.name ? -1 : 1;
+	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
 }
 
 module.exports = {

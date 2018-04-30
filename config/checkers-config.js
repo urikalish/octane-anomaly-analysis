@@ -12,10 +12,42 @@ let checkersConfig = {
 					'duplicate'
 				],
 				phasesMaxDays: {
-					'new': 90,
-					'opened': 60,
-					'fixed': 30,
-					'_DEFAULT': 30 //every other non-specified phase
+					'list_node.severity.critical': {
+						'new': 7,
+						'opened': 7,
+						'fixed': 7,
+						'_DEFAULT': 7 //every other non-specified phase
+					},
+					'list_node.severity.very_high': {
+						'new': 14,
+						'opened': 14,
+						'fixed': 14,
+						'_DEFAULT': 14 //every other non-specified phase
+					},
+					'list_node.severity.high': {
+						'new': 21,
+						'opened': 21,
+						'fixed': 21,
+						'_DEFAULT': 21 //every other non-specified phase
+					},
+					'list_node.severity.medium': {
+						'new': 28,
+						'opened': 28,
+						'fixed': 28,
+						'_DEFAULT': 28 //every other non-specified phase
+					},
+					'list_node.severity.low': {
+						'new': 35,
+						'opened': 35,
+						'fixed': 35,
+						'_DEFAULT': 35 //every other non-specified phase
+					},
+					'_DEFAULT': {
+						'new': 60,
+						'opened': 60,
+						'fixed': 60,
+						'_DEFAULT': 60 //every other non-specified phase
+					}
 				}
 			}
 		},

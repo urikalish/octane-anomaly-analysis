@@ -9,7 +9,8 @@ function check(defects, options) {
 	let stuckDefects = [];
 	defects.forEach(d => {
 		if (options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1 && d['time_in_current_phase']) {
-			let maxDays = options.phasesMaxDays[d.phase.name.toLowerCase()] || options.phasesMaxDays['_DEFAULT'];
+			let severityItem = options.phasesMaxDays[d.phase.logical_name] || options.phasesMaxDays['_DEFAULT'];
+			let maxDays = severityItem[d.phase.logical_name.toLowerCase()] || severityItem['_DEFAULT'];
 			if (getDaysInCurrentPhase(d) > maxDays) {
 				stuckDefects.push(d);
 			}
