@@ -8,7 +8,7 @@
     "Anomaly",
     "Analysis"
   ],
-  "author": "Micro Focus",
+  "author": "Uri Kalish",
   "license": "MIT",
   "scripts": {
     "start": "node index.js"
