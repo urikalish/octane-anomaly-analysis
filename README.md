@@ -8,7 +8,7 @@ This is just a small experiment - checking for anomalies in ALM Octane defect en
 
 * [NodeJs](https://nodejs.org/en/)
 
-## Installing
+## How to Install
 
 * Clone the GitHub repository to a local directory (e.g. c:\octane-anomaly-analysis\)
 
@@ -21,13 +21,13 @@ cd c:\octane-anomaly-analysis
 npm i
 ```
 
-## Configuring
+## How to Configure
 
 * Configure environment details in ./config/environment-config.js
 
 * Configure check options in ./config/checkers-config.js
 
-## Running
+## How to Run
 ```sh
 npm start
 ```
