@@ -4,9 +4,13 @@ let checkersConfig = {
 	checkers: [
 		{
 			name: 'defect-stuck-phase',
-			//enabled: false,
+			enabled: true,
 			options: {
-				phasesToIgnore: ['closed','rejected','duplicate'],
+				phasesToIgnore: [
+					'closed',
+					'rejected',
+					'duplicate'
+				],
 				phasesMaxDays: {
 					'new': 90,
 					'opened': 60,
@@ -17,35 +21,54 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-unusual-owner',
-			//enabled: false,
+			enabled: true,
 			options: {
-				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+				phasesToIgnore: [
+					'closed',
+					'rejected',
+					'duplicate',
+					'fixed'
+				],
 				maxDataSetSize: 3000
 			}
 		},
 		{
 			name: 'defect-many-comments',
-			//enabled: false,
+			enabled: true,
 			options: {
-				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+				phasesToIgnore: [
+					'closed',
+					'rejected',
+					'duplicate',
+					'fixed'
+				],
 				manyCommentsCount: 7
 			}
 		},
 		{
 			name: 'defect-many-owners',
-			//enabled: false,
+			enabled: true,
 			options: {
-				phasesToIgnore: ['closed','rejected','duplicate','fixed'],
+				phasesToIgnore: [
+					'closed',
+					'rejected',
+					'duplicate',
+					'fixed'
+				],
 				manyOwnersCount: 5
 			}
 		},
 		{
 			name: 'defect-large-attachments',
-			//enabled: false,
+			enabled: true,
 			options: {
-				phasesToIgnore: ['closed', 'rejected', 'duplicate'],
+				phasesToIgnore: [
+					'closed',
+					'rejected',
+					'duplicate'
+				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
-				attachmentsMaxSizeMB: 10
+				attachmentsLargeSizeMB: 10
 			}
 		}
 	]
