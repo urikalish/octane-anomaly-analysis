@@ -1,6 +1,6 @@
 'use strict';
 let checkersConfig = {
-	defectsDataSetSize: 5000,
+	defectsTotalDataSetSize: 5000,
 	checkers: [
 		{
 			name: 'defect-large-attachments',

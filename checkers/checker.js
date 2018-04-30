@@ -4,7 +4,7 @@ const checkersConfig = require('../config/checkers-config');
 const dataProvider = require('../data/data-provider');
 
 function check() {
-	dataProvider.getDefects(checkersConfig.defectsDataSetSize).then(
+	dataProvider.getDefects(checkersConfig.defectsTotalDataSetSize).then(
 	(defects) => {
 		checkersConfig.checkers.forEach(c => {
 			if (_.isUndefined(c.enabled) || c.enabled) {
