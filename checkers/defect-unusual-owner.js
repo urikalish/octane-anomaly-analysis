@@ -20,7 +20,7 @@ function check(defects, options) {
 		}
 	});
 	_.keys(unusualOwners).forEach(o => {
-		if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.name.toLowerCase()) === -1)) {
+		if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.logical_name) === -1)) {
 			let d = unusualOwners[o].firstDefect;
 			console.log(`Defect with an unusual owner (${o}) | ${helper.getDefectDetailsStr(d)}`);
 		}

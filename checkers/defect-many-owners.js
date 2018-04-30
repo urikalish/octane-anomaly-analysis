@@ -4,7 +4,7 @@ const dataProvider = require('../data/data-provider');
 
 function check(defects, options) {
 	defects.forEach(d => {
-		if (options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1) {
+		if (options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
 			dataProvider.getHistory(d.id).then(
 			(result) => {
 				let owners = [];

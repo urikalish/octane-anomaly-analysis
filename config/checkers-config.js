@@ -7,46 +7,43 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'closed',
-					'rejected',
-					'duplicate'
+					'phase.defect.closed',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.duplicate'
 				],
 				phasesMaxDays: {
-					'list_node.severity.critical': {
-						'new': 7,
-						'opened': 7,
-						'fixed': 7,
-						'_DEFAULT': 7 //every other non-specified phase
+					'list_node.severity.urgent': {
+						'phase.defect.new': 1,
+						'phase.defect.opened': 3,
+						'phase.defect.fixed': 2,
+						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'list_node.severity.very_high': {
-						'new': 14,
-						'opened': 14,
-						'fixed': 14,
-						'_DEFAULT': 14 //every other non-specified phase
+						'phase.defect.new': 7,
+						'phase.defect.opened': 7,
+						'phase.defect.fixed': 7,
+						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.high': {
-						'new': 21,
-						'opened': 21,
-						'fixed': 21,
-						'_DEFAULT': 21 //every other non-specified phase
+						'phase.defect.new': 7,
+						'phase.defect.opened': 7,
+						'phase.defect.fixed': 7,
+						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
-						'new': 28,
-						'opened': 28,
-						'fixed': 28,
-						'_DEFAULT': 28 //every other non-specified phase
+						'phase.defect.new': 99,
+						'phase.defect.opened': 99,
+						'phase.defect.fixed': 99,
+						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
-						'new': 35,
-						'opened': 35,
-						'fixed': 35,
-						'_DEFAULT': 35 //every other non-specified phase
+						'phase.defect.new': 99,
+						'phase.defect.opened': 99,
+						'phase.defect.fixed': 99,
+						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': {
-						'new': 60,
-						'opened': 60,
-						'fixed': 60,
-						'_DEFAULT': 60 //every other non-specified phase
+						'_DEFAULT': 30 //every other non-specified phase
 					}
 				}
 			}
@@ -56,10 +53,10 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'closed',
-					'rejected',
-					'duplicate',
-					'fixed'
+					'phase.defect.closed',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.duplicate',
+					'phase.defect.fixed'
 				],
 				maxDataSetSize: 3000
 			}
@@ -69,10 +66,10 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'closed',
-					'rejected',
-					'duplicate',
-					'fixed'
+					'phase.defect.closed',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.duplicate',
+					'phase.defect.fixed'
 				],
 				manyCommentsCount: 7
 			}
@@ -82,10 +79,10 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'closed',
-					'rejected',
-					'duplicate',
-					'fixed'
+					'phase.defect.closed',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.duplicate',
+					'phase.defect.fixed'
 				],
 				manyOwnersCount: 5
 			}
@@ -95,9 +92,9 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'closed',
-					'rejected',
-					'duplicate'
+					'phase.defect.closed',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.duplicate'
 				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10

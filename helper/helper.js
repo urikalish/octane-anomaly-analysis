@@ -13,7 +13,7 @@ function getDefectOwnersStr(d) {
 }
 
 function getDefectDetailsStr(d) {
-	return `#${d.id} | ${d.severity.name} | ${d.phase.name} | ${d.team.name} | ${getDefectOwnersStr(d)} | ${d.name}`;
+	return `${d.severity.name} | ${d.phase.name} | ${d.team.name} | ${getDefectOwnersStr(d)} | #${d.id} | ${d.name}`;
 }
 
 function getSeverityOrder(severity) {

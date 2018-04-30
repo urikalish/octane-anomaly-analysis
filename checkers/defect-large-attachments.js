@@ -4,7 +4,7 @@ const dataProvider = require('../data/data-provider');
 
 function check(defects, options) {
 	defects.forEach(d => {
-		if ((options.phasesToIgnore.indexOf(d.phase.name.toLowerCase()) === -1) && d.attachments && d.attachments['total_count'] && d.attachments['total_count'] > 0) {
+		if ((options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) && d.attachments && d.attachments['total_count'] && d.attachments['total_count'] > 0) {
 			let promises = [];
 			d.attachments.data.forEach(a => {
 				if (a.type === 'attachment' && !options.fileExtensionsToIgnoreRegex.test(a.name.toLowerCase())) {
