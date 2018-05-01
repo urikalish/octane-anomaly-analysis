@@ -42,7 +42,7 @@ let checkersConfig = {
 						'phase.defect.fixed': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
-					'_DEFAULT': {
+					'_DEFAULT': { //every other non-specified severity
 						'_DEFAULT': 30 //every other non-specified phase
 					}
 				}
