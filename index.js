@@ -11,7 +11,7 @@ function run() {
 			checker.check();
 		},
 		(reason) => {
-			helper.logError('Authenticated Error - ' + reason);
+			helper.logError('Authentication Error - ' + reason.message);
 		}
 	);
 }
