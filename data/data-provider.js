@@ -1,4 +1,5 @@
 'use strict';
+const helper = require('../helper/helper');
 const envConfig = require('../config/environment-config');
 const apiUrl = `${envConfig.serverAddress}/api/shared_spaces/${envConfig.sharedspaceId}/workspaces/${envConfig.workspaceId}`;
 let request = require('request');
@@ -22,10 +23,13 @@ function getEntity(uri) {
 			}
 
 			if (response.statusCode < 200 || response.statusCode > 299) {
+				helper.logError(response.statusCode + ' ' + response.statusMessage);
 				return reject({
 					statusCode: response.statusCode,
-					message: JSON.parse(response.body).description,
-					description: JSON.parse(response.body)
+					message: response.statusMessage,
+					description: response.statusMessage
+					//message: JSON.parse(response.body).description,
+					//description: JSON.parse(response.body)
 				});
 			}
 
@@ -58,6 +62,7 @@ function postData(uri, body, formData) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
+				helper.logError(response.statusCode + ' ' + response.statusMessage);
 				return reject({
 					statusCode: response.statusCode,
 					message: response.statusMessage,
@@ -71,7 +76,7 @@ function postData(uri, body, formData) {
 				response.headers['set-cookie'].forEach((cookie) => {
 					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
 						if (error) {
-							console.log(error);
+							helper.logError(error);
 							return reject(error);
 						}
 					});
@@ -113,7 +118,7 @@ function getHistory(entityId) {
 			resolve(result);
 		},
 		(reason) => {
-			console.log('Error on getHistory() ' + reason);
+			helper.logError('Error on getHistory() ' + reason);
 		}
 		);
 	});
@@ -131,7 +136,7 @@ function getAttachment(entityId) {
 			resolve(result);
 		},
 		(reason) => {
-			console.log('Error on getAttachment() ' + reason);
+			helper.logError('Error on getAttachment() ' + reason);
 		}
 		);
 	});
@@ -156,7 +161,7 @@ function getDefectsBatch(offset, limit) {
 				resolve(result);
 			},
 			(reason) => {
-				console.log('Error on getDefectsBatch() - ' + reason.message);
+				helper.logError('Error on getDefectsBatch() - ' + reason.message);
 			}
 		);
 	});

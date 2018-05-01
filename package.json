@@ -19,6 +19,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "chalk": "^2.4.1",
     "lodash": "^4.17.10",
     "request": "^2.85.0",
     "tough-cookie": "^2.3.4",

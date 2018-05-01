@@ -20,7 +20,7 @@ function check(defects, options) {
 						}
 					});
 					if (totalSizeMB > options.attachmentsLargeSizeMB) {
-						console.log(`Defect with large attachments (${Math.round(totalSizeMB)}MB) | ${helper.getDefectDetailsStr(d)}`);
+						helper.logAnomaly(`Defect with large attachments (${Math.round(totalSizeMB)}MB) | ${helper.getDefectDetailsStr(d)}`);
 					}
 				}
 			);

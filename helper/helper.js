@@ -1,4 +1,5 @@
 'use strict';
+const chalk = require('chalk');
 
 function getDefectOwnersStr(d) {
 	let owner = d.owner && (d.owner.full_name || d.owner.name);
@@ -38,7 +39,27 @@ function compareDefects(a, b) {
 	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
 }
 
+function logMessage(msg) {
+	console.log(chalk.magentaBright(msg));
+}
+
+function logSuccess(msg) {
+	console.log(chalk.greenBright(msg));
+}
+
+function logError(msg) {
+	console.log(chalk.redBright(msg));
+}
+
+function logAnomaly(msg) {
+	console.log(chalk.cyanBright(msg));
+}
+
 module.exports = {
+	logMessage: logMessage,
+	logSuccess: logSuccess,
+	logError: logError,
+	logAnomaly: logAnomaly,
 	getDefectDetailsStr: getDefectDetailsStr,
 	compareDefects: compareDefects
 };

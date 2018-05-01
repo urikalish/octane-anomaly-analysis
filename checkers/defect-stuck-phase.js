@@ -21,7 +21,7 @@ function check(defects, options) {
 		return (compare !== 0) ? compare : getDaysInCurrentPhase(b) - getDaysInCurrentPhase(a);
 	});
 	stuckDefects.forEach(d => {
-		console.log(`Defect stuck in phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`);
+		helper.logAnomaly(`Defect stuck in phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`);
 	});
 }
 

@@ -1,4 +1,5 @@
 'use strict';
+const helper = require('../helper/helper');
 const envConfig = require('../config/environment-config');
 const dataProvider = require('./data-provider');
 let request = require('request');
@@ -13,7 +14,7 @@ function authenticate() {
 		client_id: envConfig.clientId,
 		client_secret: envConfig.clientSecret
 	};
-	console.log('Authenticating...');
+	helper.logMessage('Authenticating...');
 	return dataProvider.postData(uri, body);
 }
 

@@ -20,7 +20,7 @@ function check(defects, options) {
 					}
 				});
 				if (ownerCount >= options.manyOwnersCount) {
-					console.log(`Defect with many owners (${ownerCount} - ${owners}) | ${helper.getDefectDetailsStr(d)}`);
+					helper.logAnomaly(`Defect with many owners (${ownerCount} - ${owners}) | ${helper.getDefectDetailsStr(d)}`);
 				}
 			}
 			);

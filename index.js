@@ -1,16 +1,17 @@
 'use strict';
+const helper = require('./helper/helper');
 const authenticator = require('./data/authenticator');
 const checker = require('./checkers/checker');
 
 function run() {
 	authenticator.authenticate().then(
 		(/*result*/) => {
-			console.log('Authenticated - OK');
-			console.log('Checking for anomalies...');
+			helper.logSuccess('Authenticated - OK');
+			helper.logMessage('Checking for anomalies...');
 			checker.check();
 		},
 		(reason) => {
-			console.log('Authenticated Error - ' + reason);
+			helper.logError('Authenticated Error - ' + reason);
 		}
 	);
 }
