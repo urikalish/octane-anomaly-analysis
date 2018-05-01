@@ -6,6 +6,7 @@ function run() {
 	authenticator.authenticate().then(
 		(/*result*/) => {
 			console.log('Authenticated - OK');
+			console.log('Checking for anomalies...');
 			checker.check();
 		},
 		(reason) => {

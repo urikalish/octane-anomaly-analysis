@@ -57,14 +57,13 @@ function postData(uri, body, formData) {
 			if (err) {
 				return reject(err);
 			}
-
-			//console.log(response);
-
 			if (response.statusCode < 200 || response.statusCode > 299) {
 				return reject({
 					statusCode: response.statusCode,
-					message: JSON.parse(response.body).description,
-					description: JSON.parse(response.body)
+					message: response.statusMessage,
+					description: response.statusMessage
+					//message: JSON.parse(response.body).description,
+					//description: JSON.parse(response.body)
 				});
 			}
 
