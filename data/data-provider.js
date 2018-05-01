@@ -157,7 +157,7 @@ function getDefectsBatch(offset, limit) {
 				resolve(result);
 			},
 			(reason) => {
-				console.log('Error on getDefectsBatch() ' + reason);
+				console.log('Error on getDefectsBatch() - ' + reason.message);
 			}
 		);
 	});
