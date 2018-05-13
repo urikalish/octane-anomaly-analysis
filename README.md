@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-This is just a small experiment - Checking for anomalies within ALM Octane's defect entities.
+Checks for anomalies within ALM Octane's defect entities.
 
 ## Prerequisites
 
