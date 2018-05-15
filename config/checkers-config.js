@@ -62,6 +62,16 @@ let checkersConfig = {
 			}
 		},
 		{
+			name: 'defect-unusual-qa_owner',
+			enabled: true,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed'
+				],
+				maxDataSetSize: 3000
+			}
+		},
+		{
 			name: 'defect-many-comments',
 			enabled: true,
 			options: {
@@ -120,17 +130,7 @@ let checkersConfig = {
                     'phase.defect.closed'
                 ]
             }
-        },
-        {
-            name: 'defect-unusual-qa_owner',
-            enabled: true,
-            options: {
-                phasesToIgnore: [
-                    'phase.defect.closed'
-                ],
-                maxDataSetSize: 3000
-            }
-        },
+        }
 	]
 };
 
