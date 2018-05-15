@@ -13,7 +13,10 @@
     "Analysis",
     "Report"
   ],
-  "author": "Uri Kalish",
+  "contributors": [
+    "Uri Kalish",
+    "Hanan Malka"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "node index.js"
