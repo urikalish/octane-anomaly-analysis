@@ -8,8 +8,8 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'phase.defect.duplicate'
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
@@ -54,8 +54,8 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
 				maxDataSetSize: 3000
@@ -66,7 +66,9 @@ let checkersConfig = {
 			enabled: true,
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed'
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
 				maxDataSetSize: 3000
 			}
@@ -77,8 +79,8 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
 				manyCommentsCount: 7
@@ -90,8 +92,8 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
 				manyOwnersCount: 5
@@ -103,8 +105,8 @@ let checkersConfig = {
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'phase.defect.duplicate'
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10
@@ -116,8 +118,8 @@ let checkersConfig = {
             options: {
                 phasesToIgnore: [
                     'phase.defect.closed',
-                    'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
                     'phase.defect.duplicate',
+                    'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
                     'phase.defect.fixed'
                 ]
             }
@@ -126,9 +128,11 @@ let checkersConfig = {
             name: 'defect-inactive-qa_owner',
             enabled: true,
             options: {
-                phasesToIgnore: [
-                    'phase.defect.closed'
-                ]
+	            phasesToIgnore: [
+		            'phase.defect.closed',
+		            'phase.defect.duplicate',
+		            'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+	            ]
             }
         }
 	]
