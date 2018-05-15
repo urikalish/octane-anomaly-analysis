@@ -101,7 +101,7 @@ let checkersConfig = {
 			}
 		},
         {
-            name: 'defect-non-active-owner',
+            name: 'defect-inactive-owner',
             enabled: true,
             options: {
                 phasesToIgnore: [
@@ -109,6 +109,24 @@ let checkersConfig = {
                     'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
                     'phase.defect.duplicate',
                     'phase.defect.fixed'
+                ]
+            }
+        },
+        {
+            name: 'defect-inactive-qa_owner',
+            enabled: true,
+            options: {
+                phasesToIgnore: [
+                    'phase.defect.closed'
+                ]
+            }
+        },
+        {
+            name: 'defect-unusual-qa_owner',
+            enabled: true,
+            options: {
+                phasesToIgnore: [
+                    'phase.defect.closed'
                 ],
                 maxDataSetSize: 3000
             }
