@@ -99,7 +99,20 @@ let checkersConfig = {
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10
 			}
-		}
+		},
+        {
+            name: 'defect-non-active-owner',
+            enabled: true,
+            options: {
+                phasesToIgnore: [
+                    'phase.defect.closed',
+                    'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+                    'phase.defect.duplicate',
+                    'phase.defect.fixed'
+                ],
+                maxDataSetSize: 3000
+            }
+        },
 	]
 };
 
