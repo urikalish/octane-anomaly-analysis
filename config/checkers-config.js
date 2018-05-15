@@ -49,7 +49,7 @@ let checkersConfig = {
 			}
 		},
 		{
-			name: 'defect-unusual-owner',
+			name: 'defect-unusual-dev-owner',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -62,7 +62,7 @@ let checkersConfig = {
 			}
 		},
 		{
-			name: 'defect-unusual-qa_owner',
+			name: 'defect-unusual-qa-owner',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -113,7 +113,7 @@ let checkersConfig = {
 			}
 		},
         {
-            name: 'defect-inactive-owner',
+            name: 'defect-inactive-dev-owner',
             enabled: true,
             options: {
                 phasesToIgnore: [
@@ -125,7 +125,7 @@ let checkersConfig = {
             }
         },
         {
-            name: 'defect-inactive-qa_owner',
+            name: 'defect-inactive-qa-owner',
             enabled: true,
             options: {
 	            phasesToIgnore: [
