@@ -4,6 +4,15 @@
 
 Checks for anomalies within ALM Octane's defect entities.
 
+* Defects with an inactive owner
+* Defects with an inactive QA owner
+* Defects with large attachments
+* Defects with many comments
+* Defects with many owners
+* Defects stuck in phase
+* Defects with an unusual owner
+* Defects with an unusual QA owner 
+
 ## Prerequisites
 
 * [NodeJs](https://nodejs.org/en/) installed on the local machine.
