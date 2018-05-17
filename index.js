@@ -7,7 +7,6 @@ function run() {
 	authenticator.authenticate().then(
 		(/*result*/) => {
 			helper.logSuccess('Authenticated - OK');
-			helper.logMessage('Checking for anomalies...');
 			checker.check();
 		},
 		(reason) => {
