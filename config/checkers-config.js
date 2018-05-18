@@ -58,7 +58,7 @@ let checkersConfig = {
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
-				maxDataSetSize: 3000
+				maxDataSetSize: 1000
 			}
 		},
 		{
@@ -70,7 +70,7 @@ let checkersConfig = {
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
-				maxDataSetSize: 3000
+				maxDataSetSize: 1000
 			}
 		},
 		{
