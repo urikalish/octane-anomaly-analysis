@@ -25,6 +25,7 @@
     "chalk": "^2.4.1",
     "lodash": "^4.17.10",
     "request": "^2.85.0",
+    "terminal-link": "^1.1.0",
     "tough-cookie": "^2.3.4",
     "url": "^0.11.0"
   }

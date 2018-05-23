@@ -22,7 +22,7 @@ function check(defects, options) {
     _.keys(unusualQAOwners).forEach(o => {
         if ((unusualQAOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualQAOwners[o].firstDefect.phase.logical_name) === -1)) {
             let d = unusualQAOwners[o].firstDefect;
-            helper.logAnomaly(`Defect with an unusual QA owner (${o}) | ${helper.getDefectDetailsStr(d)}`);
+            helper.logAnomaly(`Defect with an unusual QA owner (${o}) | ${helper.getDefectDetailsStr(d)} | ${helper.getLinkToEntity(d)}`);
         }
     });
 }
