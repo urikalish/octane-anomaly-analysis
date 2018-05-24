@@ -1,8 +1,5 @@
 'use strict';
 const chalk = require('chalk');
-const envConfig = require('../config/environment-config');
-const url = require('url');
-const terminalLink = require('terminal-link');
 
 function getDefectOwnersStr(d) {
 	let owner = d.owner && (d.owner.full_name || d.owner.name);
@@ -14,11 +11,6 @@ function getDefectOwnersStr(d) {
 		ownerStr = 'QA: ' + qaOwner;
 	}
 	return ownerStr;
-}
-
-function getLinkToEntity(d) {
-	let uri = url.resolve(envConfig.serverAddress, '/ui/entity-navigation?p=' + envConfig.sharedspaceId  + '/' + envConfig.workspaceId + '&TENANTID=1&entityType=work_item&id=' + d.id)
-    return terminalLink("Link To Entity: #" + d.id, uri);
 }
 
 function getDefectDetailsStr(d) {
@@ -68,7 +60,6 @@ module.exports = {
 	logSuccess: logSuccess,
 	logError: logError,
 	logAnomaly: logAnomaly,
-    getLinkToEntity: getLinkToEntity,
 	getDefectDetailsStr: getDefectDetailsStr,
 	compareDefects: compareDefects
 };

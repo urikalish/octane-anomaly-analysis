@@ -22,7 +22,7 @@ function check(defects, options) {
 	_.keys(unusualOwners).forEach(o => {
 		if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.logical_name) === -1)) {
 			let d = unusualOwners[o].firstDefect;
-			helper.logAnomaly(`Defect with an unusual DEV owner (${o}) | ${helper.getDefectDetailsStr(d)} | ${helper.getLinkToEntity(d)}`);
+			helper.logAnomaly(`Defect with an unusual DEV owner (${o}) | ${helper.getDefectDetailsStr(d)}`);
 		}
 	});
 }

@@ -9,7 +9,7 @@ function check(defects, options) {
         }
     });
     defectsWithInactiveQAOwner.forEach(d => {
-        helper.logAnomaly(`Defect with an inactive QA owner (${d.qa_owner.full_name}) | ${helper.getDefectDetailsStr(d)} | ${helper.getLinkToEntity(d)}`);
+        helper.logAnomaly(`Defect with an inactive QA owner (${d.qa_owner.full_name}) | ${helper.getDefectDetailsStr(d)}`);
     });
 }
 
