@@ -4,7 +4,7 @@ const chalk = require('chalk');
 function getDefectOwnersStr(d) {
 	let owner = d.owner && (d.owner.full_name || d.owner.name);
 	let qaOwner = d.qa_owner && (d.qa_owner.full_name || d.qa_owner.name);
-	let ownerStr = '<No Owners>';
+	let ownerStr = '<No Owner>';
 	if (owner) {
 		ownerStr = 'DEV: ' + owner + (qaOwner ? `, QA: ${qaOwner}` : '');
 	} else if (qaOwner) {
@@ -14,7 +14,10 @@ function getDefectOwnersStr(d) {
 }
 
 function getDefectDetailsStr(d) {
-	return `${d.severity.name} | ${d.phase.name} | ${d.team.name} | ${getDefectOwnersStr(d)} | #${d.id} | ${d.name}`;
+	if (!d.severity) {
+		console.log('############' + d.id);
+	}
+	return `${d.severity ? d.severity.name : '<No Severity>'} | ${d.phase ? d.phase.name : '<No Phase>'} | ${d.team ? d.team.name : '<No Team>'} | ${getDefectOwnersStr(d)} | #${d.id || '<No ID>'} | ${d.name || '<No Name>'}`;
 }
 
 function getSeverityOrder(severity) {
