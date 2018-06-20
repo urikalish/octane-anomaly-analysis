@@ -18,6 +18,10 @@
     "Hanan Malka"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/urikalish/octane-anomaly-analysis"
+  },
   "scripts": {
     "start": "node index.js"
   },
