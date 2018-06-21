@@ -215,26 +215,25 @@ function verifyUserTag(tagName) {
 	});
 }
 
-// function getTaggedDefects() {
-// 	return new Promise((resolve /*, reject*/) => {
-// 		let uri = getDefectsUri(false, 0, 1000, '(user_tags={id=51004})', '');
-// 		getFromOctane(uri).then(
-// 		(result) => {
-// 			resolve(result);
-// 		},
-// 		(reason) => {
-// 			helper.logError('Error on getTaggedDefects() - ' + reason.message);
-// 		}
-// 		);
-// 	});
-// }
+function getTaggedDefects(userTagId) {
+	return new Promise((resolve /*, reject*/) => {
+		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id=${userTagId}})`, '');
+		getFromOctane(uri).then(
+		(result) => {
+			resolve(result);
+		},
+		(reason) => {
+			helper.logError('Error on getTaggedDefects() - ' + reason.message);
+		}
+		);
+	});
+}
 
 module.exports = {
-	//getFromOctane: getFromOctane,
 	verifyUserTag: verifyUserTag,
 	postToOctane: postToOctane,
 	getLastDefects: getLastDefects,
-	//getTaggedDefects: getTaggedDefects,
+	getTaggedDefects: getTaggedDefects,
 	getHistory: getHistory,
 	getAttachment: getAttachment
 };

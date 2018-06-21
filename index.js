@@ -2,15 +2,14 @@
 const helper = require('./helper/helper');
 const octaneAuthenticator = require('./octane/octane-authenticator');
 const tagsManager = require('./tags/tags-manager');
-const checker = require('./checkers/checker');
+const defectsManager = require('./defects/defects-manager');
 
 function run() {
 	octaneAuthenticator.authenticate().then(
 		(/*result*/) => {
 			helper.logSuccess('Authenticated - OK');
-
-			tagsManager.getUserTags().then((/*tags*/) => {
-				checker.check();
+			tagsManager.loadUserTags().then((/*userTags*/) => {
+				defectsManager.handleDefects();
 			});
 		},
 		(reason) => {
