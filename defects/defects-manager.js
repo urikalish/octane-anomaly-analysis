@@ -16,7 +16,7 @@ function ensureDefect(d) {
 		defects[d.id] = {
 			d: d,
 			tags: {
-				db: [],
+				octane: [],
 				prev: [],
 				cur: []
 			},
@@ -26,7 +26,7 @@ function ensureDefect(d) {
 	return defects[d.id];
 }
 
-function loadFromDb() {
+function loadFromOctane() {
 	let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
 	octaneDataProvider.getTaggedDefects(generalAnomalyTagId).then(taggedDefects => {
 		if (taggedDefects && taggedDefects['total_count'] > 0) {
@@ -56,15 +56,15 @@ function checkForAnomalies() {
 }
 
 function handleDefects() {
-	loadFromDb();
-	//load from persistency
+	loadFromOctane();
+	//load from previous run
 	checkForAnomalies();
 }
 
 module.exports = {
 	handleDefects: handleDefects,
 	//getDefects: getDefects,
-	//loadFromDb: loadFromDb,
+	//loadFromOctane: loadFromOctane,
 	//loadFromPrev: loadFromPrev,
 	//checkForAnomalies: checkForAnomalies
 };
