@@ -1,11 +1,11 @@
 'use strict';
 const helper = require('../helper/helper');
-const dataProvider = require('../data/data-provider');
+const octaneDataProvider = require('../data/octane-data-provider');
 
 function check(defects, options) {
 	defects.forEach(d => {
 		if (options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
-			dataProvider.getHistory(d.id).then(
+			octaneDataProvider.getHistory(d.id).then(
 			(result) => {
 				let owners = [];
 				let ownerCount = 0;

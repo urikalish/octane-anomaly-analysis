@@ -1,10 +1,10 @@
 'use strict';
 const helper = require('./helper/helper');
-const authenticator = require('./data/authenticator');
+const octaneAuthenticator = require('./data/octane-authenticator');
 const checker = require('./checkers/checker');
 
 function run() {
-	authenticator.authenticate().then(
+	octaneAuthenticator.authenticate().then(
 		(/*result*/) => {
 			helper.logSuccess('Authenticated - OK');
 			checker.check();

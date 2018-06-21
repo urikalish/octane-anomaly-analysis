@@ -1,6 +1,6 @@
 'use strict';
 const helper = require('../helper/helper');
-const dataProvider = require('../data/data-provider');
+const octaneDataProvider = require('../data/octane-data-provider');
 
 function check(defects, options) {
 	defects.forEach(d => {
@@ -8,7 +8,7 @@ function check(defects, options) {
 			let promises = [];
 			d.attachments.data.forEach(a => {
 				if (a.type === 'attachment' && !options.fileExtensionsToIgnoreRegex.test(a.name.toLowerCase())) {
-					promises.push(dataProvider.getAttachment(a.id));
+					promises.push(octaneDataProvider.getAttachment(a.id));
 				}
 			});
 			let totalSizeMB = 0;
