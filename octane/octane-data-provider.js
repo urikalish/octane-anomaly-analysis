@@ -196,7 +196,7 @@ function getLastDefects(needed) {
 }
 
 function verifyUserTag(tagName) {
-	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"`;
+	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"&fields=id,name`;
 	return getFromOctane(url).then((results) => {
 		if (results && results['total_count'] !== 0) {
 			helper.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);

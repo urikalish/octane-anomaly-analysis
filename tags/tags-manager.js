@@ -15,13 +15,11 @@ function getUserTags() {
 			tagNames.push(anomalyTagPrefix + c.tag);
 			promises.push(octaneDataProvider.verifyUserTag(anomalyTagPrefix + c.tag));
 		});
-		let i = 0;
 		helper.logMessage('Ensuring user tags...');
 		Promise.all(promises).then((userTags) => {
 			helper.logSuccess('User tags ensured - OK');
 			userTags.forEach(userTag => {
-				tags[tagNames[i]] = userTag.id;
-				i++;
+				tags[userTag.name] = userTag.id;
 			});
 			resolve(tags);
 		});
