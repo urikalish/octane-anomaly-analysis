@@ -6,14 +6,13 @@ const octaneDataProvider = require('../octane/octane-data-provider');
 
 function check() {
 	helper.logMessage('Retrieving defects...');
-	octaneDataProvider.getLastDefects(checkersConfig.defectsTotalDataSetSize).then(
-	(defects) => {
-		helper.logSuccess('Retrieving defects - OK');
+	octaneDataProvider.getLastDefects(checkersConfig.defectsTotalDataSetSize).then((lastDefects) => {
+		helper.logSuccess('Defects retrieved - OK');
 		helper.logMessage('Checking for anomalies...');
 		checkersConfig.checkers.forEach(c => {
 			if (_.isUndefined(c.enabled) || c.enabled) {
 				let checker = require(`./${c.name}`);
-				checker.check(defects, c.options);
+				checker.check(lastDefects, c.options);
 			}
 		});
 	});

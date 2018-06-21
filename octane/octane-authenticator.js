@@ -15,7 +15,7 @@ function authenticate() {
 		client_secret: envConfig.clientSecret
 	};
 	helper.logMessage('Authenticating...');
-	return octaneDataProvider.postData(uri, body);
+	return octaneDataProvider.postToOctane(uri, body);
 }
 
 module.exports = {

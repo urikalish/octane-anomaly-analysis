@@ -10,7 +10,7 @@ const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
 const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
 
-function getEntity(uri) {
+function getFromOctane(uri) {
 	return new Promise((resolve, reject) => {
 		request({
 			method: 'GET',
@@ -21,7 +21,6 @@ function getEntity(uri) {
 			if (err) {
 				return reject(err);
 			}
-
 			if (response.statusCode < 200 || response.statusCode > 299) {
 				helper.logError(response.statusCode + ' ' + response.statusMessage);
 				return reject({
@@ -42,7 +41,7 @@ function getEntity(uri) {
 	});
 }
 
-function postData(uri, body, formData) {
+function postToOctane(uri, body, formData) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			method: 'POST',
@@ -113,7 +112,7 @@ function getHistoryUri(entityId, entityType) {
 function getHistory(entityId) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getHistoryUri(entityId);
-		getEntity(uri).then(
+		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
 		},
@@ -131,7 +130,7 @@ function getAttachmentUri(entityId) {
 function getAttachment(entityId) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getAttachmentUri(entityId);
-		getEntity(uri).then(
+		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
 		},
@@ -156,7 +155,7 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 function getDefectsBatch(offset, limit) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getDefectsUri(false, offset, limit, '', '');
-		getEntity(uri).then(
+		getFromOctane(uri).then(
 			(result) => {
 				resolve(result);
 			},
@@ -196,10 +195,46 @@ function getLastDefects(needed) {
 	});
 }
 
+function verifyUserTag(tagName) {
+	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"`;
+	return getFromOctane(url).then((results) => {
+		if (results && results['total_count'] !== 0) {
+			helper.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
+		} else {
+			helper.logMessage('Creating user tag "' + tagName + '"...');
+			url = apiUrl + '/user_tags';
+			let body = {
+				data: [{name: tagName}]
+			};
+			return postToOctane(url, body).then((result) => {
+				helper.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
+				return result.body.data[0];
+			})
+		}
+		return results.data[0];
+	});
+}
+
+// function getTaggedDefects() {
+// 	return new Promise((resolve /*, reject*/) => {
+// 		let uri = getDefectsUri(false, 0, 1000, '(user_tags={id=51004})', '');
+// 		getFromOctane(uri).then(
+// 		(result) => {
+// 			resolve(result);
+// 		},
+// 		(reason) => {
+// 			helper.logError('Error on getTaggedDefects() - ' + reason.message);
+// 		}
+// 		);
+// 	});
+// }
+
 module.exports = {
-	//getEntity: getEntity,
-	postData: postData,
+	//getFromOctane: getFromOctane,
+	verifyUserTag: verifyUserTag,
+	postToOctane: postToOctane,
 	getLastDefects: getLastDefects,
+	//getTaggedDefects: getTaggedDefects,
 	getHistory: getHistory,
 	getAttachment: getAttachment
 };

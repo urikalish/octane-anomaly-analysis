@@ -4,6 +4,7 @@ let checkersConfig = {
 	checkers: [
 		{
 			name: 'defect-stuck-phase',
+			tag: 'Stuck in Phase',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -50,6 +51,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-unusual-dev-owner',
+			tag: 'Unusual DEV Owner',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -63,6 +65,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-unusual-qa-owner',
+			tag: 'Unusual QA Owner',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -75,6 +78,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-many-comments',
+			tag: 'Many Comments',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -88,6 +92,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-many-owners',
+			tag: 'Many Owners',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -101,6 +106,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-large-attachments',
+			tag: 'Large Attachments',
 			enabled: true,
 			options: {
 				phasesToIgnore: [
@@ -114,6 +120,7 @@ let checkersConfig = {
 		},
         {
             name: 'defect-inactive-dev-owner',
+	        tag: 'Inactive DEV Owner 333',
             enabled: true,
             options: {
                 phasesToIgnore: [
@@ -126,6 +133,7 @@ let checkersConfig = {
         },
         {
             name: 'defect-inactive-qa-owner',
+	        tag: 'Inactive QA Owner',
             enabled: true,
             options: {
 	            phasesToIgnore: [
