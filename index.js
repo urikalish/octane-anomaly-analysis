@@ -9,7 +9,7 @@ function run() {
 		(/*result*/) => {
 			helper.logSuccess('Authenticated - OK');
 
-			tagsManager.loadAndEnsureTags().then((/*tags*/) => {
+			tagsManager.getUserTags().then((/*tags*/) => {
 				checker.check();
 			});
 		},

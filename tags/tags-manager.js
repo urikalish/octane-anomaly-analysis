@@ -7,7 +7,7 @@ let anomalyGeneralTag = 'Anomaly';
 let anomalyTagPrefix = 'Anomaly: ';
 let tags = {};
 
-function loadAndEnsureTags() {
+function getUserTags() {
 	return new Promise((resolve /*,reject*/) => {
 		let tagNames = [anomalyGeneralTag];
 		let promises = [octaneDataProvider.verifyUserTag(anomalyGeneralTag)];
@@ -29,5 +29,5 @@ function loadAndEnsureTags() {
 }
 
 module.exports = {
-	loadAndEnsureTags: loadAndEnsureTags
+	getUserTags: getUserTags
 };
