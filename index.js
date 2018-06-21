@@ -1,6 +1,6 @@
 'use strict';
 const helper = require('./helper/helper');
-const octaneAuthenticator = require('./data/octane-authenticator');
+const octaneAuthenticator = require('./octane/octane-authenticator');
 const checker = require('./checkers/checker');
 
 function run() {

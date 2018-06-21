@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const helper = require('../helper/helper');
 const checkersConfig = require('../config/checkers-config');
-const octaneDataProvider = require('../data/octane-data-provider');
+const octaneDataProvider = require('../octane/octane-data-provider');
 
 function check() {
 	helper.logMessage('Retrieving defects...');

@@ -1,6 +1,6 @@
 'use strict';
 const helper = require('../helper/helper');
-const octaneDataProvider = require('../data/octane-data-provider');
+const octaneDataProvider = require('../octane/octane-data-provider');
 
 function check(defects, options) {
 	defects.forEach(d => {
