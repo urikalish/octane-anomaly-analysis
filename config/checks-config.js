@@ -113,7 +113,7 @@ let checkersConfig = {
 			name: 'defect-large-attachments',
 			tag: 'Large Attachments',
 			entity: 'defect',
-			enabled: false,
+			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
