@@ -126,7 +126,7 @@ let checkersConfig = {
 			name: 'defect-unusual-dev-owner',
 			tag: 'Unusual DEV Owner',
 			entity: 'defect',
-			enabled: false,
+			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -141,7 +141,7 @@ let checkersConfig = {
 			name: 'defect-unusual-qa-owner',
 			tag: 'Unusual QA Owner',
 			entity: 'defect',
-			enabled: false,
+			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
