@@ -2,15 +2,18 @@
 const helper = require('../helper/helper');
 
 function check(defects, options) {
-    let defectsWithInactiveQAOwner = [];
-    defects.forEach(d => {
-        if (d.qa_owner && d.qa_owner.activity_level === 1 && options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
-            defectsWithInactiveQAOwner.push(d);
-        }
-    });
-    defectsWithInactiveQAOwner.forEach(d => {
-        helper.logAnomaly(`Defect with an inactive QA owner (${d.qa_owner.full_name}) | ${helper.getDefectDetailsStr(d)}`);
-    });
+	return new Promise((resolve /*, reject*/) => {
+		let anomalies = {};
+		defects.forEach(d => {
+			if (d.qa_owner && d.qa_owner.activity_level === 1 && options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
+				anomalies[d.id] = {
+					d: d,
+					text: `Defect with an inactive QA owner (${d.qa_owner.full_name}) | ${helper.getDefectDetailsStr(d)}`
+				};
+			}
+		});
+		resolve(anomalies);
+	});
 }
 
 module.exports = {

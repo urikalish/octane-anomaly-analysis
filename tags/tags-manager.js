@@ -30,11 +30,33 @@ function getGeneralAnomalyTagId() {
 	return tags[generalAnomalyTag];
 }
 
+function getGeneralAnomalyTagName() {
+	return generalAnomalyTag;
+}
+
+function getSpecificAnomalyTagPrefix() {
+	return specificAnomalyTagPrefix;
+}
+
+function getTagArray(userTags) {
+	let tags = [];
+	if (userTags['total_count']) {
+		if (userTags['total_count'] > 0) {
+			userTags.data.forEach(t => {
+				tags.push(t.name);
+			});
+		}
+	} else {
+		tags = userTags;
+	}
+	return tags;
+}
+
 function getAllAnomalyTags(userTags) {
 	let tags = [];
-	if (userTags && userTags['total_count'] && userTags['total_count'] > 0) {
-		userTags.data.forEach(t => {
-			if (t.name === generalAnomalyTag || t.name.startsWith(specificAnomalyTagPrefix)) {
+	if (userTags) {
+		getTagArray(userTags).forEach(t => {
+			if (t === generalAnomalyTag || t.startsWith(specificAnomalyTagPrefix)) {
 				tags.push(t.name);
 			}
 		});
@@ -42,34 +64,36 @@ function getAllAnomalyTags(userTags) {
 	return tags;
 }
 
-// function getSpecificAnomalyTags(userTags) {
-// 	let tags = [];
-// 	if (userTags && userTags['total_count'] && userTags['total_count'] > 0) {
-// 		userTags.data.forEach(t => {
-// 			if (t.name.startsWith(specificAnomalyTagPrefix)) {
-// 				tags.push(t.name);
-// 			}
-// 		});
-// 	}
-// 	return tags;
-// }
+function hasGeneralAnomalyTag(userTags) {
+	let result = false;
+	if (userTags) {
+		getTagArray(userTags).forEach(t => {
+			if (t.name === generalAnomalyTag) {
+				result = true;
+			}
+		});
+	}
+	return result;
+}
 
-// function hasGeneralAnomalyTag(userTags) {
-// 	let result = false;
-// 	if (userTags && userTags['total_count'] && userTags['total_count'] > 0) {
-// 		userTags.data.forEach(t => {
-// 			if (t.name === generalAnomalyTag) {
-// 				result = true;
-// 			}
-// 		});
-// 	}
-// 	return result;
-// }
+function getSpecificAnomalyTags(userTags) {
+	let tags = [];
+	if (userTags) {
+		getTagArray(userTags).forEach(t => {
+			if (t.name.startsWith(specificAnomalyTagPrefix)) {
+				tags.push(t.name);
+			}
+		});
+	}
+	return tags;
+}
 
 module.exports = {
 	loadUserTags: loadUserTags,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
-	//hasGeneralAnomalyTag: hasGeneralAnomalyTag,
+	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
+	getSpecificAnomalyTagPrefix: getSpecificAnomalyTagPrefix,
 	getAllAnomalyTags: getAllAnomalyTags,
-	//getSpecificAnomalyTags: getSpecificAnomalyTags
+	getSpecificAnomalyTags: getSpecificAnomalyTags,
+	hasGeneralAnomalyTag: hasGeneralAnomalyTag
 };
