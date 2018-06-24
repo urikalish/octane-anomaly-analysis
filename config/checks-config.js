@@ -3,6 +3,78 @@ let checkersConfig = {
 	defectsTotalDataSetSize: 5000,
 	checkers: [
 		{
+			name: 'defect-inactive-dev-owner',
+			tag: 'Inactive DEV Owner 333',
+			entity: 'defect',
+			enabled: true,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.fixed'
+				]
+			}
+		},
+		{
+			name: 'defect-inactive-qa-owner',
+			tag: 'Inactive QA Owner',
+			entity: 'defect',
+			enabled: true,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+				]
+			}
+		},
+		{
+			name: 'defect-large-attachments',
+			tag: 'Large Attachments',
+			entity: 'defect',
+			enabled: true,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+				],
+				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
+				attachmentsLargeSizeMB: 10
+			}
+		},
+		{
+			name: 'defect-many-comments',
+			tag: 'Many Comments',
+			entity: 'defect',
+			enabled: true,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.fixed'
+				],
+				manyCommentsCount: 7
+			}
+		},
+		{
+			name: 'defect-many-owners',
+			tag: 'Many Owners',
+			entity: 'defect',
+			enabled: false,
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'phase.defect.fixed'
+				],
+				manyOwnersCount: 5
+			}
+		},
+		{
 			name: 'defect-stuck-phase',
 			tag: 'Stuck in Phase',
 			entity: 'defect',
@@ -78,79 +150,7 @@ let checkersConfig = {
 				],
 				maxDataSetSize: 1000
 			}
-		},
-		{
-			name: 'defect-many-comments',
-			tag: 'Many Comments',
-			entity: 'defect',
-			enabled: false,
-			options: {
-				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'phase.defect.fixed'
-				],
-				manyCommentsCount: 7
-			}
-		},
-		{
-			name: 'defect-many-owners',
-			tag: 'Many Owners',
-			entity: 'defect',
-			enabled: false,
-			options: {
-				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'phase.defect.fixed'
-				],
-				manyOwnersCount: 5
-			}
-		},
-		{
-			name: 'defect-large-attachments',
-			tag: 'Large Attachments',
-			entity: 'defect',
-			enabled: true,
-			options: {
-				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
-				],
-				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
-				attachmentsLargeSizeMB: 10
-			}
-		},
-        {
-            name: 'defect-inactive-dev-owner',
-	        tag: 'Inactive DEV Owner 333',
-	        entity: 'defect',
-            enabled: true,
-            options: {
-                phasesToIgnore: [
-                    'phase.defect.closed',
-                    'phase.defect.duplicate',
-                    'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-                    'phase.defect.fixed'
-                ]
-            }
-        },
-        {
-            name: 'defect-inactive-qa-owner',
-	        tag: 'Inactive QA Owner',
-	        entity: 'defect',
-            enabled: true,
-            options: {
-	            phasesToIgnore: [
-		            'phase.defect.closed',
-		            'phase.defect.duplicate',
-		            'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
-	            ]
-            }
-        }
+		}
 	]
 };
 
