@@ -63,7 +63,7 @@ let checkersConfig = {
 			name: 'defect-many-owners',
 			tag: 'Many Owners',
 			entity: 'defect',
-			enabled: false,
+			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
