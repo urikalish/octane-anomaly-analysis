@@ -32,15 +32,15 @@ function getSeverityOrder(severity) {
 	return order[severity.logical_name] || order['_DEFAULT'];
 }
 
-function compareDefects(a, b) {
-	if (a.severity.logical_name === b.severity.logical_name) {
-		if (a.phase.name === b.phase.name) {
-			return 0;
-		}
-		return a.phase.name < b.phase.name ? -1 : 1;
-	}
-	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
-}
+// function compareDefects(a, b) {
+// 	if (a.severity.logical_name === b.severity.logical_name) {
+// 		if (a.phase.name === b.phase.name) {
+// 			return 0;
+// 		}
+// 		return a.phase.name < b.phase.name ? -1 : 1;
+// 	}
+// 	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
+// }
 
 function logMessage(msg) {
 	console.log(chalk.magentaBright(msg));
@@ -64,5 +64,5 @@ module.exports = {
 	logError: logError,
 	logAnomaly: logAnomaly,
 	getDefectDetailsStr: getDefectDetailsStr,
-	compareDefects: compareDefects
+	//compareDefects: compareDefects
 };

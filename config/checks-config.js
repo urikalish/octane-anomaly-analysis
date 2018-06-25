@@ -3,10 +3,10 @@ let checkersConfig = {
 	defectsTotalDataSetSize: 5000,
 	checkers: [
 		{
+			enabled: true,
 			name: 'defect-inactive-dev-owner',
 			tag: 'Inactive DEV Owner 333',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -17,10 +17,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-inactive-qa-owner',
 			tag: 'Inactive QA Owner',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -45,10 +45,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-many-comments',
 			tag: 'Many Comments',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -60,10 +60,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-many-owners',
 			tag: 'Many Owners',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -75,10 +75,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-stuck-phase',
 			tag: 'Stuck in Phase',
 			entity: 'defect',
-			enabled: false,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -99,10 +99,10 @@ let checkersConfig = {
 						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.high': {
-						'phase.defect.new': 7,
-						'phase.defect.opened': 7,
-						'phase.defect.fixed': 7,
-						'_DEFAULT': 7 //every other non-specified phase
+						'phase.defect.new': 30,
+						'phase.defect.opened': 30,
+						'phase.defect.fixed': 30,
+						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
 						'phase.defect.new': 99,
@@ -123,10 +123,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-unusual-dev-owner',
 			tag: 'Unusual DEV Owner',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -138,10 +138,10 @@ let checkersConfig = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-unusual-qa-owner',
 			tag: 'Unusual QA Owner',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
