@@ -5,7 +5,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-inactive-dev-owner',
-			tag: 'Inactive DEV Owner 333',
+			tag: 'Inactive DEV Owner',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
