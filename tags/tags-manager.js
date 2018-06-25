@@ -34,9 +34,9 @@ function getGeneralAnomalyTagName() {
 	return generalAnomalyTag;
 }
 
-function getSpecificAnomalyTagPrefix() {
-	return specificAnomalyTagPrefix;
-}
+// function getSpecificAnomalyTagPrefix() {
+// 	return specificAnomalyTagPrefix;
+// }
 
 function getTagArray(userTags) {
 	let tags = [];
@@ -76,17 +76,17 @@ function hasGeneralAnomalyTag(userTags) {
 	return result;
 }
 
-function getSpecificAnomalyTags(userTags) {
-	let tags = [];
-	if (userTags) {
-		getTagArray(userTags).forEach(t => {
-			if (t.name.startsWith(specificAnomalyTagPrefix)) {
-				tags.push(t.name);
-			}
-		});
-	}
-	return tags;
-}
+// function getSpecificAnomalyTags(userTags) {
+// 	let tags = [];
+// 	if (userTags) {
+// 		getTagArray(userTags).forEach(t => {
+// 			if (t.name.startsWith(specificAnomalyTagPrefix)) {
+// 				tags.push(t.name);
+// 			}
+// 		});
+// 	}
+// 	return tags;
+// }
 
 module.exports = {
 	loadUserTags: loadUserTags,

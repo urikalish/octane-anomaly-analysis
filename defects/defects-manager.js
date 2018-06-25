@@ -130,7 +130,6 @@ function handleDefects() {
 		loadFromStorage()
 	];
 	Promise.all(promises).then((/*results*/) => {
-		//console.log(defects);
 		saveToStorage().then(() => {
 			helper.logSuccess('Done');
 		});
