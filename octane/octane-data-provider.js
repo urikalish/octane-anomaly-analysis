@@ -41,27 +41,22 @@ function getFromOctane(uri) {
 	});
 }
 
-function postToOctane(uri, body, formData) {
+function postToOctane(uri, body) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			method: 'POST',
 			url: uri,
 			headers: getHeaders()
 		};
-
-		if (formData) {
-			options.formData = formData;
-		}
 		if (body) {
 			options.body = JSON.stringify(body);
 		}
-
 		request(options, (err, response, body) => {
 			if (err) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				helper.logError(response.statusCode + ' ' + response.statusMessage);
+				helper.logError('Error on postToOctane() ' + response.statusCode + ' ' + response.statusMessage);
 				return reject({
 					statusCode: response.statusCode,
 					message: response.statusMessage,
@@ -70,7 +65,6 @@ function postToOctane(uri, body, formData) {
 					//description: JSON.parse(response.body)
 				});
 			}
-
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
 					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
@@ -81,7 +75,49 @@ function postToOctane(uri, body, formData) {
 					});
 				});
 			}
+			try {
+				resolve({response: response, body: JSON.parse(body)});
+			} catch (e) {
+				resolve(body);
+			}
+		});
+	});
+}
 
+function putToOctane(uri, body) {
+	return new Promise((resolve, reject) => {
+		let options = {
+			method: 'PUT',
+			url: uri,
+			headers: getHeaders()
+		};
+		if (body) {
+			options.body = JSON.stringify(body);
+		}
+		request(options, (err, response, body) => {
+			if (err) {
+				return reject(err);
+			}
+			if (response.statusCode < 200 || response.statusCode > 299) {
+				helper.logError('Error on putToOctane() ' + response.statusCode + ' ' + response.statusMessage);
+				return reject({
+					statusCode: response.statusCode,
+					message: response.statusMessage,
+					description: response.statusMessage
+					//message: JSON.parse(response.body).description,
+					//description: JSON.parse(response.body)
+				});
+			}
+			if (response.headers['set-cookie']) {
+				response.headers['set-cookie'].forEach((cookie) => {
+					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
+						if (error) {
+							helper.logError(error);
+							return reject(error);
+						}
+					});
+				});
+			}
 			try {
 				resolve({response: response, body: JSON.parse(body)});
 			} catch (e) {
@@ -217,7 +253,7 @@ function verifyUserTag(tagName) {
 
 function getTaggedDefects(userTagId) {
 	return new Promise((resolve /*, reject*/) => {
-		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id=${userTagId}})`, '');
+		let uri = getDefectsUri(false, 0, 1000, `((user_tags={id=${userTagId}}))`, '');
 		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
@@ -229,9 +265,16 @@ function getTaggedDefects(userTagId) {
 	});
 }
 
+function updateDefectUserTags(defectId, data) {
+	let url =  `${apiUrl}/work_items/${defectId}`;
+	return putToOctane(url, data);
+}
+
 module.exports = {
 	verifyUserTag: verifyUserTag,
 	postToOctane: postToOctane,
+	//putToOctane: putToOctane,
+	updateDefectUserTags: updateDefectUserTags,
 	getLastDefects: getLastDefects,
 	getTaggedDefects: getTaggedDefects,
 	getHistory: getHistory,
