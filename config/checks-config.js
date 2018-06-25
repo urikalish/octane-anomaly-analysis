@@ -5,7 +5,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-inactive-dev-owner',
-			tag: 'Inactive DEV Owner',
+			tag: 'Anomaly: Inactive DEV Owner',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -19,7 +19,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-inactive-qa-owner',
-			tag: 'Inactive QA Owner',
+			tag: 'Anomaly: Inactive QA Owner',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -31,7 +31,7 @@ let checkersConfig = {
 		},
 		{
 			name: 'defect-large-attachments',
-			tag: 'Large Attachments',
+			tag: 'Anomaly: Large Attachments',
 			entity: 'defect',
 			enabled: true,
 			options: {
@@ -47,7 +47,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-many-comments',
-			tag: 'Many Comments',
+			tag: 'Anomaly: Many Comments',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -62,7 +62,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-many-owners',
-			tag: 'Many Owners',
+			tag: 'Anomaly: Many Owners',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -77,7 +77,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-stuck-phase',
-			tag: 'Stuck in Phase',
+			tag: 'Anomaly: Stuck in Phase',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -125,7 +125,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-unusual-dev-owner',
-			tag: 'Unusual DEV Owner',
+			tag: 'Anomaly: Unusual DEV Owner',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
@@ -140,7 +140,7 @@ let checkersConfig = {
 		{
 			enabled: true,
 			name: 'defect-unusual-qa-owner',
-			tag: 'Unusual QA Owner',
+			tag: 'Anomaly: Unusual QA Owner',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [

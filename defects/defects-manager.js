@@ -39,7 +39,7 @@ function checkForAnomalies() {
 				if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
 					let checker = require(`../checks/${c.name}`);
 					promises.push(checker.check(lastDefects, c.options));
-					tags.push(tagsManager.getSpecificAnomalyTagPrefix() + c.tag);
+					tags.push(c.tag);
 				}
 			});
 			let count = 0;

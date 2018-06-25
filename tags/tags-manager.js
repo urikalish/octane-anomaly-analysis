@@ -12,8 +12,8 @@ function loadUserTags() {
 		let tagNames = [generalAnomalyTag];
 		let promises = [octaneDataProvider.verifyUserTag(generalAnomalyTag)];
 		checkersConfig.checkers.forEach(c => {
-			tagNames.push(specificAnomalyTagPrefix + c.tag);
-			promises.push(octaneDataProvider.verifyUserTag(specificAnomalyTagPrefix + c.tag));
+			tagNames.push(c.tag);
+			promises.push(octaneDataProvider.verifyUserTag(c.tag));
 		});
 		helper.logMessage('Ensuring user tags...');
 		Promise.all(promises).then((userTags) => {
@@ -92,8 +92,8 @@ module.exports = {
 	loadUserTags: loadUserTags,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
 	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
-	getSpecificAnomalyTagPrefix: getSpecificAnomalyTagPrefix,
+	//getSpecificAnomalyTagPrefix: getSpecificAnomalyTagPrefix,
 	getAllAnomalyTags: getAllAnomalyTags,
-	getSpecificAnomalyTags: getSpecificAnomalyTags,
+	//getSpecificAnomalyTags: getSpecificAnomalyTags,
 	hasGeneralAnomalyTag: hasGeneralAnomalyTag
 };
