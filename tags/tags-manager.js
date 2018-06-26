@@ -1,4 +1,5 @@
 'use strict';
+const _ = require('lodash');
 const settings = require('../config/settings');
 const helper = require('../helper/helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
@@ -55,9 +56,9 @@ function getTagNames(userTags) {
 function getAllAnomalyTagNames(userTags) {
 	let tags = [];
 	if (userTags) {
-		getTagNames(userTags).forEach(t => {
-			if (t === generalAnomalyTag || t.startsWith(specificAnomalyTagPrefix) || t === ignoreAnomalyTag) {
-				tags.push(t.name);
+		getTagNames(userTags).forEach(tn => {
+			if (tn === generalAnomalyTag || tn.startsWith(specificAnomalyTagPrefix) || tn === ignoreAnomalyTag) {
+				tags.push(tn);
 			}
 		});
 	}
@@ -67,8 +68,8 @@ function getAllAnomalyTagNames(userTags) {
 function hasGeneralAnomalyTag(userTags) {
 	let result = false;
 	if (userTags) {
-		getTagNames(userTags).forEach(t => {
-			if (t.name === generalAnomalyTag) {
+		getTagNames(userTags).forEach(tn => {
+			if (tn === generalAnomalyTag) {
 				result = true;
 			}
 		});
@@ -79,8 +80,8 @@ function hasGeneralAnomalyTag(userTags) {
 function hasIgnoreAnomalyTag(userTags) {
 	let result = false;
 	if (userTags) {
-		getTagNames(userTags).forEach(t => {
-			if (t.name === ignoreAnomalyTag) {
+		getTagNames(userTags).forEach(tn => {
+			if (tn === ignoreAnomalyTag) {
 				result = true;
 			}
 		});

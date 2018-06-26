@@ -54,6 +54,7 @@ function checkForAnomalies() {
 					});
 					count++;
 				});
+				helper.logMessage(`${count} defects with anomalies were found`);
 				helper.logSuccess(`Checking for anomalies - OK`);
 				resolve();
 			},
@@ -71,8 +72,9 @@ function checkForAnomalies() {
 
 function loadFromOctane() {
 	return new Promise((resolve, reject) => {
-		octaneDataProvider.getTaggedDefects(tagsManager.getGeneralAnomalyTagId()).then(
-		taggedDefects => {
+		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
+		octaneDataProvider.getTaggedDefects(generalAnomalyTagId).then(
+		(taggedDefects) => {
 			if (taggedDefects && taggedDefects['total_count'] > 0) {
 				helper.logMessage(`${taggedDefects.data.length} defects with anomalies were loaded from Octane`);
 				taggedDefects.data.forEach(d => {
