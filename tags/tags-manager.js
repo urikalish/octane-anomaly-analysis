@@ -52,7 +52,7 @@ function getTagNames(userTags) {
 	return tags.sort();
 }
 
-function getAllAnomalyTags(userTags) {
+function getAllAnomalyTagNames(userTags) {
 	let tags = [];
 	if (userTags) {
 		getTagNames(userTags).forEach(t => {
@@ -104,7 +104,7 @@ function getTagIdByName(tagName) {
 
 module.exports = {
 	loadUserTags: loadUserTags,
-	getAllAnomalyTags: getAllAnomalyTags,
+	getAllAnomalyTagNames: getAllAnomalyTagNames,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
 	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
 	hasGeneralAnomalyTag: hasGeneralAnomalyTag,

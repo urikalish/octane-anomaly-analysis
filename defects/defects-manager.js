@@ -77,7 +77,7 @@ function loadFromOctane() {
 				helper.logMessage(`${taggedDefects.data.length} defects with anomalies were loaded from Octane`);
 				taggedDefects.data.forEach(d => {
 					let defect = ensureDefect(d.id, d);
-					defect.curTags = tagsManager.getAllAnomalyTags(d['user_tags']);
+					defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
 				});
 			} else {
 				helper.logMessage(`No defects with anomalies were loaded from Octane`);
