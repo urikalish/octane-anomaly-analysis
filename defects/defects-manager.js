@@ -54,7 +54,6 @@ function checkForAnomalies() {
 					});
 					count++;
 				});
-				helper.logMessage(`${count} defects with anomalies were found`);
 				helper.logSuccess(`Checking for anomalies - OK`);
 				resolve();
 			},
