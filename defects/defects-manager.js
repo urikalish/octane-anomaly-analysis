@@ -98,6 +98,7 @@ function updateOctane() {
 		_.forEach(defects, (value, id) => {
 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
 				value.newTags = [];
+				helper.logMessage(`Ignore anomalies for defect #${id}`);
 			}
 			let needToUpdate = value.curTags.join() !== value.newTags.join();
 			if (needToUpdate) {
@@ -125,7 +126,7 @@ function updateOctane() {
 				});
 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
 			} else {
-				helper.logMessage(`No need to update defect #${id}`);
+				helper.logMessage(`Skip update defect #${id}`);
 			}
 		});
 		Promise.all(promises).then(() => {
