@@ -5,6 +5,7 @@ const tagsManager = require('./tags/tags-manager');
 const defectsManager = require('./defects/defects-manager');
 
 function run() {
+	helper.clearLog();
 	octaneAuthenticator.authenticate().then(
 		(/*result*/) => {
 			helper.logSuccess('Authenticated - OK');

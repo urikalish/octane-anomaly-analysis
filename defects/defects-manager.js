@@ -39,7 +39,8 @@ function checkForAnomalies() {
 					tags.push(c.tag);
 				}
 			});
-			let count = 0;
+			let checkersCount = 0;
+			let totalAnomalies = 0;
 			Promise.all(promises).then((results) => {
 				results.forEach(result => {
 					_.forEach(result, (value, id) => {
@@ -47,13 +48,15 @@ function checkForAnomalies() {
 						if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
 							defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
 						}
-						defect.newTags.push(tags[count]);
+						defect.newTags.push(tags[checkersCount]);
 						defect.newTags.sort();
 						defect.anomalies.push(value.text);
 						helper.logAnomaly(value.text);
+						totalAnomalies++;
 					});
-					count++;
+					checkersCount++;
 				});
+				helper.logMessage(`${totalAnomalies} total anomalies were found`);
 				helper.logSuccess(`Checking for anomalies - OK`);
 				resolve();
 			},
@@ -76,13 +79,13 @@ function loadFromOctane() {
 		octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId).then(
 		(taggedDefects) => {
 			if (taggedDefects && taggedDefects['total_count'] > 0) {
-				helper.logMessage(`${taggedDefects.data.length} defects with anomalies were loaded from Octane`);
+				helper.logMessage(`${taggedDefects.data.length} defects with anomaly related tags were loaded from Octane`);
 				taggedDefects.data.forEach(d => {
 					let defect = ensureDefect(d.id, d);
 					defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
 				});
 			} else {
-				helper.logMessage(`No defects with anomalies were loaded from Octane`);
+				helper.logMessage(`No defects with anomaly related tags were loaded from Octane`);
 			}
 			helper.logSuccess(`Defects loaded from Octane - OK`);
 			resolve();
@@ -131,8 +134,19 @@ function updateOctane() {
 				helper.logMessage(`Skip update defect #${id}`);
 			}
 		});
-		Promise.all(promises).then(() => {
-			helper.logSuccess('Octane updated - OK');
+		helper.logMessage(`Trying to update ${promises.length} defects...`);
+		Promise.all(promises).then((results) => {
+			let successCount = 0;
+			results.forEach(r => {
+				if (r !== null) {
+					successCount++;
+				}
+			});
+			if (successCount === results.length) {
+				helper.logSuccess('Octane updated - OK');
+			} else {
+				helper.logError(`Octane partially updated - ${successCount}/${results.length}`);
+			}
 			resolve();
 		},
 		(err) => {
@@ -181,7 +195,7 @@ function handleDefects() {
 			updateOctane()
 		];
 		Promise.all(promises2).then(() => {
-			helper.logSuccess('Done');
+			helper.logMessage('Done');
 		},
 		(err) => {
 			helper.logError('Error on handleDefects() - ' + (err.message || err));
