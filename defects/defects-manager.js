@@ -130,6 +130,7 @@ function updateOctane() {
 					});
 				});
 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
+				helper.logMessage(`Try update defect #${id}`);
 			} else {
 				helper.logMessage(`Skip update defect #${id}`);
 			}
