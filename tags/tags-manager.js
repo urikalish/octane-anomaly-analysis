@@ -39,6 +39,10 @@ function getGeneralAnomalyTagName() {
 	return generalAnomalyTag;
 }
 
+function getIgnoreAnomalyTagId() {
+	return tags[ignoreAnomalyTag];
+}
+
 function getIgnoreAnomalyTagName() {
 	return ignoreAnomalyTag;
 }
@@ -112,6 +116,7 @@ module.exports = {
 	getAllAnomalyTagNames: getAllAnomalyTagNames,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
 	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
+	getIgnoreAnomalyTagId: getIgnoreAnomalyTagId,
 	getIgnoreAnomalyTagName: getIgnoreAnomalyTagName,
 	hasGeneralAnomalyTag: hasGeneralAnomalyTag,
 	hasIgnoreAnomalyTag: hasIgnoreAnomalyTag,

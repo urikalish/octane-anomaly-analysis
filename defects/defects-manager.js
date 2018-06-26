@@ -73,7 +73,8 @@ function checkForAnomalies() {
 function loadFromOctane() {
 	return new Promise((resolve, reject) => {
 		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
-		octaneDataProvider.getTaggedDefects(generalAnomalyTagId).then(
+		let ignoreAnomalyTagId = tagsManager.getIgnoreAnomalyTagId();
+		octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId).then(
 		(taggedDefects) => {
 			if (taggedDefects && taggedDefects['total_count'] > 0) {
 				helper.logMessage(`${taggedDefects.data.length} defects with anomalies were loaded from Octane`);

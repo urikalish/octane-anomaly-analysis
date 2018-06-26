@@ -251,9 +251,9 @@ function verifyUserTag(tagName) {
 	});
 }
 
-function getTaggedDefects(userTagId) {
+function getTaggedDefects(tagId1, tagId2) {
 	return new Promise((resolve /*, reject*/) => {
-		let uri = getDefectsUri(false, 0, 1000, `((user_tags={id=${userTagId}}))`, '');
+		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
 		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
