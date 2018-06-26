@@ -155,7 +155,7 @@ function saveToStorage() {
 				}
 			});
 			nodePersist.setItem('defects', storageData).then(() => {
-				helper.logSuccess('Storage updated');
+				helper.logSuccess('Storage updated - OK');
 				resolve();
 			},
 			(err) => {

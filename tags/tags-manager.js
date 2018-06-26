@@ -11,8 +11,8 @@ let tags = {};
 
 function loadUserTags() {
 	return new Promise((resolve /*,reject*/) => {
-		let tagNames = [generalAnomalyTag];
-		let promises = [octaneDataProvider.verifyUserTag(generalAnomalyTag)];
+		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
+		let promises = [octaneDataProvider.verifyUserTag(generalAnomalyTag), octaneDataProvider.verifyUserTag(ignoreAnomalyTag)];
 		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
 			promises.push(octaneDataProvider.verifyUserTag(c.tag));
