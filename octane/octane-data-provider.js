@@ -84,7 +84,7 @@ function postToOctane(uri, body) {
 	});
 }
 
-function putToOctane(uri, body) {
+function putToOctane(uri, body, defectId) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			method: 'PUT',
@@ -99,14 +99,8 @@ function putToOctane(uri, body) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				helper.logError('Error on putToOctane() ' + response.statusCode + ' ' + response.statusMessage);
-				return reject({
-					statusCode: response.statusCode,
-					message: response.statusMessage,
-					description: response.statusMessage
-					//message: JSON.parse(response.body).description,
-					//description: JSON.parse(response.body)
-				});
+				helper.logError(`Error on putToOctane() for defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${(JSON.parse(body)).description}`);
+				return resolve(null);
 			}
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
@@ -185,7 +179,7 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 	`&limit=${limit || 1}` +
 	`&query="((subtype='defect')${(querySuffix ? ';' + querySuffix : '')})"` +
 	//`&fields=${fields || 'creation_time,suite_run,parent,defect_root_level,version_stamp,release,workspace_id,num_comments,path,wsjf_cod,rank,last_modified,phase,subtype_label,fixed_on,rroe,has_children,priority,user_tags,taxonomies,defects,estimated_hours,user_stories,initial_estimate,ordering,blocked,invested_hours,items_in_releases,logical_path,has_attachments,epic_type,story_points,quality_stories,global_text_search_result,total_risky_commits,team,time_criticality,cycle_time_expiration,progress,original_id,business_value,actual_story_points,sprint,fixed_in_build,features,item_origin,committers,commits_summary,quality_story_type,ancestors,defect_type,client_lock_stamp,author,product_areas,remaining_hours,last_runs,commit_files,commit_count,has_comments,tasks_number,name,detected_in_build,logical_name,description,detected_in_release,phase_to_time_in_phase,total_commits,requirement_feature,wsjf_score,detected_by,qa_owner,subtype,is_draft,closed_on,feature_count,new_tasks,owner,severity,requirements,feature_type,blocked_reason,job_size,time_in_current_phase,comments'}`;
-	`&fields=${fields || 'id,name,severity,team,owner,qa_owner,phase,time_in_current_phase,comments,attachments,user_tags'}`;
+	`&fields=${fields || 'id,name,severity,team,owner,qa_owner,phase,time_in_current_phase,comments,attachments,user_tags,target_push_udf'}`;
 }
 
 function getDefectsBatch(offset, limit) {
@@ -267,7 +261,7 @@ function getTaggedDefects(tagId1, tagId2) {
 
 function updateDefectUserTags(defectId, body) {
 	let url =  `${apiUrl}/work_items/${defectId}`;
-	return putToOctane(url, body);
+	return putToOctane(url, body, defectId);
 }
 
 module.exports = {
