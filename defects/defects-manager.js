@@ -12,11 +12,8 @@ function ensureDefect(id, d) {
 	if (!defects[id]) {
 		defects[id] = {
 			d: d,
-			tags: {
-				octane: [],
-				storage: [],
-				current: []
-			},
+			curTags: [],
+			newTags: [],
 			anomalies: []
 		};
 	} else {
@@ -28,7 +25,7 @@ function ensureDefect(id, d) {
 }
 
 function checkForAnomalies() {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		helper.logMessage('Retrieving defects...');
 		octaneDataProvider.getLastDefects(checkersConfig.defectsTotalDataSetSize).then((lastDefects) => {
 			helper.logSuccess('Defects retrieved - OK');
@@ -45,12 +42,13 @@ function checkForAnomalies() {
 			let count = 0;
 			Promise.all(promises).then((results) => {
 				results.forEach(result => {
-					_.forEach(result, (value, key) => {
-						let defect = ensureDefect(key, value.d);
-						if (!tagsManager.hasGeneralAnomalyTag(defect.tags.current)) {
-							defect.tags.current.push(tagsManager.getGeneralAnomalyTagName());
+					_.forEach(result, (value, id) => {
+						let defect = ensureDefect(id, value.d);
+						if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
+							defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
 						}
-						defect.tags.current.push(tags[count]);
+						defect.newTags.push(tags[count]);
+						defect.newTags.sort();
 						defect.anomalies.push(value.text);
 						helper.logAnomaly(value.text);
 					});
@@ -58,13 +56,21 @@ function checkForAnomalies() {
 				});
 				helper.logSuccess(`Checking for anomalies - OK`);
 				resolve();
+			},
+			(err) => {
+				helper.logError('Error on checkForAnomalies() ' + (err.message || err));
+				reject(err);
 			});
+		},
+		(err) => {
+			helper.logError('Error on checkForAnomalies() ' + (err.message || err));
+			reject(err);
 		});
 	});
 }
 
 function loadFromOctane() {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
 		octaneDataProvider.getTaggedDefects(generalAnomalyTagId).then(
 		taggedDefects => {
@@ -72,67 +78,115 @@ function loadFromOctane() {
 				helper.logMessage(`${taggedDefects.data.length} defects with anomalies were loaded from Octane`);
 				taggedDefects.data.forEach(d => {
 					let defect = ensureDefect(d.id, d);
-					defect.tags.octane = tagsManager.getAllAnomalyTags(d['user_tags']);
+					defect.curTags = tagsManager.getAllAnomalyTags(d['user_tags']);
 				});
 			} else {
 				helper.logMessage(`No defects with anomalies were loaded from Octane`);
 			}
 			helper.logSuccess(`Defects loaded from Octane - OK`);
 			resolve();
+		},
+		(err) => {
+			helper.logError('Error on loadFromOctane() ' + (err.message || err));
+			reject(err);
 		});
 	});
 }
 
-function loadFromStorage() {
-	return new Promise((resolve /*, reject*/) => {
-		nodePersist.init({dir: './storage/'}).then(() => {
-			let count = 0;
-			nodePersist.getItem('defects').then((storageDefects) => {
-				if (storageDefects) {
-					storageDefects.forEach(storageDefect => {
-						let defect = ensureDefect(storageDefect.id);
-						defect.tags.storage = storageDefect.tags;
-						count++;
+function updateOctane() {
+	return new Promise((resolve, reject) => {
+		let promises = [];
+		_.forEach(defects, (value, id) => {
+			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
+				value.newTags = [];
+			}
+			let needToUpdate = value.curTags.join() !== value.newTags.join();
+			if (needToUpdate) {
+				let body = {
+					id: id,
+					user_tags: {
+						data: []
+					}
+				};
+				if (value.d.user_tags['total_count'] && value.d.user_tags['total_count'] > 0) {
+					value.d.user_tags.data.forEach(t => {
+						if (!tagsManager.isAnomalyTagId(t.id)) {
+							body.user_tags.data.push({
+								type: 'user_tag',
+								id: t.id
+							});
+						}
 					});
 				}
-				helper.logMessage(`${count} defects with anomalies were loaded from Persistency`);
-				helper.logSuccess(`Defects loaded from Persistency - OK`);
-				resolve();
-			});
+				value.newTags.forEach(tn => {
+					body.user_tags.data.push({
+						type: 'user_tag',
+						id: tagsManager.getTagIdByName(tn)
+					});
+				});
+				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
+			} else {
+				helper.logMessage(`No need to update defect #${id}`);
+			}
+		});
+		Promise.all(promises).then(() => {
+			helper.logSuccess('Octane updated - OK');
+			resolve();
+		},
+		(err) => {
+			helper.logError('Error on updateOctane() ' + (err.message || err));
+			reject(err);
 		});
 	});
 }
 
 function saveToStorage() {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		nodePersist.init({dir: './storage/'}).then(() => {
 			let storageData = [];
-			_.forEach(defects, (value, key) => {
-				if (value.tags.current.length > 0) {
+			_.forEach(defects, (value, id) => {
+				if (value.anomalies.length > 0) {
 					storageData.push({
-						id: key,
-						tags: value.tags.current,
+						id: id,
 						anomalies: value.anomalies
 					})
 				}
 			});
 			nodePersist.setItem('defects', storageData).then(() => {
+				helper.logSuccess('Storage updated');
 				resolve();
-			})
+			},
+			(err) => {
+				helper.logError('Error on saveToStorage() ' + (err.message || err));
+				reject(err);
+			});
+		},
+		(err) => {
+			helper.logError('Error on saveToStorage() ' + (err.message || err));
+			reject(err);
 		});
 	});
 }
 
 function handleDefects() {
-	let promises = [
+	let promises1 = [
 		checkForAnomalies(),
-		loadFromOctane(),
-		loadFromStorage()
+		loadFromOctane()
 	];
-	Promise.all(promises).then((/*results*/) => {
-		saveToStorage().then(() => {
+	Promise.all(promises1).then(() => {
+		let promises2 = [
+			saveToStorage(),
+			updateOctane()
+		];
+		Promise.all(promises2).then(() => {
 			helper.logSuccess('Done');
+		},
+		(err) => {
+			helper.logError('Error on handleDefects() - ' + (err.message || err));
 		});
+	},
+	(err) => {
+		helper.logError('Error on handleDefects() - ' + (err.message || err));
 	});
 }
 

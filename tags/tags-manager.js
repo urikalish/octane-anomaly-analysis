@@ -5,6 +5,7 @@ const octaneDataProvider = require('../octane/octane-data-provider');
 
 let generalAnomalyTag = 'Anomaly';
 let specificAnomalyTagPrefix = 'Anomaly: ';
+let ignoreAnomalyTag = 'Ignore Anomaly';
 let tags = {};
 
 function loadUserTags() {
@@ -22,6 +23,9 @@ function loadUserTags() {
 				tags[userTag.name] = userTag.id;
 			});
 			resolve(tags);
+		},
+		(err) => {
+			helper.logError('Error on loadUserTags() - ' + err.message);
 		});
 	});
 }
@@ -35,10 +39,14 @@ function getGeneralAnomalyTagName() {
 }
 
 // function getSpecificAnomalyTagPrefix() {
-// 	return specificAnomalyTagPrefix;
+//  	return specificAnomalyTagPrefix;
 // }
 
-function getTagArray(userTags) {
+// function getIgnoreAnomalyTagName() {
+// 	return ignoreAnomalyTag;
+// }
+
+function getTagNames(userTags) {
 	let tags = [];
 	if (userTags['total_count']) {
 		if (userTags['total_count'] > 0) {
@@ -49,31 +57,57 @@ function getTagArray(userTags) {
 	} else {
 		tags = userTags;
 	}
-	return tags;
+	return tags.sort();
 }
 
 function getAllAnomalyTags(userTags) {
 	let tags = [];
 	if (userTags) {
-		getTagArray(userTags).forEach(t => {
-			if (t === generalAnomalyTag || t.startsWith(specificAnomalyTagPrefix)) {
+		getTagNames(userTags).forEach(t => {
+			if (t === generalAnomalyTag || t.startsWith(specificAnomalyTagPrefix) || t === ignoreAnomalyTag) {
 				tags.push(t.name);
 			}
 		});
 	}
-	return tags;
+	return tags.sort();
 }
 
 function hasGeneralAnomalyTag(userTags) {
 	let result = false;
 	if (userTags) {
-		getTagArray(userTags).forEach(t => {
+		getTagNames(userTags).forEach(t => {
 			if (t.name === generalAnomalyTag) {
 				result = true;
 			}
 		});
 	}
 	return result;
+}
+
+function hasIgnoreAnomalyTag(userTags) {
+	let result = false;
+	if (userTags) {
+		getTagNames(userTags).forEach(t => {
+			if (t.name === ignoreAnomalyTag) {
+				result = true;
+			}
+		});
+	}
+	return result;
+}
+
+function isAnomalyTagId(tagId) {
+	let found = false;
+	_.forEach(tags, (id) => {
+		if (id === tagId) {
+			found = true;
+		}
+	});
+	return found;
+}
+
+function getTagIdByName(tagName) {
+	return tags[tagName];
 }
 
 // function getSpecificAnomalyTags(userTags) {
@@ -90,10 +124,14 @@ function hasGeneralAnomalyTag(userTags) {
 
 module.exports = {
 	loadUserTags: loadUserTags,
+	getAllAnomalyTags: getAllAnomalyTags,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
 	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
+	hasGeneralAnomalyTag: hasGeneralAnomalyTag,
+	hasIgnoreAnomalyTag: hasIgnoreAnomalyTag,
+	isAnomalyTagId: isAnomalyTagId,
+	getTagIdByName: getTagIdByName
 	//getSpecificAnomalyTagPrefix: getSpecificAnomalyTagPrefix,
-	getAllAnomalyTags: getAllAnomalyTags,
 	//getSpecificAnomalyTags: getSpecificAnomalyTags,
-	hasGeneralAnomalyTag: hasGeneralAnomalyTag
+	//getIgnoreAnomalyTagName: getIgnoreAnomalyTagName,
 };

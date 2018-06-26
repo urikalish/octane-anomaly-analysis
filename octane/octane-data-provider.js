@@ -265,9 +265,9 @@ function getTaggedDefects(userTagId) {
 	});
 }
 
-function updateDefectUserTags(defectId, data) {
+function updateDefectUserTags(defectId, body) {
 	let url =  `${apiUrl}/work_items/${defectId}`;
-	return putToOctane(url, data);
+	return putToOctane(url, body);
 }
 
 module.exports = {
