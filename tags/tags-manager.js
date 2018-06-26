@@ -1,18 +1,18 @@
 'use strict';
-const checkersConfig = require('../config/checks-config');
+const settings = require('../config/settings');
 const helper = require('../helper/helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
-let generalAnomalyTag = 'Anomaly';
-let specificAnomalyTagPrefix = 'Anomaly: ';
-let ignoreAnomalyTag = 'Ignore Anomaly';
+const generalAnomalyTag = settings.generalAnomalyTag;
+const specificAnomalyTagPrefix = settings.specificAnomalyTagPrefix;
+const ignoreAnomalyTag = settings.ignoreAnomalyTag;
 let tags = {};
 
 function loadUserTags() {
 	return new Promise((resolve /*,reject*/) => {
 		let tagNames = [generalAnomalyTag];
 		let promises = [octaneDataProvider.verifyUserTag(generalAnomalyTag)];
-		checkersConfig.checkers.forEach(c => {
+		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
 			promises.push(octaneDataProvider.verifyUserTag(c.tag));
 		});

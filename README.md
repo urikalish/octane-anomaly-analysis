@@ -32,9 +32,9 @@ npm i
 
 ## How to Configure
 
-* Configure environment details in ./config/environment-config.js
+* Configure environment details in ./config/environment.js
 
-* Configure check options in ./config/checkers-config.js
+* Configure settings in ./config/settings.js
 
 ## How to Run
 ```sh

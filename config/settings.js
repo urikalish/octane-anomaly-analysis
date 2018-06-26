@@ -1,5 +1,8 @@
 'use strict';
-let checkersConfig = {
+let settings = {
+	generalAnomalyTag: 'Anomaly',
+	specificAnomalyTagPrefix: 'Anomaly: ',
+	ignoreAnomalyTag: 'Ignore Anomaly',
 	defectsTotalDataSetSize: 5000,
 	checkers: [
 		{
@@ -100,20 +103,20 @@ let checkersConfig = {
 					},
 					'list_node.severity.high': {
 						'phase.defect.new': 30,
-						'phase.defect.opened': 30,
-						'phase.defect.fixed': 30,
+						'phase.defect.opened': 7,
+						'phase.defect.fixed': 7,
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
-						'phase.defect.new': 99,
-						'phase.defect.opened': 99,
-						'phase.defect.fixed': 99,
+						'phase.defect.new': 60,
+						'phase.defect.opened': 7,
+						'phase.defect.fixed': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
-						'phase.defect.new': 99,
-						'phase.defect.opened': 99,
-						'phase.defect.fixed': 99,
+						'phase.defect.new': 60,
+						'phase.defect.opened': 7,
+						'phase.defect.fixed': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
@@ -154,4 +157,4 @@ let checkersConfig = {
 	]
 };
 
-module.exports = checkersConfig;
+module.exports = settings;

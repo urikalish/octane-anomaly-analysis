@@ -1,10 +1,10 @@
 'use strict';
 const _ = require('lodash');
 const nodePersist = require('node-persist');
-const octaneDataProvider = require('../octane/octane-data-provider');
-const tagsManager = require('../tags/tags-manager');
+const settings = require('../config/settings');
 const helper = require('../helper/helper');
-const checkersConfig = require('../config/checks-config');
+const tagsManager = require('../tags/tags-manager');
+const octaneDataProvider = require('../octane/octane-data-provider');
 
 let defects = {};
 
@@ -27,12 +27,12 @@ function ensureDefect(id, d) {
 function checkForAnomalies() {
 	return new Promise((resolve, reject) => {
 		helper.logMessage('Retrieving defects...');
-		octaneDataProvider.getLastDefects(checkersConfig.defectsTotalDataSetSize).then((lastDefects) => {
+		octaneDataProvider.getLastDefects(settings.defectsTotalDataSetSize).then((lastDefects) => {
 			helper.logSuccess('Defects retrieved - OK');
 			helper.logMessage('Checking for anomalies...');
 			let tags = [];
 			let promises = [];
-			checkersConfig.checkers.forEach(c => {
+			settings.checkers.forEach(c => {
 				if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
 					let checker = require(`../checks/${c.name}`);
 					promises.push(checker.check(lastDefects, c.options));

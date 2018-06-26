@@ -1,5 +1,5 @@
 'use strict';
-let envConfig = {
+let environment = {
 	//serverAddress: 'https://alm-octane.saas.acme.com',
 	serverAddress: process.env.SERVER_ADDRESS,
 
@@ -21,4 +21,4 @@ let envConfig = {
 	clientSecret: process.env.CLIENT_SECRET,
 };
 
-module.exports = envConfig;
+module.exports = environment;

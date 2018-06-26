@@ -1,6 +1,6 @@
 'use strict';
 const helper = require('../helper/helper');
-const envConfig = require('../config/environment-config');
+const envConfig = require('../config/environment');
 const apiUrl = `${envConfig.serverAddress}/api/shared_spaces/${envConfig.sharedspaceId}/workspaces/${envConfig.workspaceId}`;
 let request = require('request');
 if (envConfig.proxy) {
