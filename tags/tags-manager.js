@@ -39,6 +39,10 @@ function getGeneralAnomalyTagName() {
 	return generalAnomalyTag;
 }
 
+function getIgnoreAnomalyTagName() {
+	return ignoreAnomalyTag;
+}
+
 function getTagNames(userTags) {
 	let tags = [];
 	if (userTags['total_count']) {
@@ -108,6 +112,7 @@ module.exports = {
 	getAllAnomalyTagNames: getAllAnomalyTagNames,
 	getGeneralAnomalyTagId: getGeneralAnomalyTagId,
 	getGeneralAnomalyTagName: getGeneralAnomalyTagName,
+	getIgnoreAnomalyTagName: getIgnoreAnomalyTagName,
 	hasGeneralAnomalyTag: hasGeneralAnomalyTag,
 	hasIgnoreAnomalyTag: hasIgnoreAnomalyTag,
 	isAnomalyTagId: isAnomalyTagId,

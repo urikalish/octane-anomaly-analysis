@@ -99,7 +99,7 @@ function updateOctane() {
 		let promises = [];
 		_.forEach(defects, (value, id) => {
 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
-				value.newTags = [];
+				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
 				helper.logMessage(`Ignore anomalies for defect #${id}`);
 			}
 			let needToUpdate = value.curTags.join() !== value.newTags.join();
