@@ -25,7 +25,7 @@ function loadUserTags() {
 			resolve(tags);
 		},
 		(err) => {
-			helper.logError('Error on loadUserTags() - ' + err.message);
+			helper.logError('Error on loadUserTags() - ' + (err.message || err));
 		});
 	});
 }
@@ -37,14 +37,6 @@ function getGeneralAnomalyTagId() {
 function getGeneralAnomalyTagName() {
 	return generalAnomalyTag;
 }
-
-// function getSpecificAnomalyTagPrefix() {
-//  	return specificAnomalyTagPrefix;
-// }
-
-// function getIgnoreAnomalyTagName() {
-// 	return ignoreAnomalyTag;
-// }
 
 function getTagNames(userTags) {
 	let tags = [];
@@ -110,18 +102,6 @@ function getTagIdByName(tagName) {
 	return tags[tagName];
 }
 
-// function getSpecificAnomalyTags(userTags) {
-// 	let tags = [];
-// 	if (userTags) {
-// 		getTagArray(userTags).forEach(t => {
-// 			if (t.name.startsWith(specificAnomalyTagPrefix)) {
-// 				tags.push(t.name);
-// 			}
-// 		});
-// 	}
-// 	return tags;
-// }
-
 module.exports = {
 	loadUserTags: loadUserTags,
 	getAllAnomalyTags: getAllAnomalyTags,
@@ -131,7 +111,4 @@ module.exports = {
 	hasIgnoreAnomalyTag: hasIgnoreAnomalyTag,
 	isAnomalyTagId: isAnomalyTagId,
 	getTagIdByName: getTagIdByName
-	//getSpecificAnomalyTagPrefix: getSpecificAnomalyTagPrefix,
-	//getSpecificAnomalyTags: getSpecificAnomalyTags,
-	//getIgnoreAnomalyTagName: getIgnoreAnomalyTagName,
 };

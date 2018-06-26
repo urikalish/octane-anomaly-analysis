@@ -152,8 +152,8 @@ function getHistory(entityId) {
 		(result) => {
 			resolve(result);
 		},
-		(reason) => {
-			helper.logError('Error on getHistory() ' + reason);
+		(err) => {
+			helper.logError('Error on getHistory() ' + (err.message || err));
 		}
 		);
 	});
@@ -170,8 +170,8 @@ function getAttachment(entityId) {
 		(result) => {
 			resolve(result);
 		},
-		(reason) => {
-			helper.logError('Error on getAttachment() ' + reason);
+		(err) => {
+			helper.logError('Error on getAttachment() ' + (err.message || err));
 		}
 		);
 	});
@@ -195,8 +195,8 @@ function getDefectsBatch(offset, limit) {
 			(result) => {
 				resolve(result);
 			},
-			(reason) => {
-				helper.logError('Error on getDefectsBatch() - ' + reason.message);
+			(err) => {
+				helper.logError('Error on getDefectsBatch() - ' + (err.message || err));
 			}
 		);
 	});
@@ -258,8 +258,8 @@ function getTaggedDefects(userTagId) {
 		(result) => {
 			resolve(result);
 		},
-		(reason) => {
-			helper.logError('Error on getTaggedDefects() - ' + reason.message);
+		(err) => {
+			helper.logError('Error on getTaggedDefects() - ' + (err.message || err));
 		}
 		);
 	});
