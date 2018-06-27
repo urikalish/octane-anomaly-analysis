@@ -206,12 +206,12 @@ function handleDefects() {
 		if (settings.saveToStorage) {
 			promises2.push(saveToStorage());
 		} else {
-			helper.logMessage('Skip save to storage');
+			helper.logWarning('Skip save to storage');
 		}
 		if (settings.updateOctane) {
 			promises2.push(updateOctane());
 		} else {
-			helper.logMessage('Skip update Octane');
+			helper.logWarning('Skip update Octane');
 		}
 		Promise.all(promises2).then(() => {
 			helper.logMessage('Done');

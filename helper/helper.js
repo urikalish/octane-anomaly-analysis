@@ -62,6 +62,11 @@ function logSuccess(msg) {
 	log.push(msg);
 }
 
+function logWarning(msg) {
+	console.log(chalk.yellowBright(msg));
+	log.push(msg);
+}
+
 function logError(msg) {
 	console.log(chalk.redBright(msg));
 	log.push(msg);
@@ -77,6 +82,7 @@ module.exports = {
 	//getLog: getLog,
 	logMessage: logMessage,
 	logSuccess: logSuccess,
+	logWarning: logWarning,
 	logError: logError,
 	logAnomaly: logAnomaly,
 	getDefectDetailsStr: getDefectDetailsStr,
