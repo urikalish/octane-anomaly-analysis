@@ -147,7 +147,7 @@ function getHistory(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			helper.logError('Error on getHistory() ' + (err.message || err));
+			helper.logError(`Error on getHistory() for entity #${entityId} - ${(err.message || err)}`);
 		}
 		);
 	});
@@ -165,7 +165,7 @@ function getAttachment(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			helper.logError('Error on getAttachment() ' + (err.message || err));
+			helper.logError(`Error on getAttachment() for entity #${entityId} - ${(err.message || err)}`);
 		}
 		);
 	});

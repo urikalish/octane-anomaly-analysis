@@ -12,14 +12,17 @@ let tags = {};
 function loadUserTags() {
 	return new Promise((resolve /*,reject*/) => {
 		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
-		let promises = [octaneDataProvider.verifyUserTag(generalAnomalyTag), octaneDataProvider.verifyUserTag(ignoreAnomalyTag)];
 		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
-			promises.push(octaneDataProvider.verifyUserTag(c.tag));
 		});
-		helper.logMessage('Ensuring user tags...');
+		tagNames.sort();
+		let promises = [];
+		tagNames.forEach(tn => {
+			promises.push(octaneDataProvider.verifyUserTag(tn));
+		});
+		helper.logMessage('Ensuring anomaly related user tags...');
 		Promise.all(promises).then((userTags) => {
-			helper.logSuccess('User tags ensured - OK');
+			helper.logSuccess('Anomaly related user tags ensured - OK');
 			userTags.forEach(userTag => {
 				tags[userTag.name] = userTag.id;
 			});
