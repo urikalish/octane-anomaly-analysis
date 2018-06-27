@@ -1,6 +1,6 @@
 'use strict';
 const environment = require('../config/environment');
-const helper = require('../helper/helper');
+const logger = require('../logger/logger');
 const octaneDataProvider = require('./octane-data-provider');
 let request = require('request');
 if (environment.proxy) {
@@ -14,7 +14,7 @@ function authenticate() {
 		client_id: environment.clientId,
 		client_secret: environment.clientSecret
 	};
-	helper.logMessage('Authenticating...');
+	logger.logMessage('Authenticating...');
 	return octaneDataProvider.postToOctane(uri, body);
 }
 

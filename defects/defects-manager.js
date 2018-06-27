@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const nodePersist = require('node-persist');
 const settings = require('../config/settings');
-const helper = require('../helper/helper');
+const logger = require('../logger/logger');
 const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
@@ -26,10 +26,10 @@ function ensureDefect(id, d) {
 
 function checkForAnomalies() {
 	return new Promise((resolve, reject) => {
-		helper.logMessage(`checkForAnomalies() - Retrieving last ${settings.defectsTotalDataSetSize} defects from Octane...`);
+		logger.logMessage(`checkForAnomalies() - Retrieving last ${settings.defectsTotalDataSetSize} defects from Octane...`);
 		octaneDataProvider.getLastDefects(settings.defectsTotalDataSetSize).then((lastDefects) => {
-			helper.logSuccess('checkForAnomalies() - Defects retrieved - OK');
-			helper.logMessage('checkForAnomalies() - Checking for anomalies...');
+			logger.logSuccess('checkForAnomalies() - Defects retrieved - OK');
+			logger.logMessage('checkForAnomalies() - Checking for anomalies...');
 			let tags = [];
 			let promises = [];
 			settings.checkers.forEach(c => {
@@ -51,7 +51,7 @@ function checkForAnomalies() {
 						defect.newTags.push(tags[checkersCount]);
 						defect.newTags.sort();
 						defect.anomalies.push(value.text);
-						helper.logAnomaly(value.text);
+						logger.logAnomaly(value.text);
 						totalAnomalies++;
 					});
 					checkersCount++;
@@ -62,18 +62,18 @@ function checkForAnomalies() {
 						countDefectsWithAnomalies++;
 					}
 				});
-				helper.logMessage(`checkForAnomalies() - ${countDefectsWithAnomalies} defects with anomalies were found`);
-				helper.logMessage(`checkForAnomalies() - ${totalAnomalies} total anomalies were found`);
-				helper.logSuccess(`checkForAnomalies() - Checking for anomalies - OK`);
+				logger.logMessage(`checkForAnomalies() - ${countDefectsWithAnomalies} defects with anomalies were found`);
+				logger.logMessage(`checkForAnomalies() - ${totalAnomalies} total anomalies were found`);
+				logger.logSuccess(`checkForAnomalies() - Checking for anomalies - OK`);
 				resolve();
 			},
 			(err) => {
-				helper.logError('Error on checkForAnomalies() ' + (err.message || err));
+				logger.logError('Error on checkForAnomalies() ' + (err.message || err));
 				reject(err);
 			});
 		},
 		(err) => {
-			helper.logError('Error on checkForAnomalies() ' + (err.message || err));
+			logger.logError('Error on checkForAnomalies() ' + (err.message || err));
 			reject(err);
 		});
 	});
@@ -83,23 +83,23 @@ function loadFromOctane() {
 	return new Promise((resolve, reject) => {
 		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
 		let ignoreAnomalyTagId = tagsManager.getIgnoreAnomalyTagId();
-		helper.logMessage(`loadFromOctane() - Loading defects with "Anomaly" or "Ignore Anomaly" tags from Octane...`);
+		logger.logMessage(`loadFromOctane() - Loading defects with "Anomaly" or "Ignore Anomaly" tags from Octane...`);
 		octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId).then(
 		(taggedDefects) => {
 			if (taggedDefects && taggedDefects['total_count'] > 0) {
-				helper.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
+				logger.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
 				taggedDefects.data.forEach(d => {
 					let defect = ensureDefect(d.id, d);
 					defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
 				});
 			} else {
-				helper.logMessage(`loadFromOctane() - No defects with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
+				logger.logMessage(`loadFromOctane() - No defects with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
 			}
-			helper.logSuccess(`loadFromOctane() - Defects loaded from Octane - OK`);
+			logger.logSuccess(`loadFromOctane() - Defects loaded from Octane - OK`);
 			resolve();
 		},
 		(err) => {
-			helper.logError('Error on loadFromOctane() ' + (err.message || err));
+			logger.logError('Error on loadFromOctane() ' + (err.message || err));
 			reject(err);
 		});
 	});
@@ -111,7 +111,7 @@ function updateOctane() {
 		_.forEach(defects, (value, id) => {
 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
 				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
-				helper.logMessage(`updateOctane() - Ignore anomalies for defect #${id}`);
+				logger.logMessage(`updateOctane() - Ignore anomalies for defect #${id}`);
 			}
 			let needToUpdate = value.curTags.join() !== value.newTags.join();
 			if (needToUpdate) {
@@ -138,12 +138,12 @@ function updateOctane() {
 					});
 				});
 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
-				helper.logMessage(`updateOctane() - Try update defect #${id}`);
+				logger.logMessage(`updateOctane() - Try update defect #${id}`);
 			} else {
-				helper.logMessage(`updateOctane() - Skip update defect #${id}`);
+				logger.logMessage(`updateOctane() - Skip update defect #${id}`);
 			}
 		});
-		helper.logMessage(`updateOctane() - Trying to update ${promises.length} defects...`);
+		logger.logMessage(`updateOctane() - Trying to update ${promises.length} defects...`);
 		Promise.all(promises).then((results) => {
 			let successCount = 0;
 			results.forEach(r => {
@@ -152,14 +152,14 @@ function updateOctane() {
 				}
 			});
 			if (successCount === results.length) {
-				helper.logSuccess('updateOctane() - Octane updated - OK');
+				logger.logSuccess('updateOctane() - Octane updated - OK');
 			} else {
-				helper.logError(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
+				logger.logError(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
 			}
 			resolve();
 		},
 		(err) => {
-			helper.logError('Error on updateOctane() ' + (err.message || err));
+			logger.logError('Error on updateOctane() ' + (err.message || err));
 			reject(err);
 		});
 	});
@@ -167,9 +167,9 @@ function updateOctane() {
 
 function saveToStorage() {
 	return new Promise((resolve, reject) => {
-		helper.logMessage('saveToStorage() - Initializing storage...');
+		logger.logMessage('saveToStorage() - Initializing storage...');
 		nodePersist.init({dir: './storage/'}).then(() => {
-			helper.logSuccess('saveToStorage() - Storage initialized - OK');
+			logger.logSuccess('saveToStorage() - Storage initialized - OK');
 			let storageData = [];
 			_.forEach(defects, (value, id) => {
 				if (value.anomalies.length > 0) {
@@ -179,18 +179,18 @@ function saveToStorage() {
 					})
 				}
 			});
-			helper.logMessage('saveToStorage() - Saving to storage...');
+			logger.logMessage('saveToStorage() - Saving to storage...');
 			nodePersist.setItem('defects', storageData).then(() => {
-				helper.logSuccess('saveToStorage() - Storage updated - OK');
+				logger.logSuccess('saveToStorage() - Storage updated - OK');
 				resolve();
 			},
 			(err) => {
-				helper.logError('Error on saveToStorage() ' + (err.message || err));
+				logger.logError('Error on saveToStorage() ' + (err.message || err));
 				reject(err);
 			});
 		},
 		(err) => {
-			helper.logError('Error on saveToStorage() ' + (err.message || err));
+			logger.logError('Error on saveToStorage() ' + (err.message || err));
 			reject(err);
 		});
 	});
@@ -206,22 +206,22 @@ function handleDefects() {
 		if (settings.saveToStorage) {
 			promises2.push(saveToStorage());
 		} else {
-			helper.logWarning('Skip save to storage');
+			logger.logWarning('Skip save to storage');
 		}
 		if (settings.updateOctane) {
 			promises2.push(updateOctane());
 		} else {
-			helper.logWarning('Skip update Octane');
+			logger.logWarning('Skip update Octane');
 		}
 		Promise.all(promises2).then(() => {
-			helper.logMessage('Done');
+			logger.logMessage('Done');
 		},
 		(err) => {
-			helper.logError('Error on handleDefects() - ' + (err.message || err));
+			logger.logError('Error on handleDefects() - ' + (err.message || err));
 		});
 	},
 	(err) => {
-		helper.logError('Error on handleDefects() - ' + (err.message || err));
+		logger.logError('Error on handleDefects() - ' + (err.message || err));
 	});
 }
 

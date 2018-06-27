@@ -1,6 +1,6 @@
 'use strict';
 const _ = require('lodash');
-const helper = require('../helper/helper');
+const helper = require('../defects/defects-helper');
 
 function check(defects, options) {
 	return new Promise((resolve /*, reject*/) => {

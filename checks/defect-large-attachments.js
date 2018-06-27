@@ -1,5 +1,5 @@
 'use strict';
-const helper = require('../helper/helper');
+const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
 function check(defects, options) {

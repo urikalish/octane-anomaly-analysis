@@ -1,5 +1,5 @@
 'use strict';
-const helper = require('../helper/helper');
+const logger = require('../logger/logger');
 const envConfig = require('../config/environment');
 const apiUrl = `${envConfig.serverAddress}/api/shared_spaces/${envConfig.sharedspaceId}/workspaces/${envConfig.workspaceId}`;
 let request = require('request');
@@ -22,13 +22,11 @@ function getFromOctane(uri) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				helper.logError(response.statusCode + ' ' + response.statusMessage);
+				logger.logError(response.statusCode + ' ' + response.statusMessage);
 				return reject({
 					statusCode: response.statusCode,
 					message: response.statusMessage,
 					description: response.statusMessage
-					//message: JSON.parse(response.body).description,
-					//description: JSON.parse(response.body)
 				});
 			}
 
@@ -56,7 +54,7 @@ function postToOctane(uri, body) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				helper.logError('Error on postToOctane() ' + response.statusCode + ' ' + response.statusMessage);
+				logger.logError('Error on postToOctane() ' + response.statusCode + ' ' + response.statusMessage);
 				return reject({
 					statusCode: response.statusCode,
 					message: response.statusMessage,
@@ -69,7 +67,7 @@ function postToOctane(uri, body) {
 				response.headers['set-cookie'].forEach((cookie) => {
 					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
 						if (error) {
-							helper.logError(error);
+							logger.logError(error);
 							return reject(error);
 						}
 					});
@@ -99,14 +97,14 @@ function putToOctane(uri, body, defectId) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				helper.logError(`Error on putToOctane() for defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${(JSON.parse(body)).description}`);
+				logger.logError(`Error on putToOctane() for defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${(JSON.parse(body)).description}`);
 				return resolve(null);
 			}
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
 					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
 						if (error) {
-							helper.logError(error);
+							logger.logError(error);
 							return reject(error);
 						}
 					});
@@ -147,7 +145,7 @@ function getHistory(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			helper.logError(`Error on getHistory() for entity #${entityId} - ${(err.message || err)}`);
+			logger.logError(`Error on getHistory() for entity #${entityId} - ${(err.message || err)}`);
 		}
 		);
 	});
@@ -165,7 +163,7 @@ function getAttachment(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			helper.logError(`Error on getAttachment() for entity #${entityId} - ${(err.message || err)}`);
+			logger.logError(`Error on getAttachment() for entity #${entityId} - ${(err.message || err)}`);
 		}
 		);
 	});
@@ -190,7 +188,7 @@ function getDefectsBatch(offset, limit) {
 				resolve(result);
 			},
 			(err) => {
-				helper.logError('Error on getDefectsBatch() - ' + (err.message || err));
+				logger.logError('Error on getDefectsBatch() - ' + (err.message || err));
 			}
 		);
 	});
@@ -229,15 +227,15 @@ function verifyUserTag(tagName) {
 	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"&fields=id,name`;
 	return getFromOctane(url).then((results) => {
 		if (results && results['total_count'] !== 0) {
-			helper.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
+			logger.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
 		} else {
-			helper.logMessage('Creating user tag "' + tagName + '"...');
+			logger.logMessage('Creating user tag "' + tagName + '"...');
 			url = apiUrl + '/user_tags';
 			let body = {
 				data: [{name: tagName}]
 			};
 			return postToOctane(url, body).then((result) => {
-				helper.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
+				logger.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
 				return result.body.data[0];
 			})
 		}
@@ -253,7 +251,7 @@ function getTaggedDefects(tagId1, tagId2) {
 			resolve(result);
 		},
 		(err) => {
-			helper.logError('Error on getTaggedDefects() - ' + (err.message || err));
+			logger.logError('Error on getTaggedDefects() - ' + (err.message || err));
 		}
 		);
 	});

@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('lodash');
 const settings = require('../config/settings');
-const helper = require('../helper/helper');
+const logger = require('../logger/logger');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
 const generalAnomalyTag = settings.generalAnomalyTag;
@@ -20,16 +20,16 @@ function loadUserTags() {
 		tagNames.forEach(tn => {
 			promises.push(octaneDataProvider.verifyUserTag(tn));
 		});
-		helper.logMessage('Ensuring anomaly related user tags...');
+		logger.logMessage('Ensuring anomaly related user tags...');
 		Promise.all(promises).then((userTags) => {
-			helper.logSuccess('Anomaly related user tags ensured - OK');
+			logger.logSuccess('Anomaly related user tags ensured - OK');
 			userTags.forEach(userTag => {
 				tags[userTag.name] = userTag.id;
 			});
 			resolve(tags);
 		},
 		(err) => {
-			helper.logError('Error on loadUserTags() - ' + (err.message || err));
+			logger.logError('Error on loadUserTags() - ' + (err.message || err));
 		});
 	});
 }
