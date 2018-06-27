@@ -113,6 +113,10 @@ function updateOctane() {
 				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
 				logger.logMessage(`updateOctane() - Ignore anomalies for defect #${id}`);
 			}
+
+			//enable next line to remove all anomaly tags from Octane
+			//value.newTags = [];
+
 			let needToUpdate = value.curTags.join() !== value.newTags.join();
 			if (needToUpdate) {
 				let body = {
