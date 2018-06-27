@@ -35,10 +35,10 @@ let settings = {
 			}
 		},
 		{
+			enabled: true,
 			name: 'defect-large-attachments',
 			tag: 'Anomaly: Large Attachments',
 			entity: 'defect',
-			enabled: true,
 			options: {
 				phasesToIgnore: [
 					'phase.defect.closed',
@@ -139,7 +139,7 @@ let settings = {
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
-				maxDataSetSize: 1000
+				maxDataSetSize: 2500
 			}
 		},
 		{
@@ -153,7 +153,7 @@ let settings = {
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
-				maxDataSetSize: 1000
+				maxDataSetSize: 2500
 			}
 		}
 	]
