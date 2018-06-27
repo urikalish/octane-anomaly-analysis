@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 
-function check(defects, options) {
+function check(defects, checkerName, options) {
 	return new Promise((resolve /*, reject*/) => {
 		let anomalies = {};
 		let unusualOwners = {};
@@ -25,6 +25,7 @@ function check(defects, options) {
 			if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.logical_name) === -1)) {
 				let d = unusualOwners[o].firstDefect;
 				anomalies[d.id] = {
+					checkerName: checkerName,
 					d: d,
 					text: `Defect with an unusual DEV owner (${o}) | ${helper.getDefectDetailsStr(d)}`
 				};

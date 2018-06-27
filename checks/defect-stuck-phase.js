@@ -5,7 +5,7 @@ function getDaysInCurrentPhase(d) {
 	return Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);
 }
 
-function check(defects, options) {
+function check(defects, checkerName, options) {
 	return new Promise((resolve /*, reject*/) => {
 		let anomalies = {};
 		//let stuckDefects = [];
@@ -15,6 +15,7 @@ function check(defects, options) {
 				let maxDays = severityItem[d.phase.logical_name.toLowerCase()] || severityItem['_DEFAULT'];
 				if (getDaysInCurrentPhase(d) > maxDays) {
 					anomalies[d.id] = {
+						checkerName: checkerName,
 						d: d,
 						text: `Defect stuck in phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`
 					};

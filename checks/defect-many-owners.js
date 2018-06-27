@@ -2,7 +2,7 @@
 const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
-function check(defects, options) {
+function check(defects, checkerName, options) {
 	return new Promise((resolve /*, reject*/) => {
 		let anomalies = {};
 		let relevantDefects = 0;
@@ -25,6 +25,7 @@ function check(defects, options) {
 					});
 					if (ownerCount >= options.manyOwnersCount) {
 						anomalies[d.id] = {
+							checkerName: checkerName,
 							d: d,
 							text: `Defect with many owners (${ownerCount} - ${owners}) | ${helper.getDefectDetailsStr(d)}`
 						};

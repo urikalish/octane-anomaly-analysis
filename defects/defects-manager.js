@@ -30,13 +30,13 @@ function checkForAnomalies() {
 		octaneDataProvider.getLastDefects(settings.defectsTotalDataSetSize).then((lastDefects) => {
 			logger.logSuccess('checkForAnomalies() - Defects retrieved - OK');
 			logger.logMessage('checkForAnomalies() - Checking for anomalies...');
-			let tags = [];
 			let promises = [];
+			let tagMap = {};
 			settings.checkers.forEach(c => {
 				if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
 					let checker = require(`../checks/${c.name}`);
-					promises.push(checker.check(lastDefects, c.options));
-					tags.push(c.tag);
+					tagMap[c.name] = c.tag;
+					promises.push(checker.check(lastDefects, c.name, c.options));
 				}
 			});
 			let checkersCount = 0;
@@ -48,7 +48,7 @@ function checkForAnomalies() {
 						if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
 							defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
 						}
-						defect.newTags.push(tags[checkersCount]);
+						defect.newTags.push(tagMap[value.checkerName]);
 						defect.newTags.sort();
 						defect.anomalies.push(value.text);
 						logger.logAnomaly(value.text);
@@ -202,8 +202,8 @@ function saveToStorage() {
 
 function handleDefects() {
 	let promises1 = [
-		loadFromOctane(),
-		checkForAnomalies()
+		checkForAnomalies(),
+		loadFromOctane()
 	];
 	Promise.all(promises1).then(() => {
 		let promises2 = [];

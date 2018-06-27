@@ -22,10 +22,11 @@ function loadUserTags() {
 		});
 		logger.logMessage('Ensuring anomaly related user tags...');
 		Promise.all(promises).then((userTags) => {
-			logger.logSuccess('Anomaly related user tags ensured - OK');
 			userTags.forEach(userTag => {
 				tags[userTag.name] = userTag.id;
+				logger.logMessage(`#${userTag.id} ${userTag.name}`);
 			});
+			logger.logSuccess('Anomaly related user tags ensured - OK');
 			resolve(tags);
 		},
 		(err) => {
