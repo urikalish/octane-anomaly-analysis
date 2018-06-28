@@ -36,7 +36,7 @@ function check(defects, options) {
 					}
 					checkedDefects++;
 					if (checkedDefects === relevantDefects) {
-						resolve(historyResult);
+						resolve(result);
 					}
 				});
 			}
