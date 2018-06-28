@@ -180,6 +180,20 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 	`&fields=${fields || 'id,name,severity,team,owner,qa_owner,phase,time_in_current_phase,comments,attachments,user_tags'}`;
 }
 
+function getTotalNumberOfDefects() {
+	return new Promise((resolve /*, reject*/) => {
+		let uri = getDefectsUri(false, 0, 1, '', '');
+		getFromOctane(uri).then(
+		(result) => {
+			resolve(result['total_count']);
+		},
+		(err) => {
+			logger.logError('Error on getTotalNumberOfDefects() - ' + (err.message || err));
+		}
+		);
+	});
+}
+
 function getDefectsBatch(offset, limit) {
 	return new Promise((resolve /*, reject*/) => {
 		let uri = getDefectsUri(false, offset, limit, '', '');
@@ -266,6 +280,7 @@ module.exports = {
 	verifyUserTag: verifyUserTag,
 	postToOctane: postToOctane,
 	//putToOctane: putToOctane,
+	getTotalNumberOfDefects: getTotalNumberOfDefects,
 	updateDefectUserTags: updateDefectUserTags,
 	getLastDefects: getLastDefects,
 	getTaggedDefects: getTaggedDefects,

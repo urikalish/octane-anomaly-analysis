@@ -3,7 +3,6 @@ let settings = {
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
-	defectsTotalDataSetSize: 15000,
 	saveToStorage: true,
 	updateOctane: true,
 	checkers: [
