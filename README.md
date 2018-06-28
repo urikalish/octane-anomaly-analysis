@@ -9,7 +9,8 @@ Checks for anomalies within ALM Octane's defect entities.
 * Defects with large attachments
 * Defects with many comments
 * Defects with many owners
-* Defects stuck in phase
+* Defects stuck in DEV phase
+* Defects stuck in QA phase
 * Defects with an unusual owner
 * Defects with an unusual QA owner 
 

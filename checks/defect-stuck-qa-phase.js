@@ -17,7 +17,7 @@ function check(defects, checkerName, options) {
 					anomalies[d.id] = {
 						checkerName: checkerName,
 						d: d,
-						text: `Defect stuck in phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`
+						text: `Defect stuck in QA phase (${getDaysInCurrentPhase(d)} days) | ${helper.getDefectDetailsStr(d)}`
 					};
 				}
 			}
