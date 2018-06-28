@@ -36,19 +36,20 @@ function checkForAnomalies() {
 				if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
 					let checker = require(`../checks/${c.name}`);
 					tagMap[c.name] = c.tag;
-					promises.push(checker.check(lastDefects, c.name, c.options));
+					promises.push(checker.check(lastDefects, c.options));
 				}
 			});
 			let checkersCount = 0;
 			let totalAnomalies = 0;
 			Promise.all(promises).then((results) => {
 				results.forEach(result => {
-					_.forEach(result, (value, id) => {
+					let checkerName = result.checkerName;
+					_.forEach(result.anomalies, (value, id) => {
 						let defect = ensureDefect(id, value.d);
 						if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
 							defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
 						}
-						defect.newTags.push(tagMap[value.checkerName]);
+						defect.newTags.push(tagMap[checkerName]);
 						defect.newTags.sort();
 						defect.anomalies.push(value.text);
 						logger.logAnomaly(value.text);
