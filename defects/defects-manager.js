@@ -110,6 +110,7 @@ function loadFromOctane() {
 
 function updateOctane() {
 	return new Promise((resolve, reject) => {
+		let skipCount = 0;
 		let promises = [];
 		_.forEach(defects, (value, id) => {
 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
@@ -147,6 +148,7 @@ function updateOctane() {
 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
 				logger.logMessage(`updateOctane() - Try update defect #${id}`);
 			} else {
+				skipCount++;
 				logger.logMessage(`updateOctane() - Skip update defect #${id}`);
 			}
 		});
@@ -158,10 +160,14 @@ function updateOctane() {
 					successCount++;
 				}
 			});
-			if (successCount === results.length) {
-				logger.logSuccess('updateOctane() - Octane updated - OK');
-			} else {
-				logger.logError(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
+			if (skipCount > 0) {
+				logger.logSuccess(`updateOctane() - ${skipCount} defects already updated - OK`);
+			}
+			if (successCount > 0) {
+				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
+			}
+			if (successCount !== results.length) {
+				logger.logWarning(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
 			}
 			resolve();
 		},
@@ -213,7 +219,7 @@ function handleDefects() {
 		if (settings.saveToStorage) {
 			promises2.push(saveToStorage());
 		} else {
-			logger.logWarning('Skip save to storage');
+			logger.logMessage('Skip save to storage');
 		}
 		if (settings.updateOctane) {
 			promises2.push(updateOctane());
