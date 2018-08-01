@@ -1,9 +1,9 @@
 'use strict';
 let environment = {
-	//serverAddress: 'https://alm-octane.saas.acme.com',
+	//serverAddress: 'https://center.almoctane.com',
 	serverAddress: process.env.SERVER_ADDRESS,
 
-	//domainName: 'http://saas.acme.com',
+	//domainName: 'https://almoctane.com',
 	domainName: process.env.SERVER_DOMAIN,
 
 	//sharedspaceId: '1001',
