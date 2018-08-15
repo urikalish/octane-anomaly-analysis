@@ -109,12 +109,12 @@ let settings = {
 					},
 					'list_node.severity.medium': {
 						'phase.defect.new': 99,
-						'phase.defect.opened': 7,
+						'phase.defect.opened': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
 						'phase.defect.new': 99,
-						'phase.defect.opened': 7,
+						'phase.defect.opened': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity

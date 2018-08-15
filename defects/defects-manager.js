@@ -26,60 +26,69 @@ function ensureDefect(id, d) {
 
 function checkForAnomalies() {
 	return new Promise((resolve, reject) => {
-		octaneDataProvider.getTotalNumberOfDefects().then(totalNumberOfDefects => {
-			logger.logMessage(`checkForAnomalies() - Retrieving ${totalNumberOfDefects} defects from Octane...`);
-			octaneDataProvider.getLastDefects(totalNumberOfDefects).then((lastDefects) => {
-				logger.logSuccess('checkForAnomalies() - Defects retrieved - OK');
-				logger.logMessage('checkForAnomalies() - Checking for anomalies...');
-				let promises = [];
-				let tagMap = {};
-				settings.checkers.forEach(c => {
-					if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
-						let checker = require(`../checks/${c.name}`);
-						tagMap[c.name] = c.tag;
-						promises.push(checker.check(lastDefects, c.options));
-					}
-				});
-				let checkersCount = 0;
-				let totalAnomalies = 0;
-				Promise.all(promises).then((results) => {
-					results.forEach(result => {
-						let checkerName = result.checkerName;
-						_.forEach(result.anomalies, (value, id) => {
-							let defect = ensureDefect(id, value.d);
-							if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
-								defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
-							}
-							defect.newTags.push(tagMap[checkerName]);
-							defect.newTags.sort();
-							defect.anomalies.push(value.text);
-							logger.logAnomaly(value.text);
-							totalAnomalies++;
-						});
-						checkersCount++;
-					});
-					let countDefectsWithAnomalies = 0;
-					_.forEach(defects, (value) => {
-						if (value.anomalies.length > 0) {
-							countDefectsWithAnomalies++;
+		octaneDataProvider.getTotalNumberOfDefects().then(
+			(totalNumberOfDefects) => {
+				logger.logMessage(`checkForAnomalies() - Retrieving ${totalNumberOfDefects} defects from Octane...`);
+				octaneDataProvider.getLastDefects(totalNumberOfDefects).then(
+				(lastDefects) => {
+					logger.logSuccess('checkForAnomalies() - Defects retrieved - OK');
+					logger.logMessage('checkForAnomalies() - Checking for anomalies...');
+					let promises = [];
+					let tagMap = {};
+					settings.checkers.forEach(c => {
+						if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
+							let checker = require(`../checks/${c.name}`);
+							tagMap[c.name] = c.tag;
+							promises.push(checker.check(lastDefects, c.options));
 						}
 					});
-					logger.logMessage(`checkForAnomalies() - ${countDefectsWithAnomalies} defects with anomalies were found`);
-					logger.logMessage(`checkForAnomalies() - ${totalAnomalies} total anomalies were found`);
-					logger.logSuccess(`checkForAnomalies() - Checking for anomalies - OK`);
-					resolve();
+					let checkersCount = 0;
+					let totalAnomalies = 0;
+					Promise.all(promises).then(
+					(results) => {
+						results.forEach(result => {
+							let checkerName = result.checkerName;
+							if (result) {
+								_.forEach(result.anomalies, (value, id) => {
+									let defect = ensureDefect(id, value.d);
+									if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
+										defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
+									}
+									defect.newTags.push(tagMap[checkerName]);
+									defect.newTags.sort();
+									defect.anomalies.push(value.text);
+									logger.logAnomaly(value.text);
+									totalAnomalies++;
+								});
+							}
+							checkersCount++;
+						});
+						let countDefectsWithAnomalies = 0;
+						_.forEach(defects, (value) => {
+							if (value.anomalies.length > 0) {
+								countDefectsWithAnomalies++;
+							}
+						});
+						logger.logMessage(`checkForAnomalies() - ${countDefectsWithAnomalies} defects with anomalies were found`);
+						logger.logMessage(`checkForAnomalies() - ${totalAnomalies} total anomalies were found`);
+						logger.logSuccess(`checkForAnomalies() - Checking for anomalies - OK`);
+						resolve();
+					},
+					(err) => {
+						logger.logFuncError('checkForAnomalies', err);
+						reject(err);
+					});
 				},
 				(err) => {
-					logger.logError('Error on checkForAnomalies() ' + (err.message || err));
+					logger.logFuncError('checkForAnomalies', err);
 					reject(err);
 				});
 			},
 			(err) => {
-				logger.logError('Error on checkForAnomalies() ' + (err.message || err));
+				logger.logFuncError('checkForAnomalies', err);
 				reject(err);
 			});
 		});
-	});
 }
 
 function loadFromOctane() {
@@ -102,7 +111,7 @@ function loadFromOctane() {
 			resolve();
 		},
 		(err) => {
-			logger.logError('Error on loadFromOctane() ' + (err.message || err));
+			logger.logFuncError('loadFromOctane', err);
 			reject(err);
 		});
 	});
@@ -172,7 +181,7 @@ function updateOctane() {
 			resolve();
 		},
 		(err) => {
-			logger.logError('Error on updateOctane() ' + (err.message || err));
+			logger.logFuncError('updateOctane', err);
 			reject(err);
 		});
 	});
@@ -198,43 +207,44 @@ function saveToStorage() {
 				resolve();
 			},
 			(err) => {
-				logger.logError('Error on saveToStorage() ' + (err.message || err));
+				logger.logFuncError('saveToStorage', err);
 				reject(err);
 			});
 		},
 		(err) => {
-			logger.logError('Error on saveToStorage() ' + (err.message || err));
+			logger.logFuncError('saveToStorage', err);
 			reject(err);
 		});
 	});
 }
 
 function handleDefects() {
-	let promises1 = [
-		checkForAnomalies(),
-		loadFromOctane()
-	];
-	Promise.all(promises1).then(() => {
-		let promises2 = [];
-		if (settings.saveToStorage) {
-			promises2.push(saveToStorage());
-		} else {
-			logger.logMessage('Skip save to storage');
-		}
-		if (settings.updateOctane) {
-			promises2.push(updateOctane());
-		} else {
-			logger.logWarning('Skip update Octane');
-		}
-		Promise.all(promises2).then(() => {
-			logger.logMessage('Done');
+	loadFromOctane().then(() => {
+		checkForAnomalies().then(() => {
+			let promises2 = [];
+			if (settings.saveToStorage) {
+				promises2.push(saveToStorage());
+			} else {
+				logger.logMessage('Skip save to storage');
+			}
+			if (settings.updateOctane) {
+				promises2.push(updateOctane());
+			} else {
+				logger.logWarning('Skip update Octane');
+			}
+			Promise.all(promises2).then(() => {
+				logger.logMessage('Done');
+			},
+			(err) => {
+				logger.logFuncError('handleDefects', err);
+			});
 		},
 		(err) => {
-			logger.logError('Error on handleDefects() - ' + (err.message || err));
+			logger.logFuncError('handleDefects', err);
 		});
 	},
 	(err) => {
-		logger.logError('Error on handleDefects() - ' + (err.message || err));
+		logger.logFuncError('handleDefects', err);
 	});
 }
 

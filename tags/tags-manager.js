@@ -10,7 +10,7 @@ const ignoreAnomalyTag = settings.ignoreAnomalyTag;
 let tags = {};
 
 function loadUserTags() {
-	return new Promise((resolve /*,reject*/) => {
+	return new Promise((resolve, reject) => {
 		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
 		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
@@ -30,7 +30,8 @@ function loadUserTags() {
 			resolve(tags);
 		},
 		(err) => {
-			logger.logError('Error on loadUserTags() - ' + (err.message || err));
+			logger.logFuncError('loadUserTags', err);
+			reject(err);
 		});
 	});
 }

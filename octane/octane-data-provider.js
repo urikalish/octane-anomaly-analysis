@@ -10,6 +10,9 @@ const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
 const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
 
+let loadedCount = 0;
+let loadedPercent = 0;
+
 function getFromOctane(uri) {
 	return new Promise((resolve, reject) => {
 		request({
@@ -145,7 +148,8 @@ function getHistory(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			logger.logError(`Error on getHistory() for entity #${entityId} - ${(err.message || err)}`);
+			logger.logWarning(`Unable to get history for entity #${entityId} - ${(err.message || err)}`);
+			resolve(null);
 		}
 		);
 	});
@@ -181,43 +185,52 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 }
 
 function getTotalNumberOfDefects() {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		let uri = getDefectsUri(false, 0, 1, '', '');
 		getFromOctane(uri).then(
 		(result) => {
 			resolve(result['total_count']);
 		},
 		(err) => {
-			logger.logError('Error on getTotalNumberOfDefects() - ' + (err.message || err));
+			logger.logFuncError('getTotalNumberOfDefects', err);
+			reject(err);
 		}
 		);
 	});
 }
 
-function getDefectsBatch(offset, limit) {
-	return new Promise((resolve /*, reject*/) => {
+function getDefectsBatch(offset, limit, total) {
+	return new Promise((resolve, reject) => {
 		let uri = getDefectsUri(false, offset, limit, '', '');
 		getFromOctane(uri).then(
 			(result) => {
+				loadedCount += limit;
+				let per = Math.round(100.0 * loadedCount / total);
+				if (per !== loadedPercent) {
+					loadedPercent = per;
+					logger.logMessage(`${loadedPercent}%`);
+				}
 				resolve(result);
 			},
 			(err) => {
-				logger.logError('Error on getDefectsBatch() - ' + (err.message || err));
+				logger.logFuncError('getDefectsBatch', err);
+				reject(err);
 			}
 		);
 	});
 }
 
 function getLastDefects(needed) {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		let offset = 0;
-		let batch = 100;
+		let batch = 500;
 		let promises = [];
 		while (needed > offset) {
 			let limit = ((needed - offset) >  batch) ? batch : needed - offset;
-			promises.push(getDefectsBatch(offset, limit));
+			promises.push(getDefectsBatch(offset, limit, needed));
 			offset += batch;
 		}
+		loadedCount = 0;
 		Promise.all(promises).then(
 			(batchResults) => {
 				let data = [];
@@ -232,6 +245,9 @@ function getLastDefects(needed) {
 					}
 				});
 				resolve(data);
+			},
+			(err) => {
+				reject(err);
 			}
 		);
 	});
@@ -258,14 +274,15 @@ function verifyUserTag(tagName) {
 }
 
 function getTaggedDefects(tagId1, tagId2) {
-	return new Promise((resolve /*, reject*/) => {
+	return new Promise((resolve, reject) => {
 		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
 		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
 		},
 		(err) => {
-			logger.logError('Error on getTaggedDefects() - ' + (err.message || err));
+			logger.logFuncError('getTaggedDefects', err);
+			reject(err);
 		}
 		);
 	});

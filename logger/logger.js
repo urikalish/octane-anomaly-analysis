@@ -31,6 +31,12 @@ function logError(msg) {
 	log.push(msg);
 }
 
+function logFuncError(functionName, err) {
+	let msg = `Error on ${functionName}() ${(err.message || err)}`;
+	console.log(chalk.redBright(msg));
+	log.push(msg);
+}
+
 function logAnomaly(msg) {
 	console.log(chalk.cyanBright(msg));
 	log.push(msg);
@@ -43,5 +49,6 @@ module.exports = {
 	logSuccess: logSuccess,
 	logWarning: logWarning,
 	logError: logError,
+	logFuncError: logFuncError,
 	logAnomaly: logAnomaly
 };
