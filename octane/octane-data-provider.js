@@ -167,7 +167,8 @@ function getAttachment(entityId) {
 			resolve(result);
 		},
 		(err) => {
-			logger.logError(`Error on getAttachment() for entity #${entityId} - ${(err.message || err)}`);
+			logger.logWarning(`Unable to get attachment for entity #${entityId} - ${(err.message || err)}`);
+			resolve(null);
 		}
 		);
 	});

@@ -172,11 +172,12 @@ function updateOctane() {
 			if (skipCount > 0) {
 				logger.logSuccess(`updateOctane() - ${skipCount} defects already updated - OK`);
 			}
-			if (successCount > 0) {
-				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
-			}
-			if (successCount !== results.length) {
+			if (successCount === 0) {
+				logger.logWarning(`updateOctane() - Octane was not updated`);
+			} else if (successCount !== results.length) {
 				logger.logWarning(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
+			} else {
+				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
 			}
 			resolve();
 		},

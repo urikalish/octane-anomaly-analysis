@@ -23,7 +23,7 @@ function check(defects, options) {
 				let totalSizeMB = 0;
 				Promise.all(promises).then((results) => {
 					results.forEach(result => {
-						if (result.data && result.data && result.data.length > 0) {
+						if (result && result.data && result.data && result.data.length > 0) {
 							totalSizeMB += result.data[0].size/1048576;
 						}
 					});
