@@ -31,7 +31,7 @@ function checkForAnomalies() {
 				logger.logMessage(`checkForAnomalies() - Retrieving ${totalNumberOfDefects} defects from Octane...`);
 				octaneDataProvider.getLastDefects(totalNumberOfDefects).then(
 				(lastDefects) => {
-					logger.logSuccess('checkForAnomalies() - Defects retrieved - OK');
+					logger.logSuccess(`checkForAnomalies() - ${totalNumberOfDefects} defects retrieved - OK`);
 					logger.logMessage('checkForAnomalies() - Checking for anomalies...');
 					let promises = [];
 					let tagMap = {};
