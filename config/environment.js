@@ -3,7 +3,7 @@ let environment = {
 	//serverAddress: 'https://center.almoctane.com',
 	serverAddress: process.env.SERVER_ADDRESS,
 
-	//domainName: 'https://almoctane.com',
+	//domainName: 'http://almoctane.com',
 	domainName: process.env.SERVER_DOMAIN,
 
 	//sharedspaceId: '1001',
