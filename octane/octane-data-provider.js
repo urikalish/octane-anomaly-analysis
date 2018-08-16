@@ -100,7 +100,7 @@ function putToOctane(uri, body, defectId) {
 				return reject(err);
 			}
 			if (response.statusCode < 200 || response.statusCode > 299) {
-				logger.logError(`Error on putToOctane() for defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${(JSON.parse(body)).description}`);
+				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${(JSON.parse(body)).description}`);
 				return resolve(null);
 			}
 			if (response.headers['set-cookie']) {
