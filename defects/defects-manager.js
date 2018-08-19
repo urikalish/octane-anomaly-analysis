@@ -32,7 +32,7 @@ function checkForAnomalies() {
 				octaneDataProvider.getLastDefects(totalNumberOfDefects).then(
 				(lastDefects) => {
 					logger.logSuccess(`checkForAnomalies() - ${totalNumberOfDefects} defects retrieved - OK`);
-					logger.logMessage('checkForAnomalies() - Checking for anomalies...');
+					logger.logMessage('checkForAnomalies() - Checking for anomalies. This might take a minute or two. Please wait...');
 					let promises = [];
 					let tagMap = {};
 					settings.checkers.forEach(c => {
@@ -175,6 +175,7 @@ function updateOctane() {
 			if (successCount === 0) {
 				logger.logWarning(`updateOctane() - Octane was not updated`);
 			} else if (successCount !== results.length) {
+				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
 				logger.logWarning(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
 			} else {
 				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
