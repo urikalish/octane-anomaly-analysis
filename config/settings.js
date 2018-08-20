@@ -180,7 +180,7 @@ let settings = {
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
-				maxDataSetSize: 2500
+				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
 		},
 		{
@@ -194,7 +194,7 @@ let settings = {
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
 				],
-				maxDataSetSize: 2500
+				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
 		}
 	]
