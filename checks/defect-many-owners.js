@@ -40,9 +40,11 @@ function check(defects, options) {
 							if (checkedDefects === relevantDefects) {
 								resolve(result);
 							}
-						}
-						else {
-							resolve(result);
+						} else {
+							checkedDefects++;
+							if (checkedDefects === relevantDefects) {
+								resolve(result);
+							}
 						}
 					});
 			}
