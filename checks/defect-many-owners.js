@@ -14,6 +14,11 @@ function check(defects, options) {
 		defects.forEach(d => {
 			if (options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
 				relevantDefects++;
+			}
+		});
+		defects.forEach(d => {
+			if (options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
+				//relevantDefects++;
 				octaneDataProvider.getHistory(d.id).then(
 					(historyResult) => {
 						if (historyResult) {
