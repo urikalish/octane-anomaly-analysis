@@ -136,19 +136,19 @@ function getHeaders() {
 	return headers;
 }
 
-function getHistoryUri(entityId, entityType) {
-	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
+function getDefectsHistoryUri(entityIds) {
+	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='defect'"`;
 }
 
-function getHistory(entityId) {
+function getHistories(entityIds) {
 	return new Promise((resolve /*, reject*/) => {
-		let uri = getHistoryUri(entityId);
+		let uri = getDefectsHistoryUri(entityIds);
 		getFromOctane(uri).then(
 		(result) => {
 			resolve(result);
 		},
 		(err) => {
-			logger.logWarning(`Unable to get history for entity #${entityId} - ${(err.message || err)}`);
+			logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
 			resolve(null);
 		}
 		);
@@ -302,6 +302,6 @@ module.exports = {
 	updateDefectUserTags: updateDefectUserTags,
 	getLastDefects: getLastDefects,
 	getTaggedDefects: getTaggedDefects,
-	getHistory: getHistory,
+	getHistories: getHistories,
 	getAttachment: getAttachment
 };
