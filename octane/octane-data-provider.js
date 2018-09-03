@@ -209,7 +209,7 @@ function getDefectsBatch(offset, limit, total) {
 				let per = Math.round(100.0 * loadedCount / total);
 				if (per !== loadedPercent) {
 					loadedPercent = per;
-					logger.logMessage(`${loadedPercent}%`);
+					logger.logMessage(`Retrieving defects... ${loadedPercent}%`);
 				}
 				resolve(result);
 			},

@@ -155,10 +155,10 @@ function updateOctane() {
 					});
 				});
 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
-				logger.logMessage(`updateOctane() - Try update defect #${id}`);
+				//logger.logMessage(`updateOctane() - Try update defect #${id}`);
 			} else {
 				skipCount++;
-				logger.logMessage(`updateOctane() - Skip update defect #${id}`);
+				//logger.logMessage(`updateOctane() - Skip update defect #${id}`);
 			}
 		});
 		logger.logMessage(`updateOctane() - Trying to update ${promises.length} defects...`);
