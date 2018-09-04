@@ -5,16 +5,23 @@ const tagsManager = require('./tags/tags-manager');
 const defectsManager = require('./defects/defects-manager');
 
 function run() {
+	let startTime = new Date();
 	logger.clearLog();
 	octaneAuthenticator.authenticate().then(
 		(/*result*/) => {
 			logger.logSuccess('Authenticated - OK');
 			tagsManager.loadUserTags().then((/*userTags*/) => {
-				defectsManager.handleDefects();
+				defectsManager.handleDefects().then(
+				(/*result*/) => {
+					logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
+				},
+				(/*err*/) => {
+					logger.logError('Error');
+				});
 			});
 		},
-		(reason) => {
-			logger.logError('Authentication Error - ' + reason.message);
+		(err) => {
+			logger.logError('Authentication Error - ' + err.message);
 		}
 	);
 }

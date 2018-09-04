@@ -221,32 +221,37 @@ function saveToStorage() {
 }
 
 function handleDefects() {
-	loadFromOctane().then(() => {
-		checkForAnomalies().then(() => {
-			let promises2 = [];
-			if (settings.saveToStorage) {
-				promises2.push(saveToStorage());
-			} else {
-				logger.logMessage('Skip save to storage');
-			}
-			if (settings.updateOctane) {
-				promises2.push(updateOctane());
-			} else {
-				logger.logWarning('Skip update Octane');
-			}
-			Promise.all(promises2).then(() => {
-				logger.logMessage('Done');
+	return new Promise((resolve, reject) => {
+		loadFromOctane().then(() => {
+			checkForAnomalies().then(() => {
+				let promises2 = [];
+				if (settings.saveToStorage) {
+					promises2.push(saveToStorage());
+				} else {
+					logger.logMessage('Skip save to storage');
+				}
+				if (settings.updateOctane) {
+					promises2.push(updateOctane());
+				} else {
+					logger.logWarning('Skip update Octane');
+				}
+				Promise.all(promises2).then(() => {
+					resolve();
+				},
+				(err) => {
+					logger.logFuncError('handleDefects', err);
+					reject(err);
+				});
 			},
 			(err) => {
 				logger.logFuncError('handleDefects', err);
+				reject(err);
 			});
 		},
 		(err) => {
 			logger.logFuncError('handleDefects', err);
+			reject(err);
 		});
-	},
-	(err) => {
-		logger.logFuncError('handleDefects', err);
 	});
 }
 
