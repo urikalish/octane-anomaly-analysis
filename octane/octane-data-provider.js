@@ -281,17 +281,10 @@ function getTaggedDefects(tagId1, tagId2) {
 		(result) => {
 			resolve(result);
 		},
-		() => {
-			getFromOctane(uri).then(
-			(result) => {
-				resolve(result);
-			},
-			(err) => {
-				logger.logFuncError('getTaggedDefects', err);
-				reject(err);
-			});
-		}
-		);
+		(err) => {
+			logger.logFuncError('getTaggedDefects', err);
+			reject(err);
+		});
 	});
 }
 
