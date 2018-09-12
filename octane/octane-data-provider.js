@@ -136,43 +136,60 @@ function getHeaders() {
 	return headers;
 }
 
-function getHistoryUri(entityId, entityType) {
-	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
-}
-
-function getHistory(entityId) {
-	return new Promise((resolve /*, reject*/) => {
-		let uri = getHistoryUri(entityId);
-		getFromOctane(uri).then(
-		(result) => {
-			resolve(result);
-		},
-		(err) => {
-			logger.logWarning(`Unable to get history for entity #${entityId} - ${(err.message || err)}`);
-			resolve(null);
-		}
-		);
-	});
-}
-
 // function getHistoryUri(entityId, entityType) {
-// 	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
+// 	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
 // }
 //
-// function getHistories(entityIds) {
+// function getHistory(entityId) {
 // 	return new Promise((resolve /*, reject*/) => {
-// 		let uri = getHistoryUri(entityIds);
+// 		let uri = getHistoryUri(entityId);
 // 		getFromOctane(uri).then(
 // 		(result) => {
 // 			resolve(result);
 // 		},
 // 		(err) => {
-// 			logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
+// 			logger.logWarning(`Unable to get history for entity #${entityId} - ${(err.message || err)}`);
 // 			resolve(null);
 // 		}
 // 		);
 // 	});
 // }
+
+function getHistoriesUri(entityIds, entityType) {
+	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
+}
+
+function getHistories(entityIds) {
+	return new Promise((resolve /*, reject*/) => {
+		let promises = [];
+		let counter = 0;
+		let ids = [];
+		entityIds.forEach(id => {
+			ids.push(id);
+			counter++;
+			if (counter % 10 === 0 || counter === entityIds.length) {
+				promises.push(getFromOctane(getHistoriesUri(ids)));
+				ids = [];
+			}
+		});
+		Promise.all(promises).then(
+		(results) => {
+			let retVal = {
+				data:[]
+			};
+			results.forEach(result => {
+				result.data.forEach(d => {
+					retVal.data.push(d);
+				});
+			});
+			resolve(retVal);
+		},
+		(err) => {
+			logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
+			resolve(null);
+		});
+	});
+}
 
 function getAttachmentUri(entityId) {
 	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
@@ -320,7 +337,7 @@ module.exports = {
 	updateDefectUserTags: updateDefectUserTags,
 	getLastDefects: getLastDefects,
 	getTaggedDefects: getTaggedDefects,
-	//getHistories: getHistories,
-	getHistory: getHistory,
+	getHistories: getHistories,
+	//getHistory: getHistory,
 	getAttachment: getAttachment
 };
