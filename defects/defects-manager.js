@@ -32,7 +32,7 @@ function checkForAnomalies() {
 				octaneDataProvider.getLastDefects(totalNumberOfDefects).then(
 				(lastDefects) => {
 					logger.logSuccess(`checkForAnomalies() - ${totalNumberOfDefects} defects retrieved - OK`);
-					logger.logMessage('checkForAnomalies() - Checking for anomalies... this might take a minute or two... please wait...');
+					logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
 					let promises = [];
 					let tagMap = {};
 					settings.checkers.forEach(c => {
