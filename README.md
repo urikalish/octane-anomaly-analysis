@@ -23,9 +23,7 @@ Checks for anomalies within ALM Octane's defect entities.
 * Clone the GitHub repository to a local directory (e.g. c:\octane-anomaly-analysis\)
 
 * Change directory to the newly created folder 
-```sh
-cd c:\octane-anomaly-analysis
-```
+
 * Import npm dependencies
 ```sh
 npm i
@@ -33,9 +31,9 @@ npm i
 
 ## How to Configure
 
-* Configure environment details in ./config/environment.js
+* Configure environment details in file ./config/environment.js
 
-* Configure settings in ./config/settings.js
+* Configure settings in file ./config/settings.js
 
 ## How to Run
 ```sh
