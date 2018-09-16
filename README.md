@@ -12,30 +12,38 @@ Checks for anomalies within ALM Octane's defect entities.
 * Defects stuck in DEV phase
 * Defects stuck in QA phase
 * Defects with an unusual owner
-* Defects with an unusual QA owner 
+* Defects with an unusual QA owner
+
+* The out-of-the-ordinary defects will be tagged in Octane for easy filter or group-by.
+
+## Technical Overview
+
+The code is a simple NodeJs script which communicates with your Octane instance via REST API.
 
 ## Prerequisites
 
-* [NodeJs](https://nodejs.org/en/) installed on the local machine.
+* [NodeJs](https://nodejs.org/en/) installed on your local machine.
 
 ## How to Install
 
-* Clone the GitHub repository to a local directory (e.g. c:\octane-anomaly-analysis\)
+* Unzip the [code](https://github.com/urikalish/octane-anomaly-analysis/archive/v1.0.0.zip) to your local machine.
 
-* Change directory to the newly created folder 
+* Navigate into the the newly created folder on your local machine. 
 
-* Import npm dependencies
+* From within this local folder, run this cmd command:
 ```sh
 npm i
 ```
 
 ## How to Configure
 
-* Configure environment details in file ./config/environment.js
+* Configure your Octane server details in the file ./config/environment.js
 
-* Configure settings in file ./config/settings.js
+* Customize the checks settings in the file ./config/settings.js
 
 ## How to Run
+
+* From within the local folder, run this cmd command:
 ```sh
 npm start
 ```
