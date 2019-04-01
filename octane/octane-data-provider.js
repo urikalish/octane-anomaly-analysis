@@ -184,9 +184,13 @@ function getHistories(entityIds) {
 				data:[]
 			};
 			results.forEach(result => {
-				result.data.forEach(d => {
-					retVal.data.push(d);
-				});
+				if (result.data) {
+					result.data.forEach(d => {
+						retVal.data.push(d);
+					});
+				} else {
+					logger.logWarning(`Unable to get history for entities`);
+				}
 			});
 			resolve(retVal);
 		},
