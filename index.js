@@ -4,26 +4,18 @@ const octaneAuthenticator = require('./octane/octane-authenticator');
 const tagsManager = require('./tags/tags-manager');
 const defectsManager = require('./defects/defects-manager');
 
-function run() {
+let run = async () => {
 	let startTime = new Date();
-	logger.clearLog();
-	octaneAuthenticator.authenticate().then(
-		(/*result*/) => {
-			logger.logSuccess('Authenticated - OK');
-			tagsManager.loadUserTags().then((/*userTags*/) => {
-				defectsManager.handleDefects().then(
-				(/*result*/) => {
-					logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
-				},
-				(/*err*/) => {
-					logger.logError('Error');
-				});
-			});
-		},
-		(err) => {
-			logger.logError('Authentication Error - ' + err.message);
-		}
-	);
-}
+	try {
+		logger.clearLog();
+		await octaneAuthenticator.authenticate();
+		logger.logSuccess('Authenticated - OK');
+		await tagsManager.loadUserTags();
+		await defectsManager.handleDefects();
+		logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
+	} catch (err) {
+		logger.logError('Error');
+	}
+};
 
 run();
