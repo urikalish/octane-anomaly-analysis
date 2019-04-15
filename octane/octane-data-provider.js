@@ -12,7 +12,7 @@ const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
 let loadedCount = 0;
 let loadedPercent = 0;
 
-function getFromOctane(uri) {
+const getFromOctane = (uri) => {
 	return new Promise((resolve, reject) => {
 		request({
 			method: 'GET',
@@ -39,9 +39,9 @@ function getFromOctane(uri) {
 			}
 		});
 	});
-}
+};
 
-function postToOctane(uri, body) {
+const postToOctane = (uri, body) => {
 	return new Promise((resolve, reject) => {
 		let options = {
 			method: 'POST',
@@ -82,9 +82,9 @@ function postToOctane(uri, body) {
 			}
 		});
 	});
-}
+};
 
-function putToOctane(uri, body, defectId) {
+const putToOctane = (uri, body, defectId) => {
 	return new Promise((resolve, reject) => {
 		let options = {
 			method: 'PUT',
@@ -125,9 +125,9 @@ function putToOctane(uri, body, defectId) {
 			}
 		});
 	});
-}
+};
 
-function getHeaders() {
+const getHeaders = () => {
 	let headers = {
 		"Content-Type": "application/json",
 		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
@@ -139,13 +139,13 @@ function getHeaders() {
 	});
 
 	return headers;
-}
+};
 
-// function getHistoryUri(entityId, entityType) {
+// const getHistoryUri = (entityId, entityType) => {
 // 	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
-// }
+// };
 //
-// function getHistory(entityId) {
+// const getHistory = (entityId) => {
 // 	return new Promise((resolve /*, reject*/) => {
 // 		let uri = getHistoryUri(entityId);
 // 		getFromOctane(uri).then(
@@ -158,13 +158,13 @@ function getHeaders() {
 // 		}
 // 		);
 // 	});
-// }
+// };
 
-function getHistoriesUri(entityIds, entityType) {
+const getHistoriesUri = (entityIds, entityType) => {
 	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
-}
+};
 
-async function getHistories(entityIds) {
+const getHistories = async (entityIds) => {
 	let promises = [];
 	let counter = 0;
 	let ids = [];
@@ -195,13 +195,13 @@ async function getHistories(entityIds) {
 		logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
 		return null;
 	}
-}
+};
 
-function getAttachmentUri(entityId) {
+const getAttachmentUri = (entityId) => {
 	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
-}
+};
 
-async function getAttachment(entityId) {
+const getAttachment = async (entityId) => {
 	let uri = getAttachmentUri(entityId);
 	getFromOctane(uri).then(
 	(result) => {
@@ -211,9 +211,9 @@ async function getAttachment(entityId) {
 		logger.logWarning(`Unable to get attachment for entity #${entityId} - ${(err.message || err)}`);
 		return null;
 	});
-}
+};
 
-function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
+const getDefectsUri = (isAsc, offset, limit, querySuffix, fields) => {
 	return apiUrl +
 	`/work_items` +
 	`?order_by=${isAsc ? '' : '-'}id` +
@@ -222,46 +222,38 @@ function getDefectsUri(isAsc, offset, limit, querySuffix, fields) {
 	`&query="((subtype='defect')${(querySuffix ? ';' + querySuffix : '')})"` +
 	//`&fields=${fields || 'creation_time,suite_run,parent,defect_root_level,version_stamp,release,workspace_id,num_comments,path,wsjf_cod,rank,last_modified,phase,subtype_label,fixed_on,rroe,has_children,priority,user_tags,taxonomies,defects,estimated_hours,user_stories,initial_estimate,ordering,blocked,invested_hours,items_in_releases,logical_path,has_attachments,epic_type,story_points,quality_stories,global_text_search_result,total_risky_commits,team,time_criticality,cycle_time_expiration,progress,original_id,business_value,actual_story_points,sprint,fixed_in_build,features,item_origin,committers,commits_summary,quality_story_type,ancestors,defect_type,client_lock_stamp,author,product_areas,remaining_hours,last_runs,commit_files,commit_count,has_comments,tasks_number,name,detected_in_build,logical_name,description,detected_in_release,phase_to_time_in_phase,total_commits,requirement_feature,wsjf_score,detected_by,qa_owner,subtype,is_draft,closed_on,feature_count,new_tasks,owner,severity,requirements,feature_type,blocked_reason,job_size,time_in_current_phase,comments'}`;
 	`&fields=${fields || 'id,name,severity,team,owner,qa_owner,phase,time_in_current_phase,comments,attachments,user_tags'}`;
-}
+};
 
-function getTotalNumberOfDefects() {
-	return new Promise((resolve, reject) => {
+const getTotalNumberOfDefects = async () => {
+	try {
 		let uri = getDefectsUri(false, 0, 1, '', '');
-		getFromOctane(uri).then(
-		(result) => {
-			resolve(result['total_count']);
-		},
-		(err) => {
-			logger.logFuncError('getTotalNumberOfDefects', err);
-			reject(err);
-		}
-		);
-	});
-}
+		let result = await getFromOctane(uri);
+		return result['total_count'];
+	} catch(err) {
+		logger.logFuncError('getTotalNumberOfDefects', err);
+		throw err;
+	}
+};
 
-function getDefectsBatch(offset, limit, total) {
-	return new Promise((resolve, reject) => {
+const getDefectsBatch = async (offset, limit, total) => {
+	try {
 		let uri = getDefectsUri(false, offset, limit, '', '');
-		getFromOctane(uri).then(
-			(result) => {
-				loadedCount += limit;
-				let per = Math.round(100.0 * loadedCount / total);
-				if (per !== loadedPercent) {
-					loadedPercent = per;
-					logger.logMessage(`Retrieving defects... ${loadedPercent}%`);
-				}
-				resolve(result);
-			},
-			(err) => {
-				logger.logFuncError('getDefectsBatch', err);
-				reject(err);
-			}
-		);
-	});
-}
+		let result = await getFromOctane(uri);
+		loadedCount += limit;
+		let per = Math.round(100.0 * loadedCount / total);
+		if (per !== loadedPercent) {
+			loadedPercent = per;
+			logger.logMessage(`Retrieving defects... ${loadedPercent}%`);
+		}
+		return result;
+	} catch(err) {
+		logger.logFuncError('getDefectsBatch', err);
+		throw err;
+	}
+};
 
-function getLastDefects(needed) {
-	return new Promise((resolve, reject) => {
+const getLastDefects = async (needed) => {
+	try {
 		let offset = 0;
 		let batch = 500;
 		let promises = [];
@@ -271,66 +263,56 @@ function getLastDefects(needed) {
 			offset += batch;
 		}
 		loadedCount = 0;
-		Promise.all(promises).then(
-			(batchResults) => {
-				let data = [];
-				batchResults.forEach(batchResult => {
-					if (batchResult.data) {
-						batchResult.data.forEach(batch => {
-							data.push(batch);
-						});
-						data.sort((a, b) => {
-							return b.id - a.id;
-						});
-					}
+		let batchResults = await Promise.all(promises);
+		let data = [];
+		batchResults.forEach(batchResult => {
+			if (batchResult.data) {
+				batchResult.data.forEach(batch => {
+					data.push(batch);
 				});
-				resolve(data);
-			},
-			(err) => {
-				reject(err);
+				data.sort((a, b) => {
+					return b.id - a.id;
+				});
 			}
-		);
-	});
-}
-
-function verifyUserTag(tagName) {
-	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"&fields=id,name`;
-	return getFromOctane(url).then((results) => {
-		if (results && results['total_count'] !== 0) {
-			logger.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
-		} else {
-			logger.logMessage('Creating user tag "' + tagName + '"...');
-			url = apiUrl + '/user_tags';
-			let body = {
-				data: [{name: tagName}]
-			};
-			return postToOctane(url, body).then((result) => {
-				logger.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
-				return result.body.data[0];
-			})
-		}
-		return results.data[0];
-	});
-}
-
-function getTaggedDefects(tagId1, tagId2) {
-	return new Promise((resolve, reject) => {
-		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
-		getFromOctane(uri).then(
-		(result) => {
-			resolve(result);
-		},
-		(err) => {
-			logger.logFuncError('getTaggedDefects', err);
-			reject(err);
 		});
-	});
-}
+		return data;
+	} catch(err) {
+		throw err;
+	}
+};
 
-function updateDefectUserTags(defectId, body) {
+const verifyUserTag = async (tagName) => {
+	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"&fields=id,name`;
+	let results = await getFromOctane(url);
+	if (results && results['total_count'] !== 0) {
+		logger.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
+		return results.data[0];
+	} else {
+		logger.logMessage('Creating user tag "' + tagName + '"...');
+		url = apiUrl + '/user_tags';
+		let body = {
+			data: [{name: tagName}]
+		};
+		let result = await postToOctane(url, body);
+		logger.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
+		return result.body.data[0];
+	}
+};
+
+const getTaggedDefects = async (tagId1, tagId2) => {
+	try {
+		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+		return await getFromOctane(uri);
+	} catch(err) {
+		logger.logFuncError('getTaggedDefects', err);
+		throw err;
+	}
+};
+
+const updateDefectUserTags = (defectId, body) => {
 	let url =  `${apiUrl}/work_items/${defectId}`;
 	return putToOctane(url, body, defectId);
-}
+};
 
 module.exports = {
 	verifyUserTag: verifyUserTag,
