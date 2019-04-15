@@ -8,7 +8,7 @@ const specificAnomalyTagPrefix = settings.specificAnomalyTagPrefix;
 const ignoreAnomalyTag = settings.ignoreAnomalyTag;
 let tags = {};
 
-async function loadUserTags() {
+const loadUserTags = async () => {
 	try {
 		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
 		settings.checkers.forEach(c => {
@@ -31,25 +31,25 @@ async function loadUserTags() {
 		logger.logFuncError('loadUserTags', err);
 		return err;
 	}
-}
+};
 
-function getGeneralAnomalyTagId() {
+const getGeneralAnomalyTagId = () => {
 	return tags[generalAnomalyTag];
-}
+};
 
-function getGeneralAnomalyTagName() {
+const getGeneralAnomalyTagName = () => {
 	return generalAnomalyTag;
-}
+};
 
-function getIgnoreAnomalyTagId() {
+const getIgnoreAnomalyTagId = () => {
 	return tags[ignoreAnomalyTag];
-}
+};
 
-function getIgnoreAnomalyTagName() {
+const getIgnoreAnomalyTagName = () => {
 	return ignoreAnomalyTag;
-}
+};
 
-function getTagNames(userTags) {
+const getTagNames = (userTags) => {
 	let tags = [];
 	if (userTags['total_count']) {
 		if (userTags['total_count'] > 0) {
@@ -61,9 +61,9 @@ function getTagNames(userTags) {
 		tags = userTags;
 	}
 	return tags.sort();
-}
+};
 
-function getAllAnomalyTagNames(userTags) {
+const getAllAnomalyTagNames = (userTags) => {
 	let tags = [];
 	if (userTags) {
 		getTagNames(userTags).forEach(tn => {
@@ -73,9 +73,9 @@ function getAllAnomalyTagNames(userTags) {
 		});
 	}
 	return tags.sort();
-}
+};
 
-function hasGeneralAnomalyTag(userTags) {
+const hasGeneralAnomalyTag = (userTags) => {
 	let result = false;
 	if (userTags) {
 		getTagNames(userTags).forEach(tn => {
@@ -85,9 +85,9 @@ function hasGeneralAnomalyTag(userTags) {
 		});
 	}
 	return result;
-}
+};
 
-function hasIgnoreAnomalyTag(userTags) {
+const hasIgnoreAnomalyTag = (userTags) => {
 	let result = false;
 	if (userTags) {
 		getTagNames(userTags).forEach(tn => {
@@ -97,9 +97,9 @@ function hasIgnoreAnomalyTag(userTags) {
 		});
 	}
 	return result;
-}
+};
 
-function isAnomalyTagId(tagId) {
+const isAnomalyTagId = (tagId) => {
 	let found = false;
 	_.forEach(tags, (id) => {
 		if (id === tagId) {
@@ -107,11 +107,11 @@ function isAnomalyTagId(tagId) {
 		}
 	});
 	return found;
-}
+};
 
-function getTagIdByName(tagName) {
+const getTagIdByName = (tagName) => {
 	return tags[tagName];
-}
+};
 
 module.exports = {
 	loadUserTags: loadUserTags,
