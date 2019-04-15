@@ -17,7 +17,7 @@ License: Although this is an MIT-licensed library, usage permission is only gran
 
 ## Technical Overview
 
-The code is a simple NodeJs script which communicates with your Octane instance via REST API.
+The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ The code is a simple NodeJs script which communicates with your Octane instance 
 
 * Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
 
-* Navigate into the the newly created folder on your local machine, and from within this local folder, run this cmd command:
+* Navigate to this new folder, and from within it, run this cmd command:
 ```sh
 npm i
 ```
