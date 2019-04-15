@@ -1,11 +1,11 @@
 'use strict';
 let settings = {
-	defectsRetrievalLimit: 1000000,
+	defectsRetrievalLimit: 10000,
+	updateOctane: true,
+	saveToLocalStorage: true,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
-	saveToLocalStorage: true,
-	updateOctane: true,
 	checkers: [
 		{
 			enabled: true,
