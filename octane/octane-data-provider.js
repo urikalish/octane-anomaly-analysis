@@ -104,7 +104,7 @@ const putToOctane = (uri, body, defectId) => {
 					errObj = JSON.parse(body);
 				} catch (e) {
 				}
-				let errDesc = errObj ? (JSON.parse(body)).description : body;
+				let errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
 				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${errDesc}`);
 				return resolve(null);
 			}
