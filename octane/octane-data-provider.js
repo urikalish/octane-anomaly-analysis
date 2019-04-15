@@ -164,40 +164,37 @@ function getHistoriesUri(entityIds, entityType) {
 	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
 }
 
-function getHistories(entityIds) {
-	return new Promise((resolve /*, reject*/) => {
-		let promises = [];
-		let counter = 0;
-		let ids = [];
-		entityIds.forEach(id => {
-			ids.push(id);
-			counter++;
-			if (counter % 10 === 0 || counter === entityIds.length) {
-				promises.push(getFromOctane(getHistoriesUri(ids)));
-				ids = [];
+async function getHistories(entityIds) {
+	let promises = [];
+	let counter = 0;
+	let ids = [];
+	entityIds.forEach(id => {
+		ids.push(id);
+		counter++;
+		if (counter % 10 === 0 || counter === entityIds.length) {
+			promises.push(getFromOctane(getHistoriesUri(ids)));
+			ids = [];
+		}
+	});
+	try {
+		let results = await Promise.all(promises);
+		let result = {
+			data: []
+		};
+		results.forEach(result => {
+			if (result.data) {
+				result.data.forEach(d => {
+					result.data.push(d);
+				});
+			} else {
+				logger.logWarning(`Unable to get history for entities`);
 			}
 		});
-		Promise.all(promises).then(
-		(results) => {
-			let retVal = {
-				data:[]
-			};
-			results.forEach(result => {
-				if (result.data) {
-					result.data.forEach(d => {
-						retVal.data.push(d);
-					});
-				} else {
-					logger.logWarning(`Unable to get history for entities`);
-				}
-			});
-			resolve(retVal);
-		},
-		(err) => {
-			logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
-			resolve(null);
-		});
-	});
+		return result;
+	} catch(err) {
+		logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
+		return null;
+	}
 }
 
 function getAttachmentUri(entityId) {

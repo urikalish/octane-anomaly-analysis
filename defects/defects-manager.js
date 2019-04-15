@@ -29,7 +29,7 @@ function checkForAnomalies() {
 		octaneDataProvider.getTotalNumberOfDefects().then(
 			(totalNumberOfDefects) => {
 				logger.logMessage(`checkForAnomalies() - Retrieving ${totalNumberOfDefects} defects from Octane...`);
-				octaneDataProvider.getLastDefects(totalNumberOfDefects).then(
+				octaneDataProvider.getLastDefects(100).then(
 				(lastDefects) => {
 					logger.logSuccess(`checkForAnomalies() - ${totalNumberOfDefects} defects retrieved - OK`);
 					logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
