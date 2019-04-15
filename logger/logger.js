@@ -1,46 +1,45 @@
 'use strict';
 const chalk = require('chalk');
-
 let log = [];
 
-function clearLog() {
+const clearLog = () => {
 	log = [];
-}
+};
 
-// function getLog() {
+// const getLog = () => {
 // 	return log;
-// }
+// };
 
-function logMessage(msg) {
+const logMessage = (msg) => {
 	console.log(chalk.magentaBright(msg));
 	log.push(msg);
-}
+};
 
-function logSuccess(msg) {
+const logSuccess = (msg) => {
 	console.log(chalk.greenBright(msg));
 	log.push(msg);
-}
+};
 
-function logWarning(msg) {
+const logWarning = (msg) => {
 	console.log(chalk.yellowBright(msg));
 	log.push(msg);
-}
+};
 
-function logError(msg) {
+const logError = (msg) => {
 	console.log(chalk.redBright(msg));
 	log.push(msg);
-}
+};
 
-function logFuncError(functionName, err) {
+const logFuncError = (functionName, err) => {
 	let msg = `Error on ${functionName}() ${(err.message || err)}`;
 	console.log(chalk.redBright(msg));
 	log.push(msg);
-}
+};
 
-function logAnomaly(msg) {
+const logAnomaly = (msg) => {
 	console.log(chalk.cyanBright(msg));
 	log.push(msg);
-}
+};
 
 module.exports = {
 	//getLog: getLog,
