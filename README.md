@@ -11,11 +11,9 @@ Checks for anomalies within ALM Octane's defect entities.
 * Defects with many comments
 * Defects with large attachments
 
-* The out-of-the-ordinary defects will be marked in ALM Octane using tags.
+The out-of-the-ordinary defects will be marked in ALM Octane using tags.
 
 License: Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
-
-## Technical Overview
 
 The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
 
