@@ -27,7 +27,7 @@ The code is a simple NodeJs script which communicates with your Octane instance 
 
 * Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
 
-* Navigate into the the newly created folder on your local machine., and from within this local folder, run this cmd command:
+* Navigate into the the newly created folder on your local machine, and from within this local folder, run this cmd command:
 ```sh
 npm i
 ```
