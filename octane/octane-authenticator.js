@@ -7,7 +7,7 @@ if (process.env.PROXY) {
 }
 const url = require('url');
 
-async function authenticate() {
+const authenticate = async () => {
 	let uri = url.resolve(process.env.SERVER_ADDRESS, '/authentication/sign_in');
 	let body = {
 		client_id: process.env.CLIENT_ID,
@@ -15,7 +15,7 @@ async function authenticate() {
 	};
 	logger.logMessage('Authenticating...');
 	return await octaneDataProvider.postToOctane(uri, body);
-}
+};
 
 module.exports = {
 	authenticate: authenticate

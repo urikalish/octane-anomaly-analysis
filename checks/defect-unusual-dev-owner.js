@@ -3,7 +3,7 @@ const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 
-async function check(defects, options) {
+const check = async (defects, options) => {
 	let result = {
 		checkerName: checkerName,
 		anomalies: {}
@@ -39,7 +39,7 @@ async function check(defects, options) {
 		});
 	});
 	return result;
-}
+};
 
 module.exports = {
 	check: check
