@@ -7,14 +7,14 @@ if (process.env.PROXY) {
 }
 const url = require('url');
 
-function authenticate() {
+async function authenticate() {
 	let uri = url.resolve(process.env.SERVER_ADDRESS, '/authentication/sign_in');
 	let body = {
 		client_id: process.env.CLIENT_ID,
 		client_secret: process.env.CLIENT_SECRET
 	};
 	logger.logMessage('Authenticating...');
-	return octaneDataProvider.postToOctane(uri, body);
+	return await octaneDataProvider.postToOctane(uri, body);
 }
 
 module.exports = {
