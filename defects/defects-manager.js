@@ -7,7 +7,7 @@ const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');
 let defects = {};
 
-function ensureDefect(id, d) {
+const ensureDefect = (id, d) => {
 	if (!defects[id]) {
 		defects[id] = {
 			d: d,
@@ -21,7 +21,7 @@ function ensureDefect(id, d) {
 		}
 	}
 	return defects[id];
-}
+};
 
 function checkForAnomalies() {
 	return new Promise((resolve, reject) => {
@@ -91,34 +91,30 @@ function checkForAnomalies() {
 		});
 }
 
-function loadFromOctane() {
-	return new Promise((resolve, reject) => {
+const loadFromOctane = async () => {
+	try {
 		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
 		let ignoreAnomalyTagId = tagsManager.getIgnoreAnomalyTagId();
 		logger.logMessage(`loadFromOctane() - Loading defects with "Anomaly" or "Ignore Anomaly" tags from Octane...`);
-		octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId).then(
-		(taggedDefects) => {
-			if (taggedDefects && taggedDefects['total_count'] > 0) {
-				logger.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
-				taggedDefects.data.forEach(d => {
-					let defect = ensureDefect(d.id, d);
-					defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
-				});
-			} else {
-				logger.logMessage(`loadFromOctane() - No defects with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
-			}
-			logger.logSuccess(`loadFromOctane() - Defects loaded from Octane - OK`);
-			resolve();
-		},
-		(err) => {
-			logger.logFuncError('loadFromOctane', err);
-			reject(err);
-		});
-	});
-}
+		let taggedDefects = await octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId);
+		if (taggedDefects && taggedDefects['total_count'] > 0) {
+			logger.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
+			taggedDefects.data.forEach(d => {
+				let defect = ensureDefect(d.id, d);
+				defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
+			});
+		} else {
+			logger.logMessage(`loadFromOctane() - No defects with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
+		}
+		logger.logSuccess(`loadFromOctane() - Defects loaded from Octane - OK`);
+	} catch(err) {
+		logger.logFuncError('loadFromOctane', err);
+		throw err;
+	}
+};
 
-function updateOctane() {
-	return new Promise((resolve, reject) => {
+const updateOctane = async () => {
+	try {
 		let skipCount = 0;
 		let promises = [];
 		_.forEach(defects, (value, id) => {
@@ -162,98 +158,74 @@ function updateOctane() {
 			}
 		});
 		logger.logMessage(`updateOctane() - Trying to update ${promises.length} defects...`);
-		Promise.all(promises).then((results) => {
-			let successCount = 0;
-			results.forEach(r => {
-				if (r !== null) {
-					successCount++;
-				}
-			});
-			if (skipCount > 0) {
-				logger.logSuccess(`updateOctane() - ${skipCount} defects already updated - OK`);
+		let results = await Promise.all(promises);
+		let successCount = 0;
+		results.forEach(r => {
+			if (r !== null) {
+				successCount++;
 			}
-			if (successCount === 0) {
-				logger.logWarning(`updateOctane() - Octane was not updated`);
-			} else if (successCount !== results.length) {
-				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
-				logger.logWarning(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
-			} else {
-				logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
-			}
-			resolve();
-		},
-		(err) => {
-			logger.logFuncError('updateOctane', err);
-			reject(err);
 		});
-	});
-}
+		if (skipCount > 0) {
+			logger.logSuccess(`updateOctane() - ${skipCount} defects already updated - OK`);
+		}
+		if (successCount === 0) {
+			logger.logWarning(`updateOctane() - Octane was not updated`);
+		} else if (successCount !== results.length) {
+			logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
+			logger.logWarning(`updateOctane() - Octane partially updated - ${successCount}/${results.length}`);
+		} else {
+			logger.logSuccess(`updateOctane() - ${successCount} defects successfully updated - OK`);
+		}
+	} catch(err) {
+		logger.logFuncError('updateOctane', err);
+		throw err;
+	}
+};
 
-function saveToLocalStorage() {
-	return new Promise((resolve, reject) => {
+const saveToLocalStorage = async () => {
+	try {
 		logger.logMessage('saveToLocalStorage() - Initializing storage...');
-		nodePersist.init({dir: './storage/'}).then(() => {
-			logger.logSuccess('saveToLocalStorage() - Storage initialized - OK');
-			let storageData = [];
-			_.forEach(defects, (value, id) => {
-				if (value.anomalies.length > 0) {
-					storageData.push({
-						id: id,
-						anomalies: value.anomalies
-					})
-				}
-			});
-			logger.logMessage('saveToLocalStorage() - Saving to storage...');
-			nodePersist.setItem('defects', storageData).then(() => {
-				logger.logSuccess('saveToLocalStorage() - Storage updated - OK');
-				resolve();
-			},
-			(err) => {
-				logger.logFuncError('saveToLocalStorage', err);
-				reject(err);
-			});
-		},
-		(err) => {
-			logger.logFuncError('saveToLocalStorage', err);
-			reject(err);
+		await nodePersist.init({dir: './storage/'});
+		logger.logSuccess('saveToLocalStorage() - Storage initialized - OK');
+		let storageData = [];
+		_.forEach(defects, (value, id) => {
+			if (value.anomalies.length > 0) {
+				storageData.push({
+					id: id,
+					anomalies: value.anomalies
+				})
+			}
 		});
-	});
-}
+		logger.logMessage('saveToLocalStorage() - Saving to storage...');
+		await nodePersist.setItem('defects', storageData);
+		logger.logSuccess('saveToLocalStorage() - Storage updated - OK');
+	} catch(err) {
+		logger.logFuncError('saveToLocalStorage', err);
+		throw err;
+	}
+};
 
-function handleDefects() {
-	return new Promise((resolve, reject) => {
-		loadFromOctane().then(() => {
-			checkForAnomalies().then(() => {
-				let promises2 = [];
-				if (settings.saveToLocalStorage) {
-					promises2.push(saveToLocalStorage());
-				} else {
-					logger.logMessage('Skip save to storage');
-				}
-				if (settings.updateOctane) {
-					promises2.push(updateOctane());
-				} else {
-					logger.logWarning('Skip update Octane');
-				}
-				Promise.all(promises2).then(() => {
-					resolve();
-				},
-				(err) => {
-					logger.logFuncError('handleDefects', err);
-					reject(err);
-				});
-			},
-			(err) => {
-				logger.logFuncError('handleDefects', err);
-				reject(err);
-			});
-		},
-		(err) => {
-			logger.logFuncError('handleDefects', err);
-			reject(err);
-		});
-	});
-}
+const handleDefects  = async () => {
+	try {
+		await loadFromOctane();
+		await checkForAnomalies();
+		let promises2 = [];
+		if (settings.saveToLocalStorage) {
+			promises2.push(saveToLocalStorage());
+		} else {
+			logger.logMessage('Skip save to storage');
+		}
+		if (settings.updateOctane) {
+			promises2.push(updateOctane());
+		} else {
+			logger.logWarning('Skip update Octane');
+		}
+		await Promise.all(promises2);
+	} catch(err) {
+		logger.logFuncError('handleDefects', err);
+		throw err;
+	}
+};
 
 module.exports = {
 	handleDefects: handleDefects,
