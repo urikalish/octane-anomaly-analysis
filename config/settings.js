@@ -1,5 +1,6 @@
 'use strict';
 let settings = {
+	defectsRetrievalLimit: 1000000,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',

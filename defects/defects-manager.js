@@ -28,10 +28,11 @@ function checkForAnomalies() {
 	return new Promise((resolve, reject) => {
 		octaneDataProvider.getTotalNumberOfDefects().then(
 			(totalNumberOfDefects) => {
-				logger.logMessage(`checkForAnomalies() - Retrieving ${totalNumberOfDefects} defects from Octane...`);
+				let numberOfDefectsToRetrieve = Math.min(totalNumberOfDefects, settings.defectsRetrievalLimit);
+				logger.logMessage(`checkForAnomalies() - Retrieving ${numberOfDefectsToRetrieve} defects from Octane...`);
 				octaneDataProvider.getLastDefects(100).then(
 				(lastDefects) => {
-					logger.logSuccess(`checkForAnomalies() - ${totalNumberOfDefects} defects retrieved - OK`);
+					logger.logSuccess(`checkForAnomalies() - ${numberOfDefectsToRetrieve} defects retrieved - OK`);
 					logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
 					let promises = [];
 					let tagMap = {};
