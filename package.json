@@ -1,6 +1,6 @@
 {
   "name": "octane-anomaly-analysis",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Octane Anomaly Analysis",
   "keywords": [
     "ALM",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
-    "extend": ">=3.0.2",
+    "dotenv": "^7.0.0",
     "lodash": "^4.17.11",
     "node-persist": "^3.0.1",
     "request": "^2.85.0",

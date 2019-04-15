@@ -1,11 +1,12 @@
 'use strict';
+require('dotenv').config();
 const logger = require('./logger/logger');
 const octaneAuthenticator = require('./octane/octane-authenticator');
 const tagsManager = require('./tags/tags-manager');
 const defectsManager = require('./defects/defects-manager');
 const MAX_TRY_COUNT = 3;
 const WAIT_SECS_BETWEEN_TRIES = 5;
-let tryCount;
+let tryCount = 0;
 
 let run = async () => {
 	tryCount++;
@@ -19,7 +20,7 @@ let run = async () => {
 		logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
 	} catch (err) {
 		logger.logError('Error');
-		if (tryCount <= MAX_TRY_COUNT) {
+		if (tryCount < MAX_TRY_COUNT) {
 			logger.logMessage(`Waiting for ${WAIT_SECS_BETWEEN_TRIES} seconds before trying again...`);
 			setTimeout(() => {
 				run();
@@ -31,5 +32,9 @@ let run = async () => {
 };
 
 logger.clearLog();
-tryCount = 0;
-run();
+if (process.env.SERVER_ADDRESS && process.env.SERVER_DOMAIN /* && process.env.PROXY*/ && process.env.SHAREDSPACE_ID && process.env.WORKSPACE_ID && process.env.CLIENT_ID && process.env.CLIENT_SECRET) {
+	run();
+} else {
+	logger.logError('ERROR - Environment not configured');
+}
+

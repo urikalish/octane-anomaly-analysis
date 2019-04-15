@@ -1,10 +1,9 @@
 'use strict';
 const logger = require('../logger/logger');
-const envConfig = require('../config/environment');
-const apiUrl = `${envConfig.serverAddress}/api/shared_spaces/${envConfig.sharedspaceId}/workspaces/${envConfig.workspaceId}`;
+const apiUrl = `${process.env.SERVER_ADDRESS}/api/shared_spaces/${process.env.SHAREDSPACE_ID}/workspaces/${process.env.WORKSPACE_ID}`;
 let request = require('request');
-if (envConfig.proxy) {
-	request = request.defaults({'proxy': envConfig.proxy});
+if (process.env.PROXY) {
+	request = request.defaults({'proxy': process.env.PROXY});
 }
 const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
@@ -68,7 +67,7 @@ function postToOctane(uri, body) {
 			}
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
+					cookieJar.setCookie(Cookie.parse(cookie), process.env.SERVER_DOMAIN, {}, (error) => {
 						if (error) {
 							logger.logError(error);
 							return reject(error);
@@ -111,7 +110,7 @@ function putToOctane(uri, body, defectId) {
 			}
 			if (response.headers['set-cookie']) {
 				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), envConfig.domainName, {}, (error) => {
+					cookieJar.setCookie(Cookie.parse(cookie), process.env.SERVER_DOMAIN, {}, (error) => {
 						if (error) {
 							logger.logError(error);
 							return reject(error);
@@ -133,7 +132,7 @@ function getHeaders() {
 		"Content-Type": "application/json",
 		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
 	};
-	cookieJar.getCookieString(envConfig.domainName, {allPaths: true}, function (err, cookies) {
+	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
 		if (cookies) {
 			headers['Cookie'] = cookies;
 		}

@@ -1,18 +1,17 @@
 'use strict';
-const environment = require('../config/environment');
 const logger = require('../logger/logger');
 const octaneDataProvider = require('./octane-data-provider');
 let request = require('request');
-if (environment.proxy) {
-	request = request.defaults({'proxy': environment.proxy});
+if (process.env.PROXY) {
+	request = request.defaults({'proxy': process.env.PROXY});
 }
 const url = require('url');
 
 function authenticate() {
-	let uri = url.resolve(environment.serverAddress, '/authentication/sign_in');
+	let uri = url.resolve(process.env.SERVER_ADDRESS, '/authentication/sign_in');
 	let body = {
-		client_id: environment.clientId,
-		client_secret: environment.clientSecret
+		client_id: process.env.CLIENT_ID,
+		client_secret: process.env.CLIENT_SECRET
 	};
 	logger.logMessage('Authenticating...');
 	return octaneDataProvider.postToOctane(uri, body);

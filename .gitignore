@@ -1,5 +1,6 @@
-*.iml
-.idea/
 node_modules/
 npm-debug.log
+.env
 /storage/cd547e64e411e58de89f6c9bf8c191b3
+.idea/
+*.iml
