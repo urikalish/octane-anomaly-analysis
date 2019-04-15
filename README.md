@@ -11,34 +11,74 @@ Checks for anomalies within ALM Octane's defect entities.
 * Defects with many comments
 * Defects with large attachments
 
-The out-of-the-ordinary defects will be marked in ALM Octane using tags.
+## Technical Overview
 
-License: Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
+* The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
+* The out-of-the-ordinary defects will be marked in ALM Octane using tags.
 
-The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
+## License
+Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
 
-## Prerequisites
+## Install, Setup, and Run
 
-* [NodeJs](https://nodejs.org/en/) installed on your local machine.
+### Step 1 - Ensure NodeJs is Installed
 
-## How to Install
-
-* Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
-
-* Navigate to this new folder, and from within it, run this cmd command:
+* The code was tested against NodeJs version 8.11.3
+* To check which version you have, run this cmd command:  
 ```sh
+node --version
+```
+* If you're missing NodeJs, or have an older version, you can get a newer version from [here](https://nodejs.org/en/)
+
+### Step 2 - Get the Code
+
+There are several ways to achieve that:
+
+* Option #1 - Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
+
+* Option #2 - Clone the repository using HTTPS, by running these cmd commands:  
+```sh
+cd \
+git clone https://github.com/urikalish/octane-anomaly-analysis.git
+```
+
+* Option #3 - Clone the repository using SSH, by running these cmd commands:  
+```sh
+cd \
+git clone git@github.com:urikalish/octane-anomaly-analysis.git
+```
+
+### Step 3 - Import NPM Dependencies
+
+* Import all npm dependencies, by running these cmd commands:
+```sh
+cd \
+cd octane-anomaly-analysis
 npm i
 ```
 
-## How to Configure
+### Step 4 - Create an Environment File
 
-* Duplicate the file ".env.example", rename the new copy as ".env", and edit its content to match your ALM Octane instance.
-
-* Customize the checks settings in the file ./config/settings.js
-
-## How to Run
-
-* From within the local folder, run this cmd command:
+* Duplicate and rename the environment example file, by running these cmd commands:
 ```sh
+cd \
+cd octane-anomaly-analysis
+copy .env.example .env
+```
+
+### Step 5 - Configure ALM Octane Parameters
+
+* Edit the content of the .env file to match your ALM Octane instance.
+
+### Step 6 - Configure the Rules
+
+* Customize the rules defined in the file ./config/settings.js
+
+### Step 7 - Run
+
+* Run the checks, by running this cmd commands:
+```sh
+cd \
+cd octane-anomaly-analysis
 npm start
 ```
