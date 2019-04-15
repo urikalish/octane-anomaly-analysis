@@ -36,33 +36,27 @@ There are several ways to achieve that:
 
 * Option #1 - Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
 
-* Option #2 - Clone the repository using HTTPS, by running these cmd commands:  
+* Option #2 - Clone the repository using HTTPS, by running this cmd command:  
 ```sh
-cd \
 git clone https://github.com/urikalish/octane-anomaly-analysis.git
 ```
 
-* Option #3 - Clone the repository using SSH, by running these cmd commands:  
+* Option #3 - Clone the repository using SSH, by running this cmd command:  
 ```sh
-cd \
 git clone git@github.com:urikalish/octane-anomaly-analysis.git
 ```
 
 ### Step 3 - Import NPM Dependencies
 
-* Import all npm dependencies, by running these cmd commands:
+* Import all npm dependencies, by running this cmd command (from within the folder):
 ```sh
-cd \
-cd octane-anomaly-analysis
 npm i
 ```
 
 ### Step 4 - Create an Environment File
 
-* Duplicate and rename the environment example file, by running these cmd commands:
+* Duplicate and rename the environment example file, by running this cmd command (from within the folder):
 ```sh
-cd \
-cd octane-anomaly-analysis
 copy .env.example .env
 ```
 
@@ -76,9 +70,7 @@ copy .env.example .env
 
 ### Step 7 - Run
 
-* Run the checks, by running this cmd commands:
+* Run the checks, by running this cmd command (from within the folder):
 ```sh
-cd \
-cd octane-anomaly-analysis
 npm start
 ```
