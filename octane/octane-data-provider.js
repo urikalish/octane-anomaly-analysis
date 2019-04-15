@@ -204,18 +204,15 @@ function getAttachmentUri(entityId) {
 	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
 }
 
-function getAttachment(entityId) {
-	return new Promise((resolve /*, reject*/) => {
-		let uri = getAttachmentUri(entityId);
-		getFromOctane(uri).then(
-		(result) => {
-			resolve(result);
-		},
-		(err) => {
-			logger.logWarning(`Unable to get attachment for entity #${entityId} - ${(err.message || err)}`);
-			resolve(null);
-		}
-		);
+async function getAttachment(entityId) {
+	let uri = getAttachmentUri(entityId);
+	getFromOctane(uri).then(
+	(result) => {
+		return result;
+	},
+	(err) => {
+		logger.logWarning(`Unable to get attachment for entity #${entityId} - ${(err.message || err)}`);
+		return null;
 	});
 }
 
