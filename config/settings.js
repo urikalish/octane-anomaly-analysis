@@ -4,7 +4,7 @@ let settings = {
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
-	saveToStorage: true,
+	saveToLocalStorage: true,
 	updateOctane: true,
 	checkers: [
 		{

@@ -5,7 +5,6 @@ const settings = require('../config/settings');
 const logger = require('../logger/logger');
 const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');
-
 let defects = {};
 
 function ensureDefect(id, d) {
@@ -30,7 +29,7 @@ function checkForAnomalies() {
 			(totalNumberOfDefects) => {
 				let numberOfDefectsToRetrieve = Math.min(totalNumberOfDefects, settings.defectsRetrievalLimit);
 				logger.logMessage(`checkForAnomalies() - Retrieving ${numberOfDefectsToRetrieve} defects from Octane...`);
-				octaneDataProvider.getLastDefects(100).then(
+				octaneDataProvider.getLastDefects(numberOfDefectsToRetrieve).then(
 				(lastDefects) => {
 					logger.logSuccess(`checkForAnomalies() - ${numberOfDefectsToRetrieve} defects retrieved - OK`);
 					logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
@@ -190,11 +189,11 @@ function updateOctane() {
 	});
 }
 
-function saveToStorage() {
+function saveToLocalStorage() {
 	return new Promise((resolve, reject) => {
-		logger.logMessage('saveToStorage() - Initializing storage...');
+		logger.logMessage('saveToLocalStorage() - Initializing storage...');
 		nodePersist.init({dir: './storage/'}).then(() => {
-			logger.logSuccess('saveToStorage() - Storage initialized - OK');
+			logger.logSuccess('saveToLocalStorage() - Storage initialized - OK');
 			let storageData = [];
 			_.forEach(defects, (value, id) => {
 				if (value.anomalies.length > 0) {
@@ -204,18 +203,18 @@ function saveToStorage() {
 					})
 				}
 			});
-			logger.logMessage('saveToStorage() - Saving to storage...');
+			logger.logMessage('saveToLocalStorage() - Saving to storage...');
 			nodePersist.setItem('defects', storageData).then(() => {
-				logger.logSuccess('saveToStorage() - Storage updated - OK');
+				logger.logSuccess('saveToLocalStorage() - Storage updated - OK');
 				resolve();
 			},
 			(err) => {
-				logger.logFuncError('saveToStorage', err);
+				logger.logFuncError('saveToLocalStorage', err);
 				reject(err);
 			});
 		},
 		(err) => {
-			logger.logFuncError('saveToStorage', err);
+			logger.logFuncError('saveToLocalStorage', err);
 			reject(err);
 		});
 	});
@@ -226,8 +225,8 @@ function handleDefects() {
 		loadFromOctane().then(() => {
 			checkForAnomalies().then(() => {
 				let promises2 = [];
-				if (settings.saveToStorage) {
-					promises2.push(saveToStorage());
+				if (settings.saveToLocalStorage) {
+					promises2.push(saveToLocalStorage());
 				} else {
 					logger.logMessage('Skip save to storage');
 				}
