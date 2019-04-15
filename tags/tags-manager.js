@@ -3,14 +3,13 @@ const _ = require('lodash');
 const settings = require('../config/settings');
 const logger = require('../logger/logger');
 const octaneDataProvider = require('../octane/octane-data-provider');
-
 const generalAnomalyTag = settings.generalAnomalyTag;
 const specificAnomalyTagPrefix = settings.specificAnomalyTagPrefix;
 const ignoreAnomalyTag = settings.ignoreAnomalyTag;
 let tags = {};
 
-function loadUserTags() {
-	return new Promise((resolve, reject) => {
+async function loadUserTags() {
+	try {
 		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
 		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
@@ -21,19 +20,17 @@ function loadUserTags() {
 			promises.push(octaneDataProvider.verifyUserTag(tn));
 		});
 		logger.logMessage('Ensuring anomaly related user tags...');
-		Promise.all(promises).then((userTags) => {
-			userTags.forEach(userTag => {
-				tags[userTag.name] = userTag.id;
-				logger.logMessage(`#${userTag.id} ${userTag.name}`);
-			});
-			logger.logSuccess('Anomaly related user tags ensured - OK');
-			resolve(tags);
-		},
-		(err) => {
-			logger.logFuncError('loadUserTags', err);
-			reject(err);
+		let userTags = await Promise.all(promises);
+		userTags.forEach(userTag => {
+			tags[userTag.name] = userTag.id;
+			logger.logMessage(`#${userTag.id} ${userTag.name}`);
 		});
-	});
+		logger.logSuccess('Anomaly related user tags ensured - OK');
+		return tags;
+	} catch (err) {
+		logger.logFuncError('loadUserTags', err);
+		return err;
+	}
 }
 
 function getGeneralAnomalyTagId() {
