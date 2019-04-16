@@ -59,3 +59,11 @@ copy .env.example .env
 ```sh
 npm start
 ```
+
+## How to Add Additional Checks
+
+* Duplicate a simple checker file (like defect-many-comments.js) and rename the new copy.
+
+* Edit the check method code on the new file to test for your required anomaly.
+
+* Add a corresponding section to the checkers array in the file ./config/settings.js
