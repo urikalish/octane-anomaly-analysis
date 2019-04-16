@@ -15,7 +15,7 @@ Checks for anomalies within ALM Octane's defect entities.
 
 * The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
 * The out-of-the-ordinary defects will be marked in ALM Octane using tags.
-* For each abnormal defect found, one general "Anomaly" tag, and additional "Anomaly: <TYPE>" tag(s) will be added.
+* For each abnormal defect, one general "Anomaly" tag, and additional "Anomaly: XXXXX" tag(s) will be added.
 * To dismiss a specific defect from this mechansim, you can place an "Ignore Anomaly" tag on it.
 
 ## Install, Setup, and Run
