@@ -2,14 +2,14 @@
 let settings = {
 	defectsRetrievalLimit: 50000,
 	updateOctane: true,
-	saveToLocalStorage: true,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
+	saveToLocalStorage: true,
 	checkers: [
 		{
-			enabled: true,
 			name: 'defect-inactive-dev-owner',
+			enabled: true,
 			tag: 'Anomaly: Inactive DEV Owner',
 			entity: 'defect',
 			options: {
@@ -22,8 +22,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-inactive-qa-owner',
+			enabled: true,
 			tag: 'Anomaly: Inactive QA Owner',
 			entity: 'defect',
 			options: {
@@ -35,8 +35,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-large-attachments',
+			enabled: true,
 			tag: 'Anomaly: Large Attachments',
 			entity: 'defect',
 			options: {
@@ -50,8 +50,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-many-comments',
+			enabled: true,
 			tag: 'Anomaly: Many Comments',
 			entity: 'defect',
 			options: {
@@ -65,8 +65,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-many-owners',
+			enabled: true,
 			tag: 'Anomaly: Many Owners',
 			entity: 'defect',
 			options: {
@@ -80,8 +80,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-stuck-dev-phase',
+			enabled: true,
 			tag: 'Anomaly: Stuck in DEV Phase',
 			entity: 'defect',
 			options: {
@@ -125,8 +125,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-stuck-qa-phase',
+			enabled: true,
 			tag: 'Anomaly: Stuck in QA Phase',
 			entity: 'defect',
 			options: {
@@ -170,8 +170,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-unusual-dev-owner',
+			enabled: true,
 			tag: 'Anomaly: Unusual DEV Owner',
 			entity: 'defect',
 			options: {
@@ -185,8 +185,8 @@ let settings = {
 			}
 		},
 		{
-			enabled: true,
 			name: 'defect-unusual-qa-owner',
+			enabled: true,
 			tag: 'Anomaly: Unusual QA Owner',
 			entity: 'defect',
 			options: {
@@ -197,7 +197,20 @@ let settings = {
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
-		}
+		},
+		{
+			name: 'defect-my-rule',
+			enabled: false,
+			tag: 'Anomaly: My Rule',
+			entity: 'defect',
+			options: {
+				phasesToIgnore: [
+					'phase.defect.closed',
+					'phase.defect.duplicate',
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+				]
+			}
+		},
 	]
 };
 

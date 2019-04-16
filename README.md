@@ -60,10 +60,8 @@ copy .env.example .env
 npm start
 ```
 
-## How to Add Additional Checks
+## How to Add an Additional Check
 
-* Duplicate a simple checker file (like defect-many-comments.js) and rename the new copy.
+* Edit the file ./checks/defect-my-rule.js according to your needs.
 
-* Edit the check method code on the new file to test for your required anomaly.
-
-* Add a corresponding section to the checkers array in the file ./config/settings.js
+* Edit the corresponding section at the end of the file ./config/settings.js
