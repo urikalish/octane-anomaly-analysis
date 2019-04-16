@@ -24,11 +24,7 @@ Although this is an MIT-licensed library, usage permission is only granted to th
 
 ## Install, Setup, and Run
 
-### Step 1 - Get the Code
-
-Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
-
-### Step 2 - Ensure NodeJs Installed
+### Step 1 - Ensure NodeJs Installed
 
 * To check for NodeJs existence and version, run this cmd command:  
 ```sh
@@ -36,6 +32,10 @@ node --version
 ```
 * If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 * The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
+
+### Step 2 - Get the Code
+
+Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
 
 ### Step 3 - Import NPM Dependencies
 
