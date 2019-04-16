@@ -79,4 +79,4 @@ npm start
 
 * Edit the file ./checks/defect-my-rule.js according to your needs.
 
-* Edit the corresponding section at the end of the file ./config/settings.js
+* Edit the corresponding entry at the end of the file ./config/settings.js
