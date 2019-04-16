@@ -1,6 +1,7 @@
 # octane-anomaly-analysis
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Github Release](https://img.shields.io/github/release/urikalish/octane-anomaly-analysis/all.svg)](https://github.com/urikalish/octane-anomaly-analysis/releases)
 
 Checks for anomalies within ALM Octane's defect entities.
 
