@@ -40,7 +40,12 @@ npm i
 
 ### Step 4 - Configure ALM Octane Parameters
 
-* Edit the content of the .env file to match your ALM Octane instance.
+* Duplicate and rename the environment example file, by running this cmd command (from within the folder):
+```sh
+copy .env.example .env
+```
+
+* Edit the content of the new .env file to match your ALM Octane instance.
 
 ### Step 5 - Configure the Rules
 
