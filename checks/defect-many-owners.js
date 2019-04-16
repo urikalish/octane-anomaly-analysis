@@ -2,13 +2,9 @@
 const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
-const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 
-const check = async (defects, options) => {
-	let result = {
-		checkerName: checkerName,
-		anomalies: {}
-	};
+const check = async (defects, options, checkerName) => {
+	let result = {checkerName: checkerName, anomalies: {}};
 	let relevantDefects = {};
 	let relevantDefectIds = [];
 	defects.forEach(d => {

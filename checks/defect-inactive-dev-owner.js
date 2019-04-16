@@ -1,12 +1,8 @@
 'use strict';
 const helper = require('../defects/defects-helper');
-const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 
-const check = async (defects, options) => {
-	let result = {
-		checkerName: checkerName,
-        anomalies: {}
-    };
+const check = async (defects, options, checkerName) => {
+	let result = {checkerName: checkerName, anomalies: {}};
 	defects.forEach(d => {
 		if (d.owner && d.owner.activity_level === 1 && options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) {
 			result.anomalies[d.id] = {

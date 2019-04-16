@@ -16,7 +16,11 @@ Checks for anomalies within ALM Octane's defect entities.
 * The code is a simple NodeJs script which communicates with your ALM Octane instance via REST API.
 * The out-of-the-ordinary defects will be marked in ALM Octane using tags.
 * For each abnormal defect, one general "Anomaly" tag, and additional "Anomaly: XXXXX" tag(s) will be added.
-* To dismiss a specific defect from this mechansim, you can place an "Ignore Anomaly" tag on it.
+* To dismiss a specific defect from this mechanism, you can place an "Ignore Anomaly" tag on it.
+
+## License
+
+Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
 
 ## Install, Setup, and Run
 
@@ -53,9 +57,20 @@ copy .env.example .env
 
 * Customize the rules defined in the file ./config/settings.js
 
-### Step 6 - Run
+### Step 6 - Experimental Run Without Updating ALM Octane
 
-* Run the checks, by running this cmd command (from within the folder):
+* Change the updateOctane flag to false in the file ./config/settings.js
+
+* Run the checks (without updating ALM Octane), by running this cmd command (from within the folder):
+```sh
+npm start
+```
+
+## Step 7 - Run and Update ALM Octane
+
+* When ready, change the updateOctane flag to true in the file ./config/settings.js 
+
+* Run the checks and update ALM Octane, by running this cmd command (from within the folder):
 ```sh
 npm start
 ```
