@@ -66,7 +66,7 @@ copy .env.example .env
 npm start
 ```
 
-## Step 7 - Run and Update ALM Octane
+### Step 7 - Run and Update ALM Octane
 
 * When ready, change the updateOctane flag to true in the file ./config/settings.js 
 
