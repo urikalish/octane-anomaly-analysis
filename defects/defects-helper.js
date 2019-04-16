@@ -19,10 +19,6 @@ const getDefectDetailsStr = (d) => {
 	return `${d.severity ? d.severity.name : '<No Severity>'} | ${d.phase ? d.phase.name : '<No Phase>'} | ${d.team ? d.team.name : '<No Team>'} | ${getDefectOwnersStr(d)} | #${d.id || '<No ID>'} | ${d.name || '<No Name>'}`;
 };
 
-const getDaysInCurrentPhase = (d) => {
-	return Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);
-};
-
 // const compareDefects = (a, b) => {
 // 	if (a.severity.logical_name === b.severity.logical_name) {
 // 		if (a.phase.name === b.phase.name) {
@@ -33,8 +29,22 @@ const getDaysInCurrentPhase = (d) => {
 // 	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
 // };
 
+const initCheckerResult = (checkerName) => {
+	return {
+		checkerName: checkerName,
+		anomalies: {}
+	}
+};
+
+const addDefectAnomaly = (checkerResult, d, text) => {
+	checkerResult.anomalies[d.id] = {
+		d: d,
+		checkerName: checkerResult.checkerName,
+		text: `${text} | ${getDefectDetailsStr(d)}`
+	};
+};
+
 module.exports = {
-	//compareDefects: compareDefects,
-	getDefectDetailsStr: getDefectDetailsStr,
-	getDaysInCurrentPhase: getDaysInCurrentPhase
+	initCheckerResult: initCheckerResult,
+	addDefectAnomaly: addDefectAnomaly
 };

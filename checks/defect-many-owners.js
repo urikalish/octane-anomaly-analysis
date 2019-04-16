@@ -1,10 +1,11 @@
 'use strict';
+const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
-const check = async (defects, options, checkerName) => {
-	let result = {checkerName: checkerName, anomalies: {}};
+const check = async (defects, options) => {
+	let result = helper.initCheckerResult(checkerName);
 	let relevantDefects = {};
 	let relevantDefectIds = [];
 	defects.forEach(d => {
@@ -28,13 +29,9 @@ const check = async (defects, options, checkerName) => {
 				}
 			}
 		});
-		_.forEach(defectOwners, (owners, id) => {
+		_.forEach(defectOwners, (owners) => {
 			if (owners.length >= options.manyOwnersCount) {
-				result.anomalies[id] = {
-					checkerName: checkerName,
-					d: relevantDefects[id],
-					text: `Defect with many owners (${owners.length} - ${owners}) | ${helper.getDefectDetailsStr(relevantDefects[id])}`
-				};
+				helper.addDefectAnomaly(result, d, `Defect with many owners (${owners.length} - ${owners})`);
 			}
 		});
 	}

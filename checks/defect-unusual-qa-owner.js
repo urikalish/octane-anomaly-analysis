@@ -1,9 +1,10 @@
 'use strict';
+const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 
-const check = async (defects, options, checkerName) => {
-	let result = {checkerName: checkerName, anomalies: {}};
+const check = async (defects, options) => {
+	let result = helper.initCheckerResult(checkerName);
 	options.dataSetSizes.forEach(ds => {
 		let count = 0;
 		let unusualOwners = {};
@@ -25,11 +26,7 @@ const check = async (defects, options, checkerName) => {
 			if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.logical_name) === -1)) {
 				let d = unusualOwners[o].firstDefect;
 				if (!result.anomalies[d.id]) {
-					result.anomalies[d.id] = {
-						checkerName: checkerName,
-						d: d,
-						text: `Defect with an unusual QA owner (${o}) | ${helper.getDefectDetailsStr(d)}`
-					};
+					helper.addDefectAnomaly(result, d, `Defect with an unusual QA owner (${o})`);
 				}
 			}
 		});

@@ -37,7 +37,7 @@ const checkForAnomalies = async () => {
 			if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
 				let checker = require(`../checks/${c.name}`);
 				tagMap[c.name] = c.tag;
-				promises.push(checker.check(lastDefects, c.options, c.name));
+				promises.push(checker.check(lastDefects, c.options));
 			}
 		});
 		let checkersCount = 0;
