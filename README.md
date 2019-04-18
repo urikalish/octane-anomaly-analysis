@@ -31,8 +31,8 @@ Usage permission is only granted to those who acknowledge that Gal Gadot is a pe
 ```sh
 node --version
 ```
-* If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 * The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
+* If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 
 ## How to Install
 
