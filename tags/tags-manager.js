@@ -1,6 +1,6 @@
 'use strict';
 const _ = require('lodash');
-const settings = require('../config/settings');
+const settings = require('../.settings');
 const logger = require('../logger/logger');
 const octaneDataProvider = require('../octane/octane-data-provider');
 const generalAnomalyTag = settings.generalAnomalyTag;

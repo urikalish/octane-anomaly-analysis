@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('lodash');
 const nodePersist = require('node-persist');
-const settings = require('../config/settings');
+const settings = require('../.settings');
 const logger = require('../logger/logger');
 const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');

@@ -25,7 +25,11 @@ Although this is an MIT-licensed library, usage permission is only granted to th
 
 ## Install, Setup, and Run
 
-### Step 1 - Ensure NodeJs Installed
+### Step 1 - Get the Code
+
+Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
+
+### Step 2 - Ensure NodeJs Installed
 
 * To check for NodeJs existence and version, run this cmd command:  
 ```sh
@@ -34,35 +38,34 @@ node --version
 * If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 * The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
 
-### Step 2 - Get the Code
-
-Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
-
 ### Step 3 - Import NPM Dependencies
 
-* Import all npm dependencies, by running this cmd command (from within the folder):
+* Import all npm dependencies, by running this cmd command (from within the root folder):
 ```sh
 npm i
 ```
 
 ### Step 4 - Configure ALM Octane Parameters
 
-* Duplicate and rename the environment example file, by running this cmd command (from within the folder):
+* Duplicate and rename the environment example file, by running this cmd command (from within the root folder):
 ```sh
-copy .env.example .env
+copy example\.env.example .env
 ```
-
 * Edit the content of the new .env file to match your ALM Octane instance.
 
 ### Step 5 - Configure the Rules
 
-* Customize the rules defined in the file ./config/settings.js
+* Duplicate and rename the settings example file, by running this cmd command (from within the root folder):
+```sh
+copy example\.settings.js.example .settings.js
+```
+* Customize the rules defined in the new .settings.js file to match your needs.
 
 ### Step 6 - Experimental Run Without Updating ALM Octane
 
 * Change the updateOctane flag to false in the file ./config/settings.js
 
-* Run the checks (without updating ALM Octane), by running this cmd command (from within the folder):
+* Run the checks (without updating ALM Octane), by running this cmd command (from within the root folder):
 ```sh
 npm start
 ```
