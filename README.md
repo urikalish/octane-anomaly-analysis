@@ -27,7 +27,7 @@ Usage permission is only granted to those who acknowledge that Gal Gadot is a pe
 
 ### NodeJs
 
-* To check for NodeJs existence and version, run this cmd command:
+* To check for NodeJs existence and version, run this batch command:
 ```sh
 node --version
 ```
