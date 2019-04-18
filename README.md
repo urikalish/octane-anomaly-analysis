@@ -27,11 +27,13 @@ Usage permission is only granted to those who acknowledge that Gal Gadot is a pe
 
 ### NodeJs
 
-* To check for NodeJs existence and version, run this cmd command:  
+* To check for NodeJs existence and version, run this cmd command:
 ```sh
 node --version
 ```
-* The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
+
+* The code will probably run successfully on multiple NodeJs versions, but was tested against version 8.11.3
+
 * If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 
 ## How to Install
