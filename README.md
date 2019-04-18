@@ -23,13 +23,9 @@ Checks for anomalies within ALM Octane's defect entities.
 
 Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
 
-## Install, Setup, and Run
+## Prerequisites 
 
-### Step 1 - Get the Code
-
-Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
-
-### Step 2 - Ensure NodeJs Installed
+### NodeJs
 
 * To check for NodeJs existence and version, run this cmd command:  
 ```sh
@@ -38,14 +34,22 @@ node --version
 * If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 * The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
 
-### Step 3 - Import NPM Dependencies
+## Install
+
+### Step 1 - Get the Code
+
+Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
+
+### Step 2 - Import NPM Dependencies
 
 * Import all npm dependencies, by running this cmd command (from within the root folder):
 ```sh
 npm i
 ```
 
-### Step 4 - Configure ALM Octane Parameters
+## Configure
+
+### Step 1 - Configure ALM Octane Parameters
 
 * Duplicate and rename the environment example file, by running this cmd command (from within the root folder):
 ```sh
@@ -53,7 +57,7 @@ copy example\.env.example .env
 ```
 * Edit the content of the new .env file to match your ALM Octane instance.
 
-### Step 5 - Configure the Rules
+### Step 2 - Configure the Rules
 
 * Duplicate and rename the settings example file, by running this cmd command (from within the root folder):
 ```sh
@@ -61,7 +65,9 @@ copy example\.settings.js.example .settings.js
 ```
 * Customize the rules defined in the new .settings.js file to match your needs.
 
-### Step 6 - Experimental Run Without Updating ALM Octane
+## Run
+
+### Step 1 - Experimental Run
 
 * Change the updateOctane flag to false in the file ./config/settings.js
 
@@ -70,7 +76,7 @@ copy example\.settings.js.example .settings.js
 npm start
 ```
 
-### Step 7 - Run and Update ALM Octane
+### Step 2 - Run and Update ALM Octane
 
 * When ready, change the updateOctane flag to true in the file ./config/settings.js 
 
