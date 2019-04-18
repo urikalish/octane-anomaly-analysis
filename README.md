@@ -36,58 +36,29 @@ node --version
 
 ## How to Install
 
-### Step 1 - Get the Code
-
 * Navigate to the [latest release](https://github.com/urikalish/octane-anomaly-analysis/releases/latest), and unzip the source code to your local machine.
 
-### Step 2 - Import NPM Dependencies
-
-* Import all npm dependencies, by running this cmd command (from within the root folder):
+* Navigate to the root folder, and run this cmd command:
 ```sh
-npm i
+install
 ```
 
 ## How to Configure
 
-### Step 1 - Configure ALM Octane Parameters
+* Edit the content of the .env file to match your ALM Octane instance.
 
-* Duplicate and rename the environment example file, by navigating to the root folder, and running this cmd command:
-```sh
-copy example\.env.example .env
-```
-
-* Edit the content of the new .env file to match your ALM Octane instance.
-
-### Step 2 - Configure the Rules
-
-* Duplicate and rename the settings example file, by navigating to the root folder, and running this cmd command:
-```sh
-copy example\.settings.js.example .settings.js
-```
-
-* Customize the rules defined in the new .settings.js file to match your needs.
+* Customize the rules defined in the .settings.js file to match your needs.
 
 ## How to Run
 
-### Step 1 - Experimental Run
+* Set the updateOctane flag in the file .settings.js to either true or false (for real or debug run). 
 
-* Ensure the updateOctane flag is set to false in the file .settings.js
-
-* Run the checks, by navigating to the root folder, and running this cmd command:
+* Navigate to the root folder, and run this cmd command:
 ```sh
 npm start
 ```
 
-### Step 2 - Run and Update ALM Octane
-
-* When ready, change the updateOctane flag to true in the file .settings.js
- 
-* Run the checks (with ALM Octane update), by navigating to the root folder, and running this cmd command:
-```sh
-npm start
-```
-
-## How to Add an Additional Check
+## How to Add An Additional Check
 
 * Edit the file ./checks/defect-my-rule.js according to your needs.
 
