@@ -34,7 +34,7 @@ node --version
 * If you're missing NodeJs, you can get it [here](https://nodejs.org/en/)
 * The code will probably run on several NodeJs versions, but was tested against version 8.11.3 
 
-## Install
+## How to Install
 
 ### Step 1 - Get the Code
 
@@ -47,7 +47,7 @@ node --version
 npm i
 ```
 
-## Configure
+## How to Configure
 
 ### Step 1 - Configure ALM Octane Parameters
 
@@ -67,7 +67,7 @@ copy example\.settings.js.example .settings.js
 
 * Customize the rules defined in the new .settings.js file to match your needs.
 
-## Run
+## How to Run
 
 ### Step 1 - Experimental Run
 
