@@ -53,11 +53,11 @@ install
 
 ## How to Run
 
-* Set the updateOctane flag in the file .settings.js to either true or false (for real or debug run). 
+* Set the updateAlmOctane flag in the file .settings.js to either false or true (for debug or real run). 
 
 * Navigate to the root folder, and run this batch command:
 ```sh
-npm start
+run
 ```
 
 ## How to Add An Additional Check
