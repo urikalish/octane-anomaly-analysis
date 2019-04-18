@@ -21,7 +21,7 @@ Checks for anomalies within ALM Octane's defect entities.
 
 ## License
 
-Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
+Usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
 
 ## Prerequisites 
 
