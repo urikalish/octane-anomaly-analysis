@@ -1,6 +1,6 @@
 'use strict';
 let settings = {
-	updateOctane: false,
+	updateAlmOctane: false,
 	defectsRetrievalLimit: 50000,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
