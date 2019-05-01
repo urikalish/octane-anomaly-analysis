@@ -23,7 +23,8 @@ const check = async (defects, options) => {
 			}
 		});
 		_.keys(unusualOwners).forEach(o => {
-			if ((unusualOwners[o].count === 1) && (options.phasesToIgnore.indexOf(unusualOwners[o].firstDefect.phase.logical_name) === -1)) {
+			if ((unusualOwners[o].count === 1)
+			&& !options.phasesToIgnore.includes(unusualOwners[o].firstDefect.phase.logical_name)) {
 				let d = unusualOwners[o].firstDefect;
 				if (!result.anomalies[d.id]) {
 					helper.addDefectAnomaly(result, d, `Defect with an unusual QA owner (${o})`);

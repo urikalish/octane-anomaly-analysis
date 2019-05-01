@@ -5,7 +5,10 @@ const helper = require('../defects/defects-helper');
 const check = async (defects, options) => {
 	let result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
-		if (d.phase && d.severity && options.phasesToIgnore.indexOf(d.phase.logical_name) === -1 && d['time_in_current_phase']) {
+		if (d.phase
+		&& d.severity
+		&& !options.phasesToIgnore.includes(d.phase.logical_name)
+		&& d['time_in_current_phase']) {
 			let severityItem = options.phasesMaxDays[d.severity.logical_name] || options.phasesMaxDays['_DEFAULT'];
 			let maxDays = severityItem[d.phase.logical_name.toLowerCase()] || severityItem['_DEFAULT'];
 			let daysInCurrentPhase = Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);
