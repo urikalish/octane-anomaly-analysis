@@ -61,6 +61,9 @@ let settings = {
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
 					'phase.defect.fixed'
 				],
+				defectTypesToIgnore: [
+                    'list_node_defect_type_cpe_incident_ln'
+                ],
 				manyCommentsCount: 7
 			}
 		},

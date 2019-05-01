@@ -5,7 +5,10 @@ const helper = require('../defects/defects-helper');
 const check = async (defects, options) => {
 	let result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
-		if ((options.phasesToIgnore.indexOf(d.phase.logical_name) === -1) && d.comments && d.comments['total_count'] && d.comments['total_count'] >= options.manyCommentsCount) {
+		if (!options.phasesToIgnore.includes(d.phase.logical_name)
+		&& !options.defectTypesToIgnore.includes(d.defect_type.logical_name)
+		&& d.comments && d.comments['total_count']
+		&& d.comments['total_count'] >= options.manyCommentsCount) {
 			helper.addDefectAnomaly(result, d, `Defect with many comments (${d.comments['total_count']})`);
 		}
 	});
