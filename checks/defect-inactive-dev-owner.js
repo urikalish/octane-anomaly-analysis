@@ -3,7 +3,7 @@ const checkerName = require('path').basename(__filename).substring(0, require('p
 const helper = require('../defects/defects-helper');
 
 const check = async (defects, options) => {
-	let result = helper.initCheckerResult(checkerName);
+	const result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
 		if (d.owner && d.owner.activity_level === 1
 		&& !options.phasesToIgnore.includes(d.phase.logical_name)) {
@@ -14,5 +14,5 @@ const check = async (defects, options) => {
 };
 
 module.exports = {
-    check: check
+    check,
 };

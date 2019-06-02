@@ -3,7 +3,7 @@ const checkerName = require('path').basename(__filename).substring(0, require('p
 const helper = require('../defects/defects-helper');
 
 const check = async (defects, options) => {
-	let result = helper.initCheckerResult(checkerName);
+	const result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
 		if (!options.phasesToIgnore.includes(d.phase.logical_name) && false/*replace with real conditions...*/) {
 			helper.addDefectAnomaly(result, d, `Defect with my anomaly (...)`);
@@ -13,5 +13,5 @@ const check = async (defects, options) => {
 };
 
 module.exports = {
-	check: check
+	check,
 };

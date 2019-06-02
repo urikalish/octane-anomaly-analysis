@@ -4,23 +4,23 @@ const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
 const check = async (defects, options) => {
-	let result = helper.initCheckerResult(checkerName);
+	const result = helper.initCheckerResult(checkerName);
 	let relevantDefects = 0;
 	let checkedDefects = 0;
 	for (let i = 0; i < defects.length; i++) {
-		let d = defects[i];
+		const d = defects[i];
 		if (!options.phasesToIgnore.includes(d.phase.logical_name)
 		&& d.attachments && d.attachments['total_count']
 		&& d.attachments['total_count'] > 0) {
 			relevantDefects++;
-			let promises = [];
+			const promises = [];
 			d.attachments.data.forEach(a => {
 				if (a.type === 'attachment' && !options.fileExtensionsToIgnoreRegex.test(a.name.toLowerCase())) {
 					promises.push(octaneDataProvider.getAttachment(a.id));
 				}
 			});
 			let totalSizeMB = 0;
-			let results = await Promise.all(promises);
+			const results = await Promise.all(promises);
 			results.forEach(res => {
 				if (res && res.data && res.data && res.data.length > 0) {
 					totalSizeMB += res.data[0].size / 1048576;
@@ -38,5 +38,5 @@ const check = async (defects, options) => {
 };
 
 module.exports = {
-	check: check
+	check,
 };

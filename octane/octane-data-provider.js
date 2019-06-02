@@ -43,7 +43,7 @@ const getFromOctane = (uri) => {
 
 const postToOctane = (uri, body) => {
 	return new Promise((resolve, reject) => {
-		let options = {
+		const options = {
 			method: 'POST',
 			url: uri,
 			headers: getHeaders()
@@ -86,7 +86,7 @@ const postToOctane = (uri, body) => {
 
 const putToOctane = (uri, body, defectId) => {
 	return new Promise((resolve, reject) => {
-		let options = {
+		const options = {
 			method: 'PUT',
 			url: uri,
 			headers: getHeaders()
@@ -104,7 +104,7 @@ const putToOctane = (uri, body, defectId) => {
 					errObj = JSON.parse(body);
 				} catch (e) {
 				}
-				let errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
+				const errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
 				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${errDesc}`);
 				return resolve(null);
 			}
@@ -148,7 +148,7 @@ const getHeaders = () => {
 //
 // const getHistory = (entityId) => {
 // 	return new Promise((resolve /*, reject*/) => {
-// 		let uri = getHistoryUri(entityId);
+// 		const uri = getHistoryUri(entityId);
 // 		getFromOctane(uri).then(
 // 		(result) => {
 // 			resolve(result);
@@ -166,7 +166,7 @@ const getHistoriesUri = (entityIds, entityType) => {
 };
 
 const getHistories = async (entityIds) => {
-	let promises = [];
+	const promises = [];
 	let counter = 0;
 	let ids = [];
 	entityIds.forEach(id => {
@@ -178,8 +178,8 @@ const getHistories = async (entityIds) => {
 		}
 	});
 	try {
-		let results = await Promise.all(promises);
-		let result = {
+		const results = await Promise.all(promises);
+		const result = {
 			data: []
 		};
 		results.forEach(result => {
@@ -203,7 +203,7 @@ const getAttachmentUri = (entityId) => {
 };
 
 const getAttachment = async (entityId) => {
-	let uri = getAttachmentUri(entityId);
+	const uri = getAttachmentUri(entityId);
 	getFromOctane(uri).then(
 	(result) => {
 		return result;
@@ -227,8 +227,8 @@ const getDefectsUri = (isAsc, offset, limit, querySuffix, fields) => {
 
 const getTotalNumberOfDefects = async () => {
 	try {
-		let uri = getDefectsUri(false, 0, 1, '', '');
-		let result = await getFromOctane(uri);
+		const uri = getDefectsUri(false, 0, 1, '', '');
+		const result = await getFromOctane(uri);
 		return result['total_count'];
 	} catch(err) {
 		logger.logFuncError('getTotalNumberOfDefects', err);
@@ -238,10 +238,10 @@ const getTotalNumberOfDefects = async () => {
 
 const getDefectsBatch = async (offset, limit, total) => {
 	try {
-		let uri = getDefectsUri(false, offset, limit, '', '');
-		let result = await getFromOctane(uri);
+		const uri = getDefectsUri(false, offset, limit, '', '');
+		const result = await getFromOctane(uri);
 		loadedCount += limit;
-		let per = Math.round(100.0 * loadedCount / total);
+		const per = Math.round(100.0 * loadedCount / total);
 		if (per !== loadedPercent) {
 			loadedPercent = per;
 			logger.logMessage(`Retrieving defects... ${loadedPercent}%`);
@@ -256,16 +256,16 @@ const getDefectsBatch = async (offset, limit, total) => {
 const getLastDefects = async (needed) => {
 	try {
 		let offset = 0;
-		let batch = 500;
-		let promises = [];
+		const batch = 500;
+		const promises = [];
 		while (needed > offset) {
-			let limit = ((needed - offset) >  batch) ? batch : needed - offset;
+			const limit = ((needed - offset) >  batch) ? batch : needed - offset;
 			promises.push(getDefectsBatch(offset, limit, needed));
 			offset += batch;
 		}
 		loadedCount = 0;
-		let batchResults = await Promise.all(promises);
-		let data = [];
+		const batchResults = await Promise.all(promises);
+		const data = [];
 		batchResults.forEach(batchResult => {
 			if (batchResult.data) {
 				batchResult.data.forEach(batch => {
@@ -284,17 +284,17 @@ const getLastDefects = async (needed) => {
 
 const verifyUserTag = async (tagName) => {
 	let url = apiUrl +	`/user_tags?query="(((name='${tagName}')))"&fields=id,name`;
-	let results = await getFromOctane(url);
+	const results = await getFromOctane(url);
 	if (results && results['total_count'] !== 0) {
 		logger.logMessage('User tag "' + tagName + '" exists with id ' + results.data[0].id);
 		return results.data[0];
 	} else {
 		logger.logMessage('Creating user tag "' + tagName + '"...');
 		url = apiUrl + '/user_tags';
-		let body = {
+		const body = {
 			data: [{name: tagName}]
 		};
-		let result = await postToOctane(url, body);
+		const result = await postToOctane(url, body);
 		logger.logMessage('User tag "' + tagName + '" created with id ' + result.body.data[0].id);
 		return result.body.data[0];
 	}
@@ -302,7 +302,7 @@ const verifyUserTag = async (tagName) => {
 
 const getTaggedDefects = async (tagId1, tagId2) => {
 	try {
-		let uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+		const uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
 		return await getFromOctane(uri);
 	} catch(err) {
 		logger.logFuncError('getTaggedDefects', err);
@@ -311,13 +311,13 @@ const getTaggedDefects = async (tagId1, tagId2) => {
 };
 
 const updateDefectUserTags = (defectId, body) => {
-	let url =  `${apiUrl}/work_items/${defectId}`;
+	const url =  `${apiUrl}/work_items/${defectId}`;
 	return putToOctane(url, body, defectId);
 };
 
 const getAllUserTags = async () => {
-	let url = apiUrl +	`/user_tags?fields=id,name`;
-	let results = await getFromOctane(url);
+	const url = apiUrl +	`/user_tags?fields=id,name`;
+	const results = await getFromOctane(url);
 	if (results && results['total_count'] !== 0) {
 		return results.data;
 	} else {

@@ -1,8 +1,8 @@
 'use strict';
 
 const getDefectOwnersStr = (d) => {
-	let owner = d.owner && (d.owner.full_name || d.owner.name);
-	let qaOwner = d.qa_owner && (d.qa_owner.full_name || d.qa_owner.name);
+	const owner = d.owner && (d.owner.full_name || d.owner.name);
+	const qaOwner = d.qa_owner && (d.qa_owner.full_name || d.qa_owner.name);
 	let ownerStr = '<No Owner>';
 	if (owner) {
 		ownerStr = 'DEV: ' + owner + (qaOwner ? `, QA: ${qaOwner}` : '');
@@ -45,6 +45,6 @@ const addDefectAnomaly = (checkerResult, d, text) => {
 };
 
 module.exports = {
-	initCheckerResult: initCheckerResult,
-	addDefectAnomaly: addDefectAnomaly
+	initCheckerResult,
+	addDefectAnomaly,
 };

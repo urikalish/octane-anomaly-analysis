@@ -5,18 +5,18 @@ const helper = require('../defects/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
 const check = async (defects, options) => {
-	let result = helper.initCheckerResult(checkerName);
-	let relevantDefects = {};
-	let relevantDefectIds = [];
+	const result = helper.initCheckerResult(checkerName);
+	const relevantDefects = {};
+	const relevantDefectIds = [];
 	defects.forEach(d => {
 		if (!options.phasesToIgnore.includes(d.phase.logical_name)) {
 			relevantDefects[d.id] = d;
 			relevantDefectIds.push(d.id);
 		}
 	});
-	let historyResults = await octaneDataProvider.getHistories(relevantDefectIds);
+	const historyResults = await octaneDataProvider.getHistories(relevantDefectIds);
 	if (historyResults) {
-		let defectOwners = {};
+		const defectOwners = {};
 		historyResults.data.forEach(h => {
 			if (h['property_name'] === 'owner') {
 				if (!defectOwners[h.entity_id]) {
@@ -39,5 +39,5 @@ const check = async (defects, options) => {
 };
 
 module.exports = {
-	check: check
+	check,
 };

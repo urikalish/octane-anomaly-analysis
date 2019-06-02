@@ -8,8 +8,8 @@ if (process.env.PROXY) {
 const url = require('url');
 
 const authenticate = async () => {
-	let uri = url.resolve(process.env.SERVER_ADDRESS, '/authentication/sign_in');
-	let body = {
+	const uri = url.resolve(process.env.SERVER_ADDRESS, '/authentication/sign_in');
+	const body = {
 		client_id: process.env.CLIENT_ID,
 		client_secret: process.env.CLIENT_SECRET
 	};
@@ -18,5 +18,5 @@ const authenticate = async () => {
 };
 
 module.exports = {
-	authenticate: authenticate
+	authenticate,
 };

@@ -4,14 +4,14 @@ const _ = require('lodash');
 const helper = require('../defects/defects-helper');
 
 const check = async (defects, options) => {
-	let result = helper.initCheckerResult(checkerName);
+	const result = helper.initCheckerResult(checkerName);
 	options.dataSetSizes.forEach(ds => {
 		let count = 0;
-		let unusualOwners = {};
+		const unusualOwners = {};
 		defects.forEach(d => {
 			count++;
 			if (count <= ds && d.owner) {
-				let ownerName = d.owner.full_name || d.owner.name;
+				const ownerName = d.owner.full_name || d.owner.name;
 				if (unusualOwners[ownerName]) {
 					unusualOwners[ownerName].count++;
 				} else {
@@ -25,7 +25,7 @@ const check = async (defects, options) => {
 		_.keys(unusualOwners).forEach(o => {
 			if ((unusualOwners[o].count === 1)
 			&& !options.phasesToIgnore.includes(unusualOwners[o].firstDefect.phase.logical_name)) {
-				let d = unusualOwners[o].firstDefect;
+				const d = unusualOwners[o].firstDefect;
 				if (!result.anomalies[d.id]) {
 					helper.addDefectAnomaly(result, d, `Defect with an unusual DEV owner (${o})`);
 				}
@@ -36,5 +36,5 @@ const check = async (defects, options) => {
 };
 
 module.exports = {
-	check: check
+	check,
 };

@@ -7,21 +7,21 @@ const generalAnomalyTag = settings.generalAnomalyTag;
 const specificAnomalyTagPrefix = settings.specificAnomalyTagPrefix;
 const ignoreAnomalyTag = settings.ignoreAnomalyTag;
 let allTags = [];
-let anomalyTags = {};
+const anomalyTags = {};
 
 const loadUserTags = async () => {
 	try {
-		let tagNames = [generalAnomalyTag, ignoreAnomalyTag];
+		const tagNames = [generalAnomalyTag, ignoreAnomalyTag];
 		settings.checkers.forEach(c => {
 			tagNames.push(c.tag);
 		});
 		tagNames.sort();
-		let promises = [];
+		const promises = [];
 		tagNames.forEach(tn => {
 			promises.push(octaneDataProvider.verifyUserTag(tn));
 		});
 		logger.logMessage('Ensuring anomaly related user tags...');
-		let userTags = await Promise.all(promises);
+		const userTags = await Promise.all(promises);
 		userTags.forEach(userTag => {
 			anomalyTags[userTag.name] = userTag.id;
 			logger.logMessage(`#${userTag.id} ${userTag.name}`);
@@ -71,7 +71,7 @@ const getTagNames = (userTags) => {
 };
 
 const getAllAnomalyTagNames = (userTags) => {
-	let tags = [];
+	const tags = [];
 	if (userTags) {
 		getTagNames(userTags).forEach(tn => {
 			if (tn === generalAnomalyTag || tn.startsWith(specificAnomalyTagPrefix) || tn === ignoreAnomalyTag) {

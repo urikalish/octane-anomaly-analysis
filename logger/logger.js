@@ -31,7 +31,7 @@ const logError = (msg) => {
 };
 
 const logFuncError = (functionName, err) => {
-	let msg = `Error on ${functionName}() ${(err.message || err)}`;
+	const msg = `Error on ${functionName}() ${(err.message || err)}`;
 	console.log(chalk.redBright(msg));
 	log.push(msg);
 };
@@ -42,12 +42,12 @@ const logAnomaly = (msg) => {
 };
 
 module.exports = {
-	//getLog: getLog,
-	clearLog: clearLog,
-	logMessage: logMessage,
-	logSuccess: logSuccess,
-	logWarning: logWarning,
-	logError: logError,
-	logFuncError: logFuncError,
-	logAnomaly: logAnomaly
+	//getLog,
+	clearLog,
+	logMessage,
+	logSuccess,
+	logWarning,
+	logError,
+	logFuncError,
+	logAnomaly,
 };

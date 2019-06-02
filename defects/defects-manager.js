@@ -5,7 +5,7 @@ const settings = require('../.settings');
 const logger = require('../logger/logger');
 const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');
-let defects = {};
+const defects = {};
 
 const ensureDefect = (id, d) => {
 	if (!defects[id]) {
@@ -25,29 +25,29 @@ const ensureDefect = (id, d) => {
 
 const checkForAnomalies = async () => {
 	try {
-		let totalNumberOfDefects = await octaneDataProvider.getTotalNumberOfDefects();
-		let numberOfDefectsToRetrieve = Math.min(totalNumberOfDefects, settings.defectsRetrievalLimit);
+		const totalNumberOfDefects = await octaneDataProvider.getTotalNumberOfDefects();
+		const numberOfDefectsToRetrieve = Math.min(totalNumberOfDefects, settings.defectsRetrievalLimit);
 		logger.logMessage(`checkForAnomalies() - Retrieving ${numberOfDefectsToRetrieve} defects from Octane...`);
-		let lastDefects = await octaneDataProvider.getLastDefects(numberOfDefectsToRetrieve);
+		const lastDefects = await octaneDataProvider.getLastDefects(numberOfDefectsToRetrieve);
 		logger.logSuccess(`checkForAnomalies() - ${numberOfDefectsToRetrieve} defects retrieved - OK`);
 		logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
-		let promises = [];
-		let tagMap = {};
+		const promises = [];
+		const tagMap = {};
 		settings.checkers.forEach(c => {
 			if ((_.isUndefined(c.enabled) || c.enabled) && c.entity === 'defect') {
-				let checker = require(`../checks/${c.name}`);
+				const checker = require(`../checks/${c.name}`);
 				tagMap[c.name] = c.tag;
 				promises.push(checker.check(lastDefects, c.options));
 			}
 		});
 		let checkersCount = 0;
 		let totalAnomalies = 0;
-		let results = await Promise.all(promises);
+		const results = await Promise.all(promises);
 		results.forEach(result => {
-			let checkerName = result.checkerName;
+			const checkerName = result.checkerName;
 			if (result) {
 				_.forEach(result.anomalies, (value, id) => {
-					let defect = ensureDefect(id, value.d);
+					const defect = ensureDefect(id, value.d);
 					if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
 						defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
 					}
@@ -77,14 +77,14 @@ const checkForAnomalies = async () => {
 
 const loadFromOctane = async () => {
 	try {
-		let generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
-		let ignoreAnomalyTagId = tagsManager.getIgnoreAnomalyTagId();
+		const generalAnomalyTagId = tagsManager.getGeneralAnomalyTagId();
+		const ignoreAnomalyTagId = tagsManager.getIgnoreAnomalyTagId();
 		logger.logMessage(`loadFromOctane() - Loading defects with "Anomaly" or "Ignore Anomaly" tags from Octane...`);
-		let taggedDefects = await octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId);
+		const taggedDefects = await octaneDataProvider.getTaggedDefects(generalAnomalyTagId, ignoreAnomalyTagId);
 		if (taggedDefects && taggedDefects['total_count'] > 0) {
 			logger.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
 			taggedDefects.data.forEach(d => {
-				let defect = ensureDefect(d.id, d);
+				const defect = ensureDefect(d.id, d);
 				defect.curTags = tagsManager.getAllAnomalyTagNames(d.user_tags);
 			});
 		} else {
@@ -100,7 +100,7 @@ const loadFromOctane = async () => {
 const updateAlmOctane = async () => {
 	try {
 		let skipCount = 0;
-		let promises = [];
+		const promises = [];
 		_.forEach(defects, (value, id) => {
 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
 				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
@@ -110,9 +110,9 @@ const updateAlmOctane = async () => {
 			//enable next line to remove all anomaly tags from Octane
 			//value.newTags = [];
 
-			let needToUpdate = value.curTags.join() !== value.newTags.join();
+			const needToUpdate = value.curTags.join() !== value.newTags.join();
 			if (needToUpdate) {
-				let body = {
+				const body = {
 					id: id,
 					user_tags: {
 						data: []
@@ -140,7 +140,7 @@ const updateAlmOctane = async () => {
 			}
 		});
 		logger.logMessage(`updateAlmOctane() - Trying to update ${promises.length} defects...`);
-		let results = await Promise.all(promises);
+		const results = await Promise.all(promises);
 		let successCount = 0;
 		results.forEach(r => {
 			if (r !== null) {
@@ -169,7 +169,7 @@ const saveToLocalStorage = async () => {
 		logger.logMessage('saveToLocalStorage() - Initializing storage...');
 		await nodePersist.init({dir: './storage/'});
 		logger.logSuccess('saveToLocalStorage() - Storage initialized - OK');
-		let storageData = [];
+		const storageData = [];
 		_.forEach(defects, (value, id) => {
 			if (value.anomalies.length > 0) {
 				storageData.push({
@@ -191,7 +191,7 @@ const handleDefects  = async () => {
 	try {
 		await loadFromOctane();
 		await checkForAnomalies();
-		let promises2 = [];
+		const promises2 = [];
 		if (settings.saveToLocalStorage) {
 			promises2.push(saveToLocalStorage());
 		} else {

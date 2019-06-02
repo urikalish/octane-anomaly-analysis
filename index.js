@@ -8,14 +8,14 @@ const MAX_TRY_COUNT = 3;
 const WAIT_SECS_BETWEEN_TRIES = 5;
 let tryCount = 0;
 
-let run = async () => {
+const run = async () => {
 	tryCount++;
 	logger.logMessage(`Try number ${tryCount}`);
 	try {
 		await octaneAuthenticator.authenticate();
 		logger.logSuccess('Authenticated - OK');
 		await tagsManager.loadUserTags();
-		let startTime = new Date();
+		const startTime = new Date();
 		await defectsManager.handleDefects();
 		logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
 	} catch (err) {
