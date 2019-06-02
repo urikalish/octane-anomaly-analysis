@@ -85,7 +85,7 @@ const loadFromOctane = async () => {
 			logger.logMessage(`loadFromOctane() - ${taggedDefects.data.length} defects with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
 			taggedDefects.data.forEach(d => {
 				let defect = ensureDefect(d.id, d);
-				defect.curTags = tagsManager.getAllAnomalyTagNames(d['user_tags']);
+				defect.curTags = tagsManager.getAllAnomalyTagNames(d.user_tags);
 			});
 		} else {
 			logger.logMessage(`loadFromOctane() - No defects with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
@@ -210,5 +210,5 @@ const handleDefects  = async () => {
 };
 
 module.exports = {
-	handleDefects: handleDefects,
+	handleDefects,
 };

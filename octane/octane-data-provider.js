@@ -128,9 +128,10 @@ const putToOctane = (uri, body, defectId) => {
 };
 
 const getHeaders = () => {
-	let headers = {
-		"Content-Type": "application/json",
-		"HPECLIENTTYPE": "HPE_REST_API_TECH_PREVIEW"
+	const headers = {
+		'Content-Type': 'application/json',
+		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
+		//'ALM_OCTANE_TECH_PREVIEW': 'true'
 	};
 	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
 		if (cookies) {
@@ -314,15 +315,26 @@ const updateDefectUserTags = (defectId, body) => {
 	return putToOctane(url, body, defectId);
 };
 
+const getAllUserTags = async () => {
+	let url = apiUrl +	`/user_tags?fields=id,name`;
+	let results = await getFromOctane(url);
+	if (results && results['total_count'] !== 0) {
+		return results.data;
+	} else {
+		return [];
+	}
+};
+
 module.exports = {
-	verifyUserTag: verifyUserTag,
-	postToOctane: postToOctane,
-	//putToOctane: putToOctane,
-	getTotalNumberOfDefects: getTotalNumberOfDefects,
-	updateDefectUserTags: updateDefectUserTags,
-	getLastDefects: getLastDefects,
-	getTaggedDefects: getTaggedDefects,
-	getHistories: getHistories,
-	//getHistory: getHistory,
-	getAttachment: getAttachment
+	getAllUserTags,
+	verifyUserTag,
+	postToOctane,
+	getTotalNumberOfDefects,
+	updateDefectUserTags,
+	getLastDefects,
+	getTaggedDefects,
+	getHistories,
+	getAttachment,
+	//putToOctane,
+	//getHistory,
 };
