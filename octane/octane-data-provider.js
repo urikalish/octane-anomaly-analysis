@@ -12,6 +12,20 @@ const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
 let loadedCount = 0;
 let loadedPercent = 0;
 
+const getHeaders = () => {
+	const headers = {
+		'Content-Type': 'application/json',
+		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
+		//'ALM_OCTANE_TECH_PREVIEW': 'true'
+	};
+	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
+		if (cookies) {
+			headers['Cookie'] = cookies;
+		}
+	});
+	return headers;
+};
+
 const getFromOctane = (uri) => {
 	return new Promise((resolve, reject) => {
 		request({
@@ -125,21 +139,6 @@ const putToOctane = (uri, body, defectId) => {
 			}
 		});
 	});
-};
-
-const getHeaders = () => {
-	const headers = {
-		'Content-Type': 'application/json',
-		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
-		//'ALM_OCTANE_TECH_PREVIEW': 'true'
-	};
-	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
-		if (cookies) {
-			headers['Cookie'] = cookies;
-		}
-	});
-
-	return headers;
 };
 
 // const getHistoryUri = (entityId, entityType) => {
@@ -316,17 +315,20 @@ const updateDefectUserTags = (defectId, body) => {
 };
 
 const getAllUserTags = async () => {
-	const url = apiUrl +	`/user_tags?fields=id,name`;
+	const url = `${apiUrl}/user_tags?fields=id,name`;
 	const results = await getFromOctane(url);
-	if (results && results['total_count'] !== 0) {
-		return results.data;
-	} else {
-		return [];
-	}
+	return (results && results['total_count'] !== 0) ? results.data : [];
+};
+
+const getAllPhases = async () => {
+	const url = `${apiUrl}/phases?fields=id,name`;
+	const results = await getFromOctane(url);
+	return (results && results['total_count'] !== 0) ? results.data : [];
 };
 
 module.exports = {
 	getAllUserTags,
+	getAllPhases,
 	verifyUserTag,
 	postToOctane,
 	getTotalNumberOfDefects,
