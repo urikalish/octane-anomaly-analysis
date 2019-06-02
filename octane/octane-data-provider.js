@@ -12,20 +12,6 @@ const cookieJar = new tough.CookieJar(undefined, {rejectPublicSuffixes: false});
 let loadedCount = 0;
 let loadedPercent = 0;
 
-const getHeaders = () => {
-	const headers = {
-		'Content-Type': 'application/json',
-		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
-		//'ALM_OCTANE_TECH_PREVIEW': 'true'
-	};
-	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
-		if (cookies) {
-			headers['Cookie'] = cookies;
-		}
-	});
-	return headers;
-};
-
 const getFromOctane = (uri) => {
 	return new Promise((resolve, reject) => {
 		request({
@@ -326,9 +312,30 @@ const getAllPhases = async () => {
 	return (results && results['total_count'] !== 0) ? results.data : [];
 };
 
+const getAllSeverities = async () => {
+	const url = `${apiUrl}/list_nodes?query="(((list_root={(id='list_node.severity')})))"&fields=id,name,logical_name`;
+	const results = await getFromOctane(url);
+	return (results && results['total_count'] !== 0) ? results.data : [];
+};
+
+const getHeaders = () => {
+	const headers = {
+		'Content-Type': 'application/json',
+		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
+		//'ALM_OCTANE_TECH_PREVIEW': 'true'
+	};
+	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
+		if (cookies) {
+			headers['Cookie'] = cookies;
+		}
+	});
+	return headers;
+};
+
 module.exports = {
 	getAllUserTags,
 	getAllPhases,
+	getAllSeverities,
 	verifyUserTag,
 	postToOctane,
 	getTotalNumberOfDefects,
