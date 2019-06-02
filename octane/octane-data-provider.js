@@ -321,7 +321,7 @@ const getAllUserTags = async () => {
 };
 
 const getAllPhases = async () => {
-	const url = `${apiUrl}/phases?fields=id,name`;
+	const url = `${apiUrl}/phases?fields=id,name,logical_name`;
 	const results = await getFromOctane(url);
 	return (results && results['total_count'] !== 0) ? results.data : [];
 };
