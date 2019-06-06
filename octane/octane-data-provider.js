@@ -163,13 +163,13 @@ const getHistories = async (entityIds) => {
 		}
 	});
 	try {
-		const results = await Promise.all(promises);
+		const historyResults = await Promise.all(promises);
 		const result = {
 			data: []
 		};
-		results.forEach(result => {
-			if (result.data) {
-				result.data.forEach(d => {
+		historyResults.forEach(historyResult => {
+			if (historyResult.data) {
+				historyResult.data.forEach(d => {
 					result.data.push(d);
 				});
 			} else {
