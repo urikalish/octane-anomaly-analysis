@@ -5,12 +5,16 @@
 
 Checks for anomalies within ALM Octane's defect entities.
 
-* Defects stuck in DEV/QA phase
-* Defects with an inactive DEV/QA owner
-* Defects with an unusual DEV/QA owner
+* Defects stuck in DEV phase
+* Defects stuck in QA phase
+* Defects with an inactive DEV owner
+* Defects with an inactive QA owner
+* Defects with an unusual DEV owner
+* Defects with an unusual QA owner
 * Defects with many owners
 * Defects with many comments
 * Defects with large attachments
+* You can add your own anomaly checks
 
 ## Technical Overview
 
