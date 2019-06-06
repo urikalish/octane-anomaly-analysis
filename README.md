@@ -60,7 +60,7 @@ install
 run
 ```
 
-## How to Add An Additional Check
+## How to Add an Additional Check
 
 * Edit the file ./checks/defect-my-rule.js according to your needs.
 
