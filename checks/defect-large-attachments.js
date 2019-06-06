@@ -35,6 +35,7 @@ const check = async (defects, options) => {
 			}
 		}
 	}
+	return result;
 };
 
 module.exports = {

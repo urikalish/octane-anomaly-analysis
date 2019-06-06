@@ -300,23 +300,23 @@ const updateDefectUserTags = (defectId, body) => {
 	return putToOctane(url, body, defectId);
 };
 
-const getAllUserTags = async () => {
-	const url = `${apiUrl}/user_tags?fields=id,name`;
-	const results = await getFromOctane(url);
-	return (results && results['total_count'] !== 0) ? results.data : [];
-};
-
-const getAllPhases = async () => {
-	const url = `${apiUrl}/phases?fields=id,name,logical_name`;
-	const results = await getFromOctane(url);
-	return (results && results['total_count'] !== 0) ? results.data : [];
-};
-
-const getAllSeverities = async () => {
-	const url = `${apiUrl}/list_nodes?query="(((list_root={(id='list_node.severity')})))"&fields=id,name,logical_name`;
-	const results = await getFromOctane(url);
-	return (results && results['total_count'] !== 0) ? results.data : [];
-};
+// const getAllUserTags = async () => {
+// 	const url = `${apiUrl}/user_tags?fields=id,name`;
+// 	const results = await getFromOctane(url);
+// 	return (results && results['total_count'] !== 0) ? results.data : [];
+// };
+//
+// const getAllPhases = async () => {
+// 	const url = `${apiUrl}/phases?fields=id,name,logical_name`;
+// 	const results = await getFromOctane(url);
+// 	return (results && results['total_count'] !== 0) ? results.data : [];
+// };
+//
+// const getAllSeverities = async () => {
+// 	const url = `${apiUrl}/list_nodes?query="(((list_root={(id='list_node.severity')})))"&fields=id,name,logical_name`;
+// 	const results = await getFromOctane(url);
+// 	return (results && results['total_count'] !== 0) ? results.data : [];
+// };
 
 const getHeaders = () => {
 	const headers = {
@@ -333,9 +333,6 @@ const getHeaders = () => {
 };
 
 module.exports = {
-	getAllUserTags,
-	getAllPhases,
-	getAllSeverities,
 	verifyUserTag,
 	postToOctane,
 	getTotalNumberOfDefects,
@@ -344,6 +341,9 @@ module.exports = {
 	getTaggedDefects,
 	getHistories,
 	getAttachment,
+	//getAllUserTags,
+	//getAllPhases,
+	//getAllSeverities,
 	//putToOctane,
 	//getHistory,
 };

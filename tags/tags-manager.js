@@ -6,8 +6,7 @@ const octaneDataProvider = require('../octane/octane-data-provider');
 const generalAnomalyTag = settings.generalAnomalyTag;
 const specificAnomalyTagPrefix = settings.specificAnomalyTagPrefix;
 const ignoreAnomalyTag = settings.ignoreAnomalyTag;
-let allTags = [];
-const anomalyTags = {};
+let tags = {};
 
 const loadUserTags = async () => {
 	try {
@@ -23,21 +22,19 @@ const loadUserTags = async () => {
 		logger.logMessage('Ensuring anomaly related user tags...');
 		const userTags = await Promise.all(promises);
 		userTags.forEach(userTag => {
-			anomalyTags[userTag.name] = userTag.id;
+			tags[userTag.name] = userTag.id;
 			logger.logMessage(`#${userTag.id} ${userTag.name}`);
 		});
 		logger.logSuccess('Anomaly related user tags ensured - OK');
-		logger.logMessage('Get all user tags...');
-		allTags = await octaneDataProvider.getAllUserTags();
-		logger.logMessage('Got all user tags');
+		return tags;
 	} catch (err) {
 		logger.logFuncError('loadUserTags', err);
-		throw err;
+		return err;
 	}
 };
 
 const getGeneralAnomalyTagId = () => {
-	return anomalyTags[generalAnomalyTag];
+	return tags[generalAnomalyTag];
 };
 
 const getGeneralAnomalyTagName = () => {
@@ -45,7 +42,7 @@ const getGeneralAnomalyTagName = () => {
 };
 
 const getIgnoreAnomalyTagId = () => {
-	return anomalyTags[ignoreAnomalyTag];
+	return tags[ignoreAnomalyTag];
 };
 
 const getIgnoreAnomalyTagName = () => {
@@ -57,11 +54,7 @@ const getTagNames = (userTags) => {
 	if (userTags['total_count']) {
 		if (userTags['total_count'] > 0) {
 			userTags.data.forEach(t => {
-				if (t.name) {
-					tags.push(t.name);
-				} else {
-					tags.push(getTagNameById(t.id));
-				}
+				tags.push(t.name);
 			});
 		}
 	} else {
@@ -108,7 +101,7 @@ const hasIgnoreAnomalyTag = (userTags) => {
 
 const isAnomalyTagId = (tagId) => {
 	let found = false;
-	_.forEach(anomalyTags, (id) => {
+	_.forEach(tags, (id) => {
 		if (id === tagId) {
 			found = true;
 		}
@@ -117,17 +110,7 @@ const isAnomalyTagId = (tagId) => {
 };
 
 const getTagIdByName = (tagName) => {
-	const tag = _.find(allTags, t => {
-		return t.name === tagName;
-	});
-	return (tag && tag.id) || 0;
-};
-
-const getTagNameById = (tagId) => {
-	const tag = _.find(allTags, t => {
-		return t.id === tagId;
-	});
-	return (tag && tag.name) || '';
+	return tags[tagName];
 };
 
 module.exports = {

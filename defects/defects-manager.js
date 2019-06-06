@@ -23,18 +23,18 @@ const ensureDefect = (id, d) => {
 	return defects[id];
 };
 
-const completeDefectsData = async (defects) => {
-	logger.logMessage(`completeDefectsData() - Retrieving data from Octane...`);
-	const phases = await octaneDataProvider.getAllPhases();
-	const severities = await octaneDataProvider.getAllSeverities();
-	defects.forEach(d => {
-		const phase = _.find(phases, p => {return p.id === d.phase.id;});
-		d.phase.logical_name = (phase && phase.logical_name) || '';
-		const severity = _.find(severities, s => {return s.id === d.severity.id;});
-		d.severity.logical_name = (severity && severity.logical_name) || '';
-	});
-	logger.logMessage(`completeDefectsData() - Retrieving data from Octane - OK`);
-};
+// const completeDefectsData = async (defects) => {
+// 	logger.logMessage(`completeDefectsData() - Retrieving data from Octane...`);
+// 	const phases = await octaneDataProvider.getAllPhases();
+// 	const severities = await octaneDataProvider.getAllSeverities();
+// 	defects.forEach(d => {
+// 		const phase = _.find(phases, p => {return p.id === d.phase.id;});
+// 		d.phase.logical_name = (phase && phase.logical_name) || '';
+// 		const severity = _.find(severities, s => {return s.id === d.severity.id;});
+// 		d.severity.logical_name = (severity && severity.logical_name) || '';
+// 	});
+// 	logger.logMessage(`completeDefectsData() - Retrieving data from Octane - OK`);
+// };
 
 const checkForAnomalies = async () => {
 	try {
@@ -43,7 +43,7 @@ const checkForAnomalies = async () => {
 		logger.logMessage(`checkForAnomalies() - Retrieving ${numberOfDefectsToRetrieve} defects from Octane...`);
 		const lastDefects = await octaneDataProvider.getLastDefects(numberOfDefectsToRetrieve);
 		logger.logSuccess(`checkForAnomalies() - ${numberOfDefectsToRetrieve} defects retrieved - OK`);
-		await completeDefectsData(lastDefects);
+		//await completeDefectsData(lastDefects);
 		logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
 		const promises = [];
 		const tagMap = {};
