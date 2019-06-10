@@ -29,9 +29,9 @@ const check = async (defects, options) => {
 				}
 			}
 		});
-		_.forEach(defectOwners, (owners) => {
+		_.forEach(defectOwners, (owners, defectId) => {
 			if (owners.length >= options.manyOwnersCount) {
-				helper.addDefectAnomaly(result, d, `Defect with many owners (${owners.length} - ${owners})`);
+				helper.addDefectAnomaly(result, relevantDefects[defectId], `Defect with many owners (${owners.length} - ${owners})`);
 			}
 		});
 	}
