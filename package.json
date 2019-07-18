@@ -22,15 +22,19 @@
     "url": "https://github.com/urikalish/octane-anomaly-analysis"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "chalk": "^2.4.1",
     "dotenv": "^7.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.12",
     "node-persist": "^3.0.1",
     "request": "^2.85.0",
     "tough-cookie": "^2.3.4",
-    "url": "^0.11.0"
-  }
+    "url": "^0.11.0",
+    "snyk": "^1.193.2"
+  },
+  "snyk": true
 }
