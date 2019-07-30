@@ -127,6 +127,44 @@ const putToOctane = (uri, body, defectId) => {
 	});
 };
 
+const putMultipleToOctane = (uri, body) => {
+	return new Promise((resolve /*, reject*/) => {
+		const options = {
+			method: 'PUT',
+			url: uri,
+			headers: getHeaders()
+		};
+		if (body) {
+			options.body = JSON.stringify(body);
+		}
+		request(options, (err, response, body) => {
+			if (err) {
+				logger.logError(`Error on putMultipleToOctane() - ${err.message || err}`);
+				return resolve(0);
+			}
+			try {
+				let res = JSON.parse(body);
+				if (!res['errors']) {
+					logger.logMessage(`${res['total_count']} defects successfully updated`);
+				} else {
+					if (res['total_count'] === 0) {
+						logger.logWarning(`Nothing was updated`);
+					} else {
+						logger.logWarning(`Partial update (${res['total_count']}/${res['total_count'] + res['errors'].length})`);
+					}
+					res['errors'].forEach(e => {
+						logger.logError(`defect #${e['properties']['entity_id']} - ${e['description'].replace(/\r?\n|\r/g,' ')}`);
+					});
+				}
+				resolve(res['total_count']);
+			} catch (err) {
+				logger.logError(`Error on putMultipleToOctane() - ${err.message || err}`);
+				resolve(0);
+			}
+		});
+	});
+};
+
 // const getHistoryUri = (entityId, entityType) => {
 // 	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
 // };
@@ -300,6 +338,11 @@ const updateDefectUserTags = (defectId, body) => {
 	return putToOctane(url, body, defectId);
 };
 
+const updateMultipleDefectsUserTags = (body) => {
+	const url =  `${apiUrl}/work_items/`;
+	return putMultipleToOctane(url, body);
+};
+
 // const getAllUserTags = async () => {
 // 	const url = `${apiUrl}/user_tags?fields=id,name`;
 // 	const results = await getFromOctane(url);
@@ -337,13 +380,9 @@ module.exports = {
 	postToOctane,
 	getTotalNumberOfDefects,
 	updateDefectUserTags,
+	updateMultipleDefectsUserTags,
 	getLastDefects,
 	getTaggedDefects,
 	getHistories,
 	getAttachment,
-	//getAllUserTags,
-	//getAllPhases,
-	//getAllSeverities,
-	//putToOctane,
-	//getHistory,
 };

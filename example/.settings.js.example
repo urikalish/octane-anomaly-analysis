@@ -2,6 +2,7 @@
 const settings = {
 	updateAlmOctane: false,
 	defectsRetrievalLimit: 50000,
+	updateAlmOctaneMaxBatch: 200,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
