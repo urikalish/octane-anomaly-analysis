@@ -152,34 +152,34 @@ const constructOneDefectRecord = (value, id) => {
 	return result;
 };
 
-const updateAlmOctaneOneByOne = async () => {
-	try {
-		let countDefectsNeedUpdate = 0;
-		let countDefectsSkipped = 0;
-		const promises = [];
-		_.forEach(defects, (value, id) => {
-			let oneDefectRecord = constructOneDefectRecord(value);
-			if (oneDefectRecord) {
-				promises.push(octaneDataProvider.updateDefectUserTags(id, oneDefectRecord));
-				countDefectsNeedUpdate++;
-			} else {
-				countDefectsSkipped++;
-			}
-		});
-		logger.logMessage(`updateAlmOctane() - Trying to update ${promises.length} defects...`);
-		const results = await Promise.all(promises);
-		let successCount = 0;
-		results.forEach(r => {
-			if (r !== null) {
-				successCount++;
-			}
-		});
-		logUpdateResult(countDefectsNeedUpdate, successCount);
-	} catch(err) {
-		logger.logFuncError('updateAlmOctane', err);
-		throw err;
-	}
-};
+// const updateAlmOctaneOneByOne = async () => {
+// 	try {
+// 		let countDefectsNeedUpdate = 0;
+// 		let countDefectsSkipped = 0;
+// 		const promises = [];
+// 		_.forEach(defects, (value, id) => {
+// 			let oneDefectRecord = constructOneDefectRecord(value);
+// 			if (oneDefectRecord) {
+// 				promises.push(octaneDataProvider.updateDefectUserTags(id, oneDefectRecord));
+// 				countDefectsNeedUpdate++;
+// 			} else {
+// 				countDefectsSkipped++;
+// 			}
+// 		});
+// 		logger.logMessage(`updateAlmOctane() - Trying to update ${promises.length} defects...`);
+// 		const results = await Promise.all(promises);
+// 		let successCount = 0;
+// 		results.forEach(r => {
+// 			if (r !== null) {
+// 				successCount++;
+// 			}
+// 		});
+// 		logUpdateResult(countDefectsNeedUpdate, successCount);
+// 	} catch(err) {
+// 		logger.logFuncError('updateAlmOctane', err);
+// 		throw err;
+// 	}
+// };
 
 const updateAlmOctaneByBatches = async () => {
 	try {
@@ -262,11 +262,11 @@ const handleDefects  = async () => {
 			logger.logMessage('Skip save to storage');
 		}
 		if (settings.updateAlmOctane) {
-			if (settings.updateAlmOctaneMaxBatch === 1) {
-				await updateAlmOctaneOneByOne();
-			} else {
-				await updateAlmOctaneByBatches();
-			}
+			// if (settings.updateAlmOctaneMaxBatch === 1) {
+			// 	await updateAlmOctaneOneByOne();
+			// } else {
+			await updateAlmOctaneByBatches();
+			// }
 		} else {
 			logger.logWarning('Skip update ALM Octane');
 		}
