@@ -115,7 +115,7 @@ const constructOneDefectRecord = (value, id) => {
 	let result = null;
 	if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
 		value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
-		logger.logMessage(`updateAlmOctane() - Ignore anomalies for defect #${id}`);
+		logger.logMessage(`constructOneDefectRecord() - Ignore anomalies for defect #${id}`);
 	}
 
 	//enable next line to remove all anomaly tags from Octane
@@ -123,7 +123,7 @@ const constructOneDefectRecord = (value, id) => {
 
 	const needToUpdate = value.curTags.join() !== value.newTags.join();
 	if (needToUpdate) {
-		logger.logMessage(`updateAlmOctane() - Defect #${id} needs update: [${value.curTags.join(', ')}] -> [${value.newTags.join(', ')}]`);
+		logger.logMessage(`constructOneDefectRecord() - Defect #${id} needs update: [${value.curTags.join(', ')}] -> [${value.newTags.join(', ')}]`);
 		result = {
 			id: id,
 			user_tags: {
@@ -147,7 +147,7 @@ const constructOneDefectRecord = (value, id) => {
 			});
 		});
 	} else {
-		logger.logMessage(`updateAlmOctane() - Defect #${id} skipped`);
+		logger.logMessage(`constructOneDefectRecord() - Defect #${id} skipped`);
 	}
 	return result;
 };
@@ -206,7 +206,8 @@ const updateAlmOctaneByBatches = async () => {
 			promises.push(octaneDataProvider.updateMultipleDefectsUserTags({data: batch}));
 		});
 		logger.logMessage(`updateAlmOctane() - Trying to update ${countDefectsNeedUpdate} defects...`);
-		const results = await Promise.all(promises);
+		//const results = await Promise.all(promises);
+		const results = await promises[0];
 		let countDefectsUpdated = results.reduce((acc, cur) => {
 			return acc + cur;
 		}, 0);
