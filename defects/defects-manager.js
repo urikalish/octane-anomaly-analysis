@@ -111,6 +111,76 @@ const loadFromOctane = async () => {
 	}
 };
 
+const constructOneDefectRecord = (value, id) => {
+	let result = null;
+	if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
+		value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
+		logger.logMessage(`updateAlmOctane() - Ignore anomalies for defect #${id}`);
+	}
+
+	//enable next line to remove all anomaly tags from Octane
+	//value.newTags = [];
+
+	const needToUpdate = value.curTags.join() !== value.newTags.join();
+	if (needToUpdate) {
+		logger.logMessage(`updateAlmOctane() - Defect #${id} needs update: [${value.curTags.join(', ')}] -> [${value.newTags.join(', ')}]`);
+		result = {
+			id: id,
+			user_tags: {
+				data: []
+			}
+		};
+		if (value.d.user_tags['total_count'] && value.d.user_tags['total_count'] > 0) {
+			value.d.user_tags.data.forEach(t => {
+				if (!tagsManager.isAnomalyTagId(t.id)) {
+					result.user_tags.data.push({
+						type: 'user_tag',
+						id: t.id
+					});
+				}
+			});
+		}
+		value.newTags.forEach(tn => {
+			result.user_tags.data.push({
+				type: 'user_tag',
+				id: tagsManager.getTagIdByName(tn)
+			});
+		});
+	} else {
+		logger.logMessage(`updateAlmOctane() - Defect #${id} skipped`);
+	}
+	return result;
+};
+
+const updateAlmOctaneOneByOne = async () => {
+	try {
+		let countDefectsNeedUpdate = 0;
+		let countDefectsSkipped = 0;
+		const promises = [];
+		_.forEach(defects, (value, id) => {
+			let oneDefectRecord = constructOneDefectRecord(value);
+			if (oneDefectRecord) {
+				promises.push(octaneDataProvider.updateDefectUserTags(id, oneDefectRecord));
+				countDefectsNeedUpdate++;
+			} else {
+				countDefectsSkipped++;
+			}
+		});
+		logger.logMessage(`updateAlmOctane() - Trying to update ${promises.length} defects...`);
+		const results = await Promise.all(promises);
+		let successCount = 0;
+		results.forEach(r => {
+			if (r !== null) {
+				successCount++;
+			}
+		});
+		logUpdateResult(countDefectsNeedUpdate, successCount);
+	} catch(err) {
+		logger.logFuncError('updateAlmOctane', err);
+		throw err;
+	}
+};
+
 const updateAlmOctaneByBatches = async () => {
 	try {
 		let maxDefectsPerUpdateBatch = settings.updateAlmOctaneMaxBatch || 200;
@@ -120,39 +190,8 @@ const updateAlmOctaneByBatches = async () => {
 		let countDefectsSkipped = 0;
 		const promises = [];
 		_.forEach(defects, (value, id) => {
-			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
-				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
-				logger.logMessage(`updateAlmOctane() - Ignore anomalies for defect #${id}`);
-			}
-
-			//enable next line to remove all anomaly tags from Octane
-			//value.newTags = [];
-
-			const needToUpdate = value.curTags.join() !== value.newTags.join();
-			if (needToUpdate) {
-				const oneDefectRecord = {
-					id: id,
-					user_tags: {
-						data: []
-					}
-				};
-				if (value.d.user_tags['total_count'] && value.d.user_tags['total_count'] > 0) {
-					value.d.user_tags.data.forEach(t => {
-						if (!tagsManager.isAnomalyTagId(t.id)) {
-							oneDefectRecord.user_tags.data.push({
-								type: 'user_tag',
-								id: t.id
-							});
-						}
-					});
-				}
-				value.newTags.forEach(tn => {
-					oneDefectRecord.user_tags.data.push({
-						type: 'user_tag',
-						id: tagsManager.getTagIdByName(tn)
-					});
-				});
-
+			let oneDefectRecord = constructOneDefectRecord(value, id);
+			if (oneDefectRecord) {
 				const curBatchIndex = Math.trunc(countDefectsNeedUpdate / maxDefectsPerUpdateBatch);
 				if (!defectBatches[curBatchIndex]) {
 					defectBatches[curBatchIndex] = [];
@@ -166,94 +205,28 @@ const updateAlmOctaneByBatches = async () => {
 		defectBatches.forEach(batch => {
 			promises.push(octaneDataProvider.updateMultipleDefectsUserTags({data: batch}));
 		});
-		if (countDefectsSkipped > 0) {
-			logger.logSuccess(`updateAlmOctane() - ${countDefectsSkipped} defects already updated - OK`);
-		}
 		logger.logMessage(`updateAlmOctane() - Trying to update ${countDefectsNeedUpdate} defects...`);
 		const results = await Promise.all(promises);
 		let countDefectsUpdated = results.reduce((acc, cur) => {
 			return acc + cur;
 		}, 0);
-		if (countDefectsUpdated === 0) {
-		 	logger.logWarning(`updateAlmOctane() - Octane was not updated`);
-		} else if (countDefectsUpdated !== countDefectsNeedUpdate) {
-		 	logger.logSuccess(`updateAlmOctane() - ${countDefectsUpdated} defects successfully updated - OK`);
-		 	logger.logWarning(`updateAlmOctane() - Octane partially updated - ${countDefectsUpdated}/${countDefectsNeedUpdate}`);
-		} else {
-		 	logger.logSuccess(`updateAlmOctane() - ${countDefectsUpdated} defects successfully updated - OK`);
-		}
+		logUpdateResult(countDefectsNeedUpdate, countDefectsUpdated);
 	} catch(err) {
 		logger.logFuncError('updateAlmOctane', err);
 		throw err;
 	}
 };
 
-// const updateAlmOctane = async () => {
-// 	try {
-// 		let skipCount = 0;
-// 		const promises = [];
-// 		_.forEach(defects, (value, id) => {
-// 			if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
-// 				value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
-// 				logger.logMessage(`updateAlmOctane() - Ignore anomalies for defect #${id}`);
-// 			}
-//
-// 			//enable next line to remove all anomaly tags from Octane
-// 			//value.newTags = [];
-//
-// 			const needToUpdate = value.curTags.join() !== value.newTags.join();
-// 			if (needToUpdate) {
-// 				const body = {
-// 					id: id,
-// 					user_tags: {
-// 						data: []
-// 					}
-// 				};
-// 				if (value.d.user_tags['total_count'] && value.d.user_tags['total_count'] > 0) {
-// 					value.d.user_tags.data.forEach(t => {
-// 						if (!tagsManager.isAnomalyTagId(t.id)) {
-// 							body.user_tags.data.push({
-// 								type: 'user_tag',
-// 								id: t.id
-// 							});
-// 						}
-// 					});
-// 				}
-// 				value.newTags.forEach(tn => {
-// 					body.user_tags.data.push({
-// 						type: 'user_tag',
-// 						id: tagsManager.getTagIdByName(tn)
-// 					});
-// 				});
-// 				promises.push(octaneDataProvider.updateDefectUserTags(id, body));
-// 			} else {
-// 				skipCount++;
-// 			}
-// 		});
-// 		logger.logMessage(`updateAlmOctane() - Trying to update ${promises.length} defects...`);
-// 		const results = await Promise.all(promises);
-// 		let successCount = 0;
-// 		results.forEach(r => {
-// 			if (r !== null) {
-// 				successCount++;
-// 			}
-// 		});
-// 		if (skipCount > 0) {
-// 			logger.logSuccess(`updateAlmOctane() - ${skipCount} defects already updated - OK`);
-// 		}
-// 		if (successCount === 0) {
-// 			logger.logWarning(`updateAlmOctane() - Octane was not updated`);
-// 		} else if (successCount !== results.length) {
-// 			logger.logSuccess(`updateAlmOctane() - ${successCount} defects successfully updated - OK`);
-// 			logger.logWarning(`updateAlmOctane() - Octane partially updated - ${successCount}/${results.length}`);
-// 		} else {
-// 			logger.logSuccess(`updateAlmOctane() - ${successCount} defects successfully updated - OK`);
-// 		}
-// 	} catch(err) {
-// 		logger.logFuncError('updateAlmOctane', err);
-// 		throw err;
-// 	}
-// };
+const logUpdateResult = (countDefectsNeedUpdate, countDefectsUpdated) => {
+	if (countDefectsUpdated === 0) {
+		logger.logWarning(`updateAlmOctane() - Octane was not updated`);
+	} else if (countDefectsUpdated !== countDefectsNeedUpdate) {
+		logger.logSuccess(`updateAlmOctane() - ${countDefectsUpdated} defects successfully updated - OK`);
+		logger.logWarning(`updateAlmOctane() - Octane partially updated - ${countDefectsUpdated}/${countDefectsNeedUpdate}`);
+	} else {
+		logger.logSuccess(`updateAlmOctane() - ${countDefectsUpdated} defects successfully updated - OK`);
+	}
+};
 
 const saveToLocalStorage = async () => {
 	try {
@@ -282,19 +255,20 @@ const handleDefects  = async () => {
 	try {
 		await loadFromOctane();
 		await checkForAnomalies();
-		const promises2 = [];
 		if (settings.saveToLocalStorage) {
-			promises2.push(saveToLocalStorage());
+			await saveToLocalStorage();
 		} else {
 			logger.logMessage('Skip save to storage');
 		}
 		if (settings.updateAlmOctane) {
-			//promises2.push(updateAlmOctane());
-			promises2.push(updateAlmOctaneByBatches());
+			if (settings.updateAlmOctaneMaxBatch === 1) {
+				await updateAlmOctaneOneByOne();
+			} else {
+				await updateAlmOctaneByBatches();
+			}
 		} else {
 			logger.logWarning('Skip update ALM Octane');
 		}
-		await Promise.all(promises2);
 	} catch(err) {
 		logger.logFuncError('handleDefects', err);
 		throw err;

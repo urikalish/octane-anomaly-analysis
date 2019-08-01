@@ -1,8 +1,8 @@
 'use strict';
 const settings = {
 	updateAlmOctane: false,
-	defectsRetrievalLimit: 50000,
-	updateAlmOctaneMaxBatch: 200,
+	defectsRetrievalLimit: 5000,
+	updateAlmOctaneMaxBatch: 100,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
