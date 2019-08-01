@@ -206,8 +206,7 @@ const updateAlmOctaneByBatches = async () => {
 			promises.push(octaneDataProvider.updateMultipleDefectsUserTags({data: batch}));
 		});
 		logger.logMessage(`updateAlmOctane() - Trying to update ${countDefectsNeedUpdate} defects...`);
-		//const results = await Promise.all(promises);
-		const results = await promises[0];
+		const results = await Promise.all(promises);
 		let countDefectsUpdated = results.reduce((acc, cur) => {
 			return acc + cur;
 		}, 0);
