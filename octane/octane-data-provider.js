@@ -84,48 +84,48 @@ const postToOctane = (uri, body) => {
 	});
 };
 
-const putToOctane = (uri, body, defectId) => {
-	return new Promise((resolve, reject) => {
-		const options = {
-			method: 'PUT',
-			url: uri,
-			headers: getHeaders()
-		};
-		if (body) {
-			options.body = JSON.stringify(body);
-		}
-		request(options, (err, response, body) => {
-			if (err) {
-				return reject(err);
-			}
-			if (response.statusCode < 200 || response.statusCode > 299) {
-				let errObj = null;
-				try {
-					errObj = JSON.parse(body);
-				} catch (e) {
-				}
-				const errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
-				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${errDesc}`);
-				return resolve(null);
-			}
-			if (response.headers['set-cookie']) {
-				response.headers['set-cookie'].forEach((cookie) => {
-					cookieJar.setCookie(Cookie.parse(cookie), process.env.SERVER_DOMAIN, {}, (error) => {
-						if (error) {
-							logger.logError(error);
-							return reject(error);
-						}
-					});
-				});
-			}
-			try {
-				resolve({response: response, body: JSON.parse(body)});
-			} catch (e) {
-				resolve(body);
-			}
-		});
-	});
-};
+// const putToOctane = (uri, body, defectId) => {
+// 	return new Promise((resolve, reject) => {
+// 		const options = {
+// 			method: 'PUT',
+// 			url: uri,
+// 			headers: getHeaders()
+// 		};
+// 		if (body) {
+// 			options.body = JSON.stringify(body);
+// 		}
+// 		request(options, (err, response, body) => {
+// 			if (err) {
+// 				return reject(err);
+// 			}
+// 			if (response.statusCode < 200 || response.statusCode > 299) {
+// 				let errObj = null;
+// 				try {
+// 					errObj = JSON.parse(body);
+// 				} catch (e) {
+// 				}
+// 				const errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
+// 				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${errDesc}`);
+// 				return resolve(null);
+// 			}
+// 			if (response.headers['set-cookie']) {
+// 				response.headers['set-cookie'].forEach((cookie) => {
+// 					cookieJar.setCookie(Cookie.parse(cookie), process.env.SERVER_DOMAIN, {}, (error) => {
+// 						if (error) {
+// 							logger.logError(error);
+// 							return reject(error);
+// 						}
+// 					});
+// 				});
+// 			}
+// 			try {
+// 				resolve({response: response, body: JSON.parse(body)});
+// 			} catch (e) {
+// 				resolve(body);
+// 			}
+// 		});
+// 	});
+// };
 
 const putMultipleToOctane = (uri, body) => {
 	return new Promise((resolve /*, reject*/) => {
@@ -184,42 +184,42 @@ const putMultipleToOctane = (uri, body) => {
 // 	});
 // };
 
-const getHistoriesUri = (entityIds, entityType) => {
-	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
-};
+// const getHistoriesUri = (entityIds, entityType) => {
+// 	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
+// };
 
-const getHistories = async (entityIds) => {
-	const promises = [];
-	let counter = 0;
-	let ids = [];
-	entityIds.forEach(id => {
-		ids.push(id);
-		counter++;
-		if (counter % 10 === 0 || counter === entityIds.length) {
-			promises.push(getFromOctane(getHistoriesUri(ids)));
-			ids = [];
-		}
-	});
-	try {
-		const historyResults = await Promise.all(promises);
-		const result = {
-			data: []
-		};
-		historyResults.forEach(historyResult => {
-			if (historyResult.data) {
-				historyResult.data.forEach(d => {
-					result.data.push(d);
-				});
-			} else {
-				logger.logWarning(`Unable to get history for entities`);
-			}
-		});
-		return result;
-	} catch(err) {
-		logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
-		return null;
-	}
-};
+// const getHistories = async (entityIds) => {
+// 	const promises = [];
+// 	let counter = 0;
+// 	let ids = [];
+// 	entityIds.forEach(id => {
+// 		ids.push(id);
+// 		counter++;
+// 		if (counter % 10 === 0 || counter === entityIds.length) {
+// 			promises.push(getFromOctane(getHistoriesUri(ids)));
+// 			ids = [];
+// 		}
+// 	});
+// 	try {
+// 		const historyResults = await Promise.all(promises);
+// 		const result = {
+// 			data: []
+// 		};
+// 		historyResults.forEach(historyResult => {
+// 			if (historyResult.data) {
+// 				historyResult.data.forEach(d => {
+// 					result.data.push(d);
+// 				});
+// 			} else {
+// 				logger.logWarning(`Unable to get history for entities`);
+// 			}
+// 		});
+// 		return result;
+// 	} catch(err) {
+// 		logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
+// 		return null;
+// 	}
+// };
 
 const getAttachmentUri = (entityId) => {
 	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
@@ -227,7 +227,7 @@ const getAttachmentUri = (entityId) => {
 
 const getAttachment = async (entityId) => {
 	const uri = getAttachmentUri(entityId);
-	getFromOctane(uri).then(
+	await getFromOctane(uri).then(
 	(result) => {
 		return result;
 	},
@@ -333,10 +333,10 @@ const getTaggedDefects = async (tagId1, tagId2) => {
 	}
 };
 
-const updateDefectUserTags = (defectId, body) => {
-	const url =  `${apiUrl}/work_items/${defectId}`;
-	return putToOctane(url, body, defectId);
-};
+// const updateDefectUserTags = (defectId, body) => {
+// 	const url =  `${apiUrl}/work_items/${defectId}`;
+// 	return putToOctane(url, body, defectId);
+// };
 
 const updateMultipleDefectsUserTags = (body) => {
 	const url =  `${apiUrl}/work_items/`;
@@ -364,7 +364,8 @@ const updateMultipleDefectsUserTags = (body) => {
 const getHeaders = () => {
 	const headers = {
 		'Content-Type': 'application/json',
-		'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
+		//'HPECLIENTTYPE': 'HPE_REST_API_TECH_PREVIEW',
+		'HPECLIENTTYPE': 'IT_PRIVATE'
 		//'ALM_OCTANE_TECH_PREVIEW': 'true'
 	};
 	cookieJar.getCookieString(process.env.SERVER_DOMAIN, {allPaths: true}, function (err, cookies) {
@@ -375,14 +376,28 @@ const getHeaders = () => {
 	return headers;
 };
 
+const getHistoryLogsBatch = async (action, fieldName, fromTimestamp, toTimestamp, limit) => {
+	let url = apiUrl + `/history_logs?query="timestamp>=^${fromTimestamp}^;timestamp<=^${toTimestamp}^;entity_type=^defect^;action=^${action}^;field_name=^${fieldName}^"&limit=${limit}`;
+	try {
+		const audits = await getFromOctane(url);
+		if (audits && audits.data && audits.data.length > 0) {
+			return audits;
+		} else {
+			return null;
+		}
+	} catch (err) {
+		logger.logFuncError('getHistoryLogsBatch', err);
+		return null;
+	}
+};
+
 module.exports = {
 	verifyUserTag,
 	postToOctane,
 	getTotalNumberOfDefects,
-	updateDefectUserTags,
 	updateMultipleDefectsUserTags,
 	getLastDefects,
 	getTaggedDefects,
-	getHistories,
 	getAttachment,
+	getHistoryLogsBatch,
 };

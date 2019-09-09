@@ -1,8 +1,9 @@
 'use strict';
 const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 const _ = require('lodash');
+const settings = require('../.settings');
 const helper = require('../defects/defects-helper');
-const octaneDataProvider = require('../octane/octane-data-provider');
+const historyManager = require('../history/history-manager');
 
 const check = async (defects, options) => {
 	const result = helper.initCheckerResult(checkerName);
@@ -14,27 +15,23 @@ const check = async (defects, options) => {
 			relevantDefectIds.push(d.id);
 		}
 	});
-	const historyResults = await octaneDataProvider.getHistories(relevantDefectIds);
-	if (historyResults) {
-		const defectOwners = {};
-		historyResults.data.forEach(h => {
-			if (h['property_name'] === 'owner') {
-				if (!defectOwners[h.entity_id]) {
-					defectOwners[h.entity_id] = [];
-				}
-				if (h['new_value']) {
-					defectOwners[h.entity_id].push((h['new_value'].replace(/<html><body>/g, '').replace(/<\/body><\/html>/g, '').trim()));
-				} else {
-					defectOwners[h.entity_id].push('<empty>');
-				}
-			}
-		});
-		_.forEach(defectOwners, (owners, defectId) => {
-			if (owners.length >= options.manyOwnersCount) {
-				helper.addDefectAnomaly(result, relevantDefects[defectId], `Defect with many owners (${owners.length} - ${owners})`);
-			}
-		});
-	}
+	const historyLogsTimestampFrom = settings.historyLogsTimestampFrom || '1970-01-01T00:00:00Z';
+	const historyLogsTimestampTo = settings.historyLogsTimestampTo || '2030-01-01T00:00:00Z';
+	const historyLogs = await historyManager.getHistoryLogs('owner', relevantDefectIds, historyLogsTimestampFrom, historyLogsTimestampTo);
+	const defectOwners = {};
+	defects.forEach(d => {
+		if (historyLogs[d.id]) {
+			defectOwners[d.id] = [];
+			historyLogs[d.id].forEach(change => {
+				defectOwners[d.id].push(change.value || '<empty>');
+			})
+		}
+	});
+	_.forEach(defectOwners, (owners, defectId) => {
+		if (owners.length >= options.manyOwnersCount) {
+			helper.addDefectAnomaly(result, relevantDefects[defectId], `Defect with many owners (${owners.length} - ${owners})`);
+		}
+	});
 	return result;
 };
 
