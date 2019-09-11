@@ -6,6 +6,7 @@ const getSingleActionHistoryLogs = async (action, fieldName, defectIds, fromTime
 	logger.logMessage('getSingleActionHistoryLogs()');
 	logger.logMessage(`action: ${action}`);
 	logger.logMessage(`fieldName: ${fieldName}`);
+	logger.logMessage('This may take a few minutes. Please wait...');
 	let result = {};
 	let previousResults = {};
 	let audits;
@@ -49,6 +50,7 @@ const getSingleActionHistoryLogs = async (action, fieldName, defectIds, fromTime
 
 const getHistoryLogs = async (fieldName, defectIds, fromTimestamp, toTimestamp) => {
 	logger.logMessage('getHistoryLogs()');
+	logger.logMessage(`fieldName: ${fieldName}, from: ${fromTimestamp}, to ${toTimestamp}`);
 	let result = {};
 	const BATCH_LIMIT = 1000;
 	const createResults = await getSingleActionHistoryLogs('create', fieldName, defectIds, fromTimestamp, toTimestamp, BATCH_LIMIT);

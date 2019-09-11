@@ -1,7 +1,6 @@
 'use strict';
 const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
 const _ = require('lodash');
-const settings = require('../.settings');
 const helper = require('../defects/defects-helper');
 const historyManager = require('../history/history-manager');
 
@@ -15,11 +14,10 @@ const check = async (defects, options) => {
 			relevantDefectIds.push(d.id);
 		}
 	});
-	const historyLogsTimestampFrom = settings.historyLogsTimestampFrom || '1970-01-01T00:00:00Z';
-	const historyLogsTimestampTo = settings.historyLogsTimestampTo || '2030-01-01T00:00:00Z';
-	const historyLogs = await historyManager.getHistoryLogs('owner', relevantDefectIds, historyLogsTimestampFrom, historyLogsTimestampTo);
+	const historyLogsTimeRange = helper.getHistoryLogsTimeRange(Object.values(relevantDefects));
+	const historyLogs = await historyManager.getHistoryLogs('owner', relevantDefectIds, historyLogsTimeRange.from, historyLogsTimeRange.to);
 	const defectOwners = {};
-	defects.forEach(d => {
+	Object.values(relevantDefects).forEach(d => {
 		if (historyLogs[d.id]) {
 			defectOwners[d.id] = [];
 			historyLogs[d.id].forEach(change => {

@@ -1,4 +1,5 @@
 'use strict';
+const settings = require('../.settings');
 
 const getDefectOwnersStr = (d) => {
 	const owner = d.owner && (d.owner.full_name || d.owner.name);
@@ -44,7 +45,31 @@ const addDefectAnomaly = (checkerResult, d, text) => {
 	};
 };
 
+const getEarliestTimestamp = (defects) => {
+	let earliestRelevantDefectTimestamp = '';
+	defects.forEach(d => {
+		if (earliestRelevantDefectTimestamp === '' || earliestRelevantDefectTimestamp.localeCompare(d['creation_time']) > 0) {
+			earliestRelevantDefectTimestamp = d['creation_time'];
+		}
+	});
+	return earliestRelevantDefectTimestamp;
+};
+
+const getHistoryLogsTimeRange = (defects) => {
+	return {
+		from:
+			settings.historyLogs && settings.historyLogs.manualTimeRange && settings.historyLogs.manualTimeRangeFrom ?
+			settings.historyLogs.manualTimeRangeFrom :
+			getEarliestTimestamp(defects) || '1970-01-01T00:00:00Z',
+		to:
+			settings.historyLogs && settings.historyLogs.manualTimeRange && settings.historyLogs.manualTimeRangeTo ?
+			settings.historyLogs.manualTimeRangeTo :
+			'2030-01-01T00:00:00Z'
+	};
+};
+
 module.exports = {
 	initCheckerResult,
 	addDefectAnomaly,
+	getHistoryLogsTimeRange,
 };
