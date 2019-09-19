@@ -159,6 +159,7 @@ const putMultipleToOctane = (uri, body) => {
 				resolve(res['total_count']);
 			} catch (err) {
 				logger.logError(`Error on putMultipleToOctane() - ${err.message || err}`);
+				logger.logError(body);
 				resolve(0);
 			}
 		});
