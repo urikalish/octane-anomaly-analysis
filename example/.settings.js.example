@@ -3,10 +3,10 @@ const settings = {
 	updateAlmOctane: false,
 	defectsRetrievalLimit: 5000,
 	historyLogs: {
-        manualTimeRange: false,
-        manualTimeRangeFrom: '2017-01-01T00:00:00Z',
-        manualTimeRangeTo: '2030-01-01T00:00:00Z',
-    },
+		manualTimeRange: false,
+		manualTimeRangeFrom: '2017-01-01T00:00:00Z',
+		manualTimeRangeTo: '2030-01-01T00:00:00Z',
+	},
 	updateAlmOctaneMaxBatch: 100,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
@@ -23,6 +23,7 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.fixed'
 				]
 			}
@@ -36,7 +37,8 @@ const settings = {
 				phasesToIgnore: [
 					'phase.defect.closed',
 					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
 				]
 			}
 		},
@@ -49,7 +51,8 @@ const settings = {
 				phasesToIgnore: [
 					'phase.defect.closed',
 					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
 				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10
@@ -65,12 +68,13 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.fixed'
 				],
 				defectTypesToIgnore: [
-                    'list_node_defect_type_cpe_incident_ln'
-                ],
-				manyCommentsCount: 7
+					'list_node_defect_type_cpe_incident_ln'
+				],
+				manyCommentsCount: 9
 			}
 		},
 		{
@@ -83,6 +87,7 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.fixed'
 				],
 				manyOwnersCount: 5
@@ -98,6 +103,7 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.rejected',
 					'phase.defect.fixed',
 				],
@@ -143,6 +149,7 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.new',
 					'phase.defect.opened'
 				],
@@ -188,6 +195,7 @@ const settings = {
 					'phase.defect.closed',
 					'phase.defect.duplicate',
 					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
 					'phase.defect.fixed'
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
@@ -202,7 +210,8 @@ const settings = {
 				phasesToIgnore: [
 					'phase.defect.closed',
 					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
@@ -216,7 +225,8 @@ const settings = {
 				phasesToIgnore: [
 					'phase.defect.closed',
 					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/
+					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
+					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
 				]
 			}
 		},
