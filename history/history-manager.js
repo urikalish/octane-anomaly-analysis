@@ -28,13 +28,16 @@ const getSingleActionHistoryLogs = async (action, fieldName, defectIds, fromTime
 						if (!result[audit.entity_id]) {
 							result[audit.entity_id] = [];
 						}
-						result[audit.entity_id].push({
-							time: audit.timestamp,
-							value: audit.change_set.find(change => change.field_name === fieldName).value_text
-						});
-						result[audit.entity_id] = result[audit.entity_id].sort((a,b) => {
-							return a.time.localeCompare(b.time);
-						});
+						const change = audit.change_set.find(change => change.field_name === fieldName);
+						if (change) {
+							result[audit.entity_id].push({
+								time: audit.timestamp,
+								value: change.value_text
+							});
+							result[audit.entity_id] = result[audit.entity_id].sort((a, b) => {
+								return a.time.localeCompare(b.time);
+							});
+						}
 					});
 				}
 			}
