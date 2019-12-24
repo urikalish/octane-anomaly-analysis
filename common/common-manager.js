@@ -9,7 +9,7 @@ const stories = {};
 const DEFECT_SUBTYPE = 'defect';
 const STORY_SUBTYPE = 'story';
 
-const ensureEntity = (id, entity, entities, subtype) => {
+const getEntityKey = (subtype) => {
 	let key = '';
 	switch (subtype) {
 		case 'defect':
@@ -19,6 +19,11 @@ const ensureEntity = (id, entity, entities, subtype) => {
 			key = 's';
 			break;
 	}
+	return key;
+};
+
+const ensureEntity = (id, entity, entities, subtype) => {
+	const key = getEntityKey(subtype);
 	if (!entities[id]) {
 		entities[id] = {
 			[key]: entity,
@@ -119,7 +124,7 @@ const checkForAnomalies = async (entities, subtype) => {
 	}
 };
 
-const constructOneEntityRecord = (value, id) => {
+const constructOneEntityRecord = (value, id, subtype) => {
 	let result = null;
 	if (tagsManager.hasIgnoreAnomalyTag(value.curTags)) {
 		value.newTags = [tagsManager.getIgnoreAnomalyTagName()];
@@ -138,8 +143,9 @@ const constructOneEntityRecord = (value, id) => {
 				data: []
 			}
 		};
-		if (value.d.user_tags['total_count'] && value.d.user_tags['total_count'] > 0) {
-			value.d.user_tags.data.forEach(t => {
+		const key = getEntityKey(subtype);
+		if (value[key].user_tags['total_count'] && value[key].user_tags['total_count'] > 0) {
+			value[key].user_tags.data.forEach(t => {
 				if (!tagsManager.isAnomalyTagId(t.id)) {
 					result.user_tags.data.push({
 						type: 'user_tag',
@@ -171,7 +177,7 @@ const logUpdateResult = (countEntitiesNeedUpdate, countEntitiesUpdated) => {
 	}
 };
 
-const updateAlmOctaneByBatches = async (entities) => {
+const updateAlmOctaneByBatches = async (entities, subtype) => {
 	try {
 		let maxEntitiesPerUpdateBatch = settings.updateAlmOctaneMaxBatch || 200;
 		logger.logMessage(`updateAlmOctaneByBatches() - Max batch size: ${maxEntitiesPerUpdateBatch}`);
@@ -180,7 +186,7 @@ const updateAlmOctaneByBatches = async (entities) => {
 		let countEntitiesSkipped = 0;
 		const promises = [];
 		_.forEach(entities, (value, id) => {
-			let oneEntityRecord = constructOneEntityRecord(value, id);
+			let oneEntityRecord = constructOneEntityRecord(value, id, subtype);
 			if (oneEntityRecord) {
 				const curBatchIndex = Math.trunc(countEntitiesNeedUpdate / maxEntitiesPerUpdateBatch);
 				if (!entitiesBatches[curBatchIndex]) {
@@ -213,7 +219,7 @@ const handleEntities  = async (entities, subtype) => {
 		await loadFromOctane(entities, subtype);
 		await checkForAnomalies(entities, subtype);
 		if (settings.updateAlmOctane) {
-			await updateAlmOctaneByBatches(entities);
+			await updateAlmOctaneByBatches(entities, subtype);
 		} else {
 			logger.logWarning('Skip update ALM Octane');
 		}
