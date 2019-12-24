@@ -144,17 +144,26 @@ const putMultipleToOctane = (uri, body) => {
 			}
 			try {
 				let res = JSON.parse(body);
-				if (!res['errors']) {
+				if (res['total_count'] && !res['errors']) {
 					logger.logMessage(`${res['total_count']} entities successfully updated`);
 				} else {
-					if (res['total_count'] === 0) {
+					if (!res['total_count'] || res['total_count'] === 0) {
 						logger.logWarning(`Nothing was updated`);
 					} else {
 						logger.logWarning(`Partial update (${res['total_count']}/${res['total_count'] + res['errors'].length})`);
 					}
-					res['errors'].forEach(e => {
-						logger.logError(`defect #${e['properties']['entity_id']} - ${e['description'].replace(/\r?\n|\r/g,' ')}`);
-					});
+					if (res['errors']) {
+						res['errors'].forEach(e => {
+							logger.logError(`defect #${e['properties']['entity_id']} - ${e['description'].replace(/\r?\n|\r/g,' ')}`);
+						});
+						resolve(0);
+					} else if (res['description_translated']) {
+						logger.logError(`${res['description_translated'].replace(/\r?\n|\r/g,' ')}`);
+						resolve(0);
+					} else if (res['description']) {
+						logger.logError(`${res['description'].replace(/\r?\n|\r/g,' ')}`);
+						resolve(0);
+					}
 				}
 				resolve(res['total_count']);
 			} catch (err) {
