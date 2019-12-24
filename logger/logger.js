@@ -41,6 +41,12 @@ const logAnomaly = (msg) => {
 	log.push(msg);
 };
 
+const logDivider = () => {
+	const msg = '--------------------------------------------------------------------------------';
+	console.log(chalk.magentaBright(msg));
+	log.push(msg);
+};
+
 module.exports = {
 	//getLog,
 	clearLog,
@@ -50,4 +56,5 @@ module.exports = {
 	logError,
 	logFuncError,
 	logAnomaly,
+	logDivider
 };

@@ -145,7 +145,7 @@ const putMultipleToOctane = (uri, body) => {
 			try {
 				let res = JSON.parse(body);
 				if (!res['errors']) {
-					logger.logMessage(`${res['total_count']} defects successfully updated`);
+					logger.logMessage(`${res['total_count']} entities successfully updated`);
 				} else {
 					if (res['total_count'] === 0) {
 						logger.logWarning(`Nothing was updated`);
@@ -245,46 +245,73 @@ const getDefectsUri = (isAsc, offset, limit, querySuffix, fields) => {
 	`&offset=${offset || 0}` +
 	`&limit=${limit || 1}` +
 	`&query="((subtype='defect')${(querySuffix ? ';' + querySuffix : '')})"` +
-	//`&fields=${fields || 'creation_time,suite_run,parent,defect_root_level,version_stamp,release,workspace_id,num_comments,path,wsjf_cod,rank,last_modified,phase,subtype_label,fixed_on,rroe,has_children,priority,user_tags,taxonomies,defects,estimated_hours,user_stories,initial_estimate,ordering,blocked,invested_hours,items_in_releases,logical_path,has_attachments,epic_type,story_points,quality_stories,global_text_search_result,total_risky_commits,team,time_criticality,cycle_time_expiration,progress,original_id,business_value,actual_story_points,sprint,fixed_in_build,features,item_origin,committers,commits_summary,quality_story_type,ancestors,defect_type,client_lock_stamp,author,product_areas,remaining_hours,last_runs,commit_files,commit_count,has_comments,tasks_number,name,detected_in_build,logical_name,description,detected_in_release,phase_to_time_in_phase,total_commits,requirement_feature,wsjf_score,detected_by,qa_owner,subtype,is_draft,closed_on,feature_count,new_tasks,owner,severity,requirements,feature_type,blocked_reason,job_size,time_in_current_phase,comments'}`;
-	`&fields=${fields || 'id,name,severity,team,owner,qa_owner,phase,creation_time,time_in_current_phase,defect_type,comments,attachments,user_tags'}`;
+	`&fields=${fields || 'id,subtype,name,severity,team,owner,qa_owner,phase,creation_time,time_in_current_phase,defect_type,comments,attachments,user_tags'}`;
 };
 
-const getTotalNumberOfDefects = async () => {
+const getStoriesUri = (isAsc, offset, limit, querySuffix, fields) => {
+	return apiUrl +
+	`/work_items` +
+	`?order_by=${isAsc ? '' : '-'}id` +
+	`&offset=${offset || 0}` +
+	`&limit=${limit || 1}` +
+	`&query="((subtype='story')${(querySuffix ? ';' + querySuffix : '')})"` +
+	`&fields=${fields || 'id,subtype,name,team,owner,qa_owner,phase,creation_time,time_in_current_phase,comments,attachments,user_tags'}`;
+};
+
+const getTotalNumberOfEntities = async (subtype) => {
 	try {
-		const uri = getDefectsUri(false, 0, 1, '', '');
+		let uri = '';
+		switch (subtype) {
+			case 'defect': {
+				uri = getDefectsUri(false, 0, 1, '', '');
+				break;
+			}
+			case 'story': {
+				uri = getStoriesUri(false, 0, 1, '', '');
+			}
+		}
 		const result = await getFromOctane(uri);
 		return result['total_count'];
 	} catch(err) {
-		logger.logFuncError('getTotalNumberOfDefects', err);
+		logger.logFuncError('getTotalNumberOfEntities', err);
 		throw err;
 	}
 };
 
-const getDefectsBatch = async (offset, limit, total) => {
+const getEntitiesBatch = async (offset, limit, total, subtype) => {
 	try {
-		const uri = getDefectsUri(false, offset, limit, '', '');
+		let uri = '';
+		switch (subtype) {
+			case 'defect': {
+				uri = getDefectsUri(false, offset, limit, '', '');
+				break;
+			}
+			case 'story': {
+				uri = getStoriesUri(false, offset, limit, '', '');
+			}
+		}
 		const result = await getFromOctane(uri);
 		loadedCount += limit;
 		const per = Math.round(100.0 * loadedCount / total);
 		if (per !== loadedPercent) {
 			loadedPercent = per;
-			logger.logMessage(`Retrieving defects... ${loadedPercent}%`);
+			logger.logMessage(`Retrieving entities... ${loadedPercent}%`);
 		}
 		return result;
 	} catch(err) {
-		logger.logFuncError('getDefectsBatch', err);
+		logger.logFuncError('getEntitiesBatch', err);
 		throw err;
 	}
 };
 
-const getLastDefects = async (needed) => {
+const getLastEntities = async (needed, subtype) => {
 	try {
 		let offset = 0;
 		const batch = 500;
 		const promises = [];
 		while (needed > offset) {
 			const limit = ((needed - offset) >  batch) ? batch : needed - offset;
-			promises.push(getDefectsBatch(offset, limit, needed));
+			promises.push(getEntitiesBatch(offset, limit, needed, subtype));
 			offset += batch;
 		}
 		loadedCount = 0;
@@ -324,9 +351,18 @@ const verifyUserTag = async (tagName) => {
 	}
 };
 
-const getTaggedDefects = async (tagId1, tagId2) => {
+const getTaggedEntities = async (tagId1, tagId2, subtype) => {
 	try {
-		const uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+		let uri = '';
+		switch (subtype) {
+			case 'defect': {
+				uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+				break;
+			}
+			case 'story': {
+				uri = getStoriesUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+			}
+		}
 		return await getFromOctane(uri);
 	} catch(err) {
 		logger.logFuncError('getTaggedDefects', err);
@@ -334,33 +370,10 @@ const getTaggedDefects = async (tagId1, tagId2) => {
 	}
 };
 
-// const updateDefectUserTags = (defectId, body) => {
-// 	const url =  `${apiUrl}/work_items/${defectId}`;
-// 	return putToOctane(url, body, defectId);
-// };
-
-const updateMultipleDefectsUserTags = (body) => {
+const updateMultipleEntitiesUserTags = (body) => {
 	const url =  `${apiUrl}/work_items/`;
 	return putMultipleToOctane(url, body);
 };
-
-// const getAllUserTags = async () => {
-// 	const url = `${apiUrl}/user_tags?fields=id,name`;
-// 	const results = await getFromOctane(url);
-// 	return (results && results['total_count'] !== 0) ? results.data : [];
-// };
-//
-// const getAllPhases = async () => {
-// 	const url = `${apiUrl}/phases?fields=id,name,logical_name`;
-// 	const results = await getFromOctane(url);
-// 	return (results && results['total_count'] !== 0) ? results.data : [];
-// };
-//
-// const getAllSeverities = async () => {
-// 	const url = `${apiUrl}/list_nodes?query="(((list_root={(id='list_node.severity')})))"&fields=id,name,logical_name`;
-// 	const results = await getFromOctane(url);
-// 	return (results && results['total_count'] !== 0) ? results.data : [];
-// };
 
 const getHeaders = () => {
 	const headers = {
@@ -395,10 +408,10 @@ const getHistoryLogsBatch = async (action, fieldName, fromTimestamp, toTimestamp
 module.exports = {
 	verifyUserTag,
 	postToOctane,
-	getTotalNumberOfDefects,
-	updateMultipleDefectsUserTags,
-	getLastDefects,
-	getTaggedDefects,
+	getTotalNumberOfEntities,
+	updateMultipleEntitiesUserTags,
+	getLastEntities,
+	getTaggedEntities,
 	getAttachment,
 	getHistoryLogsBatch,
 };

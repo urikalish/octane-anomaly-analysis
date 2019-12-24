@@ -3,7 +3,7 @@ require('dotenv').config();
 const logger = require('./logger/logger');
 const octaneAuthenticator = require('./octane/octane-authenticator');
 const tagsManager = require('./tags/tags-manager');
-const defectsManager = require('./defects/defects-manager');
+const commonManager = require('./common/common-manager');
 const MAX_TRY_COUNT = 3;
 const WAIT_SECS_BETWEEN_TRIES = 5;
 let tryCount = 0;
@@ -16,7 +16,7 @@ const run = async () => {
 		logger.logSuccess('Authenticated - OK');
 		await tagsManager.loadUserTags();
 		const startTime = new Date();
-		await defectsManager.handleDefects();
+		await commonManager.handleAllEntities();
 		logger.logSuccess(`Done - ${Math.round(((new Date()).getTime() - startTime.getTime()) / 1000)} seconds`);
 	} catch (err) {
 		logger.logError('Error');
