@@ -91,13 +91,13 @@ const checkForAnomalies = async (entities, subtype) => {
 			const checkerName = result.checkerName;
 			if (result) {
 				_.forEach(result.anomalies, (value, id) => {
-					const defect = ensureEntity(id, value.d, entities, subtype);
-					if (!tagsManager.hasGeneralAnomalyTag(defect.newTags)) {
-						defect.newTags.push(tagsManager.getGeneralAnomalyTagName());
+					const entity = ensureEntity(id, value.e, entities, subtype);
+					if (!tagsManager.hasGeneralAnomalyTag(entity.newTags)) {
+						entity.newTags.push(tagsManager.getGeneralAnomalyTagName());
 					}
-					defect.newTags.push(tagMap[checkerName]);
-					defect.newTags.sort();
-					defect.anomalies.push(value.text);
+					entity.newTags.push(tagMap[checkerName]);
+					entity.newTags.sort();
+					entity.anomalies.push(value.text);
 					logger.logAnomaly(value.text);
 					totalAnomalies++;
 				});
@@ -240,6 +240,5 @@ const handleAllEntities  = async () => {
 module.exports = {
 	loadFromOctane,
 	checkForAnomalies,
-	updateAlmOctaneByBatches,
 	handleAllEntities
 };

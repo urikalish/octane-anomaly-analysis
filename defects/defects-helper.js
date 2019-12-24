@@ -1,35 +1,21 @@
 'use strict';
 const settings = require('../.settings');
-
-const getDefectOwnersStr = (d) => {
-	const owner = d.owner && (d.owner.full_name || d.owner.name);
-	const qaOwner = d.qa_owner && (d.qa_owner.full_name || d.qa_owner.name);
-	let ownerStr = '<No Owner>';
-	if (owner) {
-		ownerStr = 'DEV: ' + owner + (qaOwner ? `, QA: ${qaOwner}` : '');
-	} else if (qaOwner) {
-		ownerStr = 'QA: ' + qaOwner;
-	}
-	return ownerStr;
-};
+const commonHelper = require('../common/common-helper');
 
 const getDefectDetailsStr = (d) => {
 	if (!d.severity) {
 		console.log('############' + d.id);
 	}
-	return `${d.severity ? d.severity.name : '<No Severity>'} | ${d.phase ? d.phase.name : '<No Phase>'} | ${d.team ? d.team.name : '<No Team>'} | ${getDefectOwnersStr(d)} | #${d.id || '<No ID>'} | ${d.name || '<No Name>'}`;
+	return `${d.severity ? d.severity.name : '<No Severity>'} | ${d.phase ? d.phase.name : '<No Phase>'} | ${d.team ? d.team.name : '<No Team>'} | ${commonHelper.getEntityOwnersStr(d)} | #${d.id || '<No ID>'} | ${d.name || '<No Name>'}`;
 };
 
 const initCheckerResult = (checkerName) => {
-	return {
-		checkerName: checkerName,
-		anomalies: {}
-	}
+	return commonHelper.initCheckerResult(checkerName);
 };
 
 const addDefectAnomaly = (checkerResult, d, text) => {
 	checkerResult.anomalies[d.id] = {
-		d: d,
+		e: d,
 		checkerName: checkerResult.checkerName,
 		text: `${text} | ${getDefectDetailsStr(d)}`
 	};
