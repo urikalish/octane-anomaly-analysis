@@ -1,6 +1,6 @@
 'use strict';
 const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
-const helper = require('../defects/defects-helper');
+const helper = require('../helpers/defects-helper');
 const octaneDataProvider = require('../octane/octane-data-provider');
 
 const check = async (defects, options) => {

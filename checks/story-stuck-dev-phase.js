@@ -1,6 +1,6 @@
 'use strict';
 const checkerName = require('path').basename(__filename).substring(0, require('path').basename(__filename).length - 3);
-const helper = require('../stories/stories-helper');
+const helper = require('../helpers/stories-helper');
 
 const check = async (stories, options) => {
 	const result = helper.initCheckerResult(checkerName);

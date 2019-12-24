@@ -1,6 +1,6 @@
 'use strict';
 const settings = require('../.settings');
-const commonHelper = require('../common/common-helper');
+const commonHelper = require('./common-helper');
 
 const getDefectDetailsStr = (d) => {
 	if (!d.severity) {

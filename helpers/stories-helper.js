@@ -1,5 +1,5 @@
 'use strict';
-const commonHelper = require('../common/common-helper');
+const commonHelper = require('./common-helper');
 
 const initCheckerResult = (checkerName) => {
 	return commonHelper.initCheckerResult(checkerName);
