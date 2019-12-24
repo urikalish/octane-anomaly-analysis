@@ -20,16 +20,6 @@ const getDefectDetailsStr = (d) => {
 	return `${d.severity ? d.severity.name : '<No Severity>'} | ${d.phase ? d.phase.name : '<No Phase>'} | ${d.team ? d.team.name : '<No Team>'} | ${getDefectOwnersStr(d)} | #${d.id || '<No ID>'} | ${d.name || '<No Name>'}`;
 };
 
-// const compareDefects = (a, b) => {
-// 	if (a.severity.logical_name === b.severity.logical_name) {
-// 		if (a.phase.name === b.phase.name) {
-// 			return 0;
-// 		}
-// 		return a.phase.name < b.phase.name ? -1 : 1;
-// 	}
-// 	return getSeverityOrder(a.severity) - getSeverityOrder(b.severity);
-// };
-
 const initCheckerResult = (checkerName) => {
 	return {
 		checkerName: checkerName,
