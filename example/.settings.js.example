@@ -14,6 +14,52 @@ const settings = {
 	ignoreAnomalyTag: 'Ignore Anomaly',
 	saveToLocalStorage: true,
 	checkers: [
+	    {
+            name: 'story-stuck-dev-phase',
+            enabled: true,
+            tag: 'Anomaly: Stuck in DEV Phase',
+            entity: 'story',
+            options: {
+                phasesToIgnore: [
+                    'phase.story.done',
+                    '97z8n12ekrl2pbq05y093j5mr' /*cancelled*/,
+                    'phase.story.intesting',
+                    'doy0kl5mev40ra61rz46q9q2j' /*ready for QA*/,
+                ],
+                phasesMaxDays: {
+                    'phase.story.new': 600,
+                    '2p9l7rp25mzjqa0m52n3owmed': 60, /*ready for R&D*/
+                    'phase.story.inprogress': 30,
+                    'm9nd7d9kdgvpebyqdmm214qyx': 30, /*fixing defects*/
+                    '_DEFAULT': { //every other non-specified phase
+                        '_DEFAULT': 30 //every other non-specified phase
+                    }
+                }
+            }
+        },
+        {
+            name: 'story-stuck-qa-phase',
+            enabled: true,
+            tag: 'Anomaly: Stuck in QA Phase',
+            entity: 'story',
+            options: {
+                phasesToIgnore: [
+                    'phase.story.done',
+                    '97z8n12ekrl2pbq05y093j5mr', /*cancelled*/
+                    'phase.story.new',
+                    '2p9l7rp25mzjqa0m52n3owmed', /*ready for R&D*/
+                    'phase.story.inprogress',
+                    'm9nd7d9kdgvpebyqdmm214qyx' /*fixing defects*/
+                ],
+                phasesMaxDays: {
+                    'phase.story.intesting': 30,
+                    'doy0kl5mev40ra61rz46q9q2j': 30, /*ready for QA*/
+                    '_DEFAULT': { //every other non-specified phase
+                        '_DEFAULT': 30 //every other non-specified phase
+                    }
+                }
+            }
+        },
 		{
 			name: 'defect-inactive-dev-owner',
 			enabled: true,
