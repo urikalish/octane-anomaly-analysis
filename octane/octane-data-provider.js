@@ -157,11 +157,8 @@ const putMultipleToOctane = (uri, body) => {
 							logger.logError(`defect #${e['properties']['entity_id']} - ${e['description'].replace(/\r?\n|\r/g,' ')}`);
 						});
 						resolve(0);
-					} else if (res['description_translated']) {
-						logger.logError(`${res['description_translated'].replace(/\r?\n|\r/g,' ')}`);
-						resolve(0);
-					} else if (res['description']) {
-						logger.logError(`${res['description'].replace(/\r?\n|\r/g,' ')}`);
+					} else if (res['description_translated'] || res['description']) {
+						logger.logError(`${(res['description_translated'] || res['description']).replace(/\r?\n|\r/g,' ')}`);
 						resolve(0);
 					}
 				}
