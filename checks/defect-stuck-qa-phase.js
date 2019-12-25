@@ -9,7 +9,7 @@ const check = async (defects, options) => {
 		&& d.severity
 		&& !options.phasesToIgnore.includes(d.phase.name)
 		&& d['time_in_current_phase']) {
-			const severityItem = options.phasesMaxDays[d.severity.logical_name] || options.phasesMaxDays['_DEFAULT'];
+			const severityItem = options.phasesMaxDays[d.severity.name] || options.phasesMaxDays['_DEFAULT'];
 			const maxDays = severityItem[d.phase.name] || severityItem['_DEFAULT'];
 			const daysInCurrentPhase = Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);
 			if (daysInCurrentPhase > maxDays) {
