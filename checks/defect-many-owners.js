@@ -9,7 +9,7 @@ const check = async (defects, options) => {
 	const relevantDefects = {};
 	const relevantDefectIds = [];
 	defects.forEach(d => {
-		if (!options.phasesToIgnore.includes(d.phase.logical_name)) {
+		if (!options.phasesToIgnore.includes(d.phase.name)) {
 			relevantDefects[d.id] = d;
 			relevantDefectIds.push(d.id);
 		}

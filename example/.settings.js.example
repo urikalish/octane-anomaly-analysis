@@ -5,57 +5,56 @@ const settings = {
 	storiesRetrievalLimit: 5000,
 	historyLogs: {
 		manualTimeRange: false,
-		manualTimeRangeFrom: '2017-01-01T00:00:00Z',
+		manualTimeRangeFrom: '2018-01-01T00:00:00Z',
 		manualTimeRangeTo: '2030-01-01T00:00:00Z',
 	},
 	updateAlmOctaneMaxBatch: 100,
 	generalAnomalyTag: 'Anomaly',
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
-	saveToLocalStorage: true,
 	checkers: [
-	    {
-            name: 'story-stuck-dev-phase',
-            enabled: true,
-            tag: 'Anomaly: Stuck in DEV Phase',
-            entity: 'story',
-            options: {
-                phasesToIgnore: [
-                    'Cancelled',
-                    'Ready for QA',
-                    'In Testing',
-                    'Done',
-                ],
-                phasesMaxDays: {
-                    'New': 600,
-                    'Ready for R&D': 60,
-                    'In Progress': 30,
-                    'Fixing Defects': 30,
-                    '_DEFAULT': 30, //every other non-specified phase
-                }
-            }
-        },
-        {
-            name: 'story-stuck-qa-phase',
-            enabled: true,
-            tag: 'Anomaly: Stuck in QA Phase',
-            entity: 'story',
-            options: {
-                phasesToIgnore: [
-                    'New',
-                    'Cancelled',
-                    'Ready for R&D',
-                    'In Progress',
-                    'Fixing Defects',
-                    'Done',
-                ],
-                phasesMaxDays: {
-                    'Ready for QA': 30,
-                    'In Testing': 30,
-                    '_DEFAULT': 30 //every other non-specified phase
-                }
-            }
-        },
+		{
+			name: 'story-stuck-dev-phase',
+			enabled: true,
+			tag: 'Anomaly: Stuck in DEV Phase',
+			entity: 'story',
+			options: {
+				phasesToIgnore: [
+					'Cancelled',
+					'Ready for QA',
+					'In Testing',
+					'Done',
+				],
+				phasesMaxDays: {
+					'New': 600,
+					'Ready for R&D': 60,
+					'In Progress': 30,
+					'Fixing Defects': 30,
+					'_DEFAULT': 30, //every other non-specified phase
+				}
+			}
+		},
+		{
+			name: 'story-stuck-qa-phase',
+			enabled: true,
+			tag: 'Anomaly: Stuck in QA Phase',
+			entity: 'story',
+			options: {
+				phasesToIgnore: [
+					'New',
+					'Cancelled',
+					'Ready for R&D',
+					'In Progress',
+					'Fixing Defects',
+					'Done',
+				],
+				phasesMaxDays: {
+					'Ready for QA': 30,
+					'In Testing': 30,
+					'_DEFAULT': 30 //every other non-specified phase
+				}
+			}
+		},
 		{
 			name: 'defect-inactive-dev-owner',
 			enabled: true,
@@ -63,11 +62,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
-					'phase.defect.fixed'
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
+					'Fixed'
 				]
 			}
 		},
@@ -78,24 +77,24 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred'
 				]
 			}
 		},
 		{
 			name: 'defect-large-attachments',
-			enabled: true,
+			enabled: false,
 			tag: 'Anomaly: Large Attachments',
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred'
 				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10
@@ -108,11 +107,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
-					'phase.defect.fixed'
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
+					'Fixed'
 				],
 				defectTypesToIgnore: [
 					'list_node_defect_type_cpe_incident_ln'
@@ -127,11 +126,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
-					'phase.defect.fixed'
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
+					'Fixed'
 				],
 				manyOwnersCount: 5
 			}
@@ -143,37 +142,37 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
 					'phase.defect.rejected',
-					'phase.defect.fixed',
+					'Fixed',
 				],
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
-						'phase.defect.new': 1,
-						'phase.defect.opened': 3,
+						'New': 1,
+						'Opened': 3,
 						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'list_node.severity.very_high': {
-						'phase.defect.new': 7,
-						'phase.defect.opened': 7,
+						'New': 7,
+						'Opened': 7,
 						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.high': {
-						'phase.defect.new': 30,
-						'phase.defect.opened': 7,
+						'New': 30,
+						'Opened': 7,
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
-						'phase.defect.new': 99,
-						'phase.defect.opened': 99,
+						'New': 99,
+						'Opened': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
-						'phase.defect.new': 99,
-						'phase.defect.opened': 99,
+						'New': 99,
+						'Opened': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
@@ -189,36 +188,36 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
-					'phase.defect.new',
-					'phase.defect.opened'
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
+					'New',
+					'Opened'
 				],
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
-						'phase.defect.fixed': 3,
+						'Fixed': 3,
 						'phase.defect.rejected': 3,
 						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'list_node.severity.very_high': {
-						'phase.defect.fixed': 7,
+						'Fixed': 7,
 						'phase.defect.rejected': 7,
 						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.high': {
-						'phase.defect.fixed': 7,
+						'Fixed': 7,
 						'phase.defect.rejected': 7,
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
-						'phase.defect.fixed': 7,
+						'Fixed': 7,
 						'phase.defect.rejected': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
-						'phase.defect.fixed': 7,
+						'Fixed': 7,
 						'phase.defect.rejected': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
@@ -235,11 +234,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/,
-					'phase.defect.fixed'
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred',
+					'Fixed'
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
@@ -251,10 +250,10 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred'
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
@@ -266,10 +265,10 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'phase.defect.closed',
-					'phase.defect.duplicate',
-					'n4e05glkovrvs1kz6l6ly9lq3' /*rejected*/,
-					'rn3x5ee9r2zjeiwl8g1ny5q71' /*deferred*/
+					'Closed',
+					'Duplicate',
+					'Rejected',
+					'Deferred'
 				]
 			}
 		},

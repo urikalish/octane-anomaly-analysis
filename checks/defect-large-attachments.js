@@ -9,7 +9,7 @@ const check = async (defects, options) => {
 	let checkedDefects = 0;
 	for (let i = 0; i < defects.length; i++) {
 		const d = defects[i];
-		if (!options.phasesToIgnore.includes(d.phase.logical_name)
+		if (!options.phasesToIgnore.includes(d.phase.name)
 		&& d.attachments && d.attachments['total_count']
 		&& d.attachments['total_count'] > 0) {
 			relevantDefects++;

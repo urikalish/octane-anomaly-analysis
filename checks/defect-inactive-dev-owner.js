@@ -6,7 +6,7 @@ const check = async (defects, options) => {
 	const result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
 		if (d.owner && d.owner.activity_level === 1
-		&& !options.phasesToIgnore.includes(d.phase.logical_name)) {
+		&& !options.phasesToIgnore.includes(d.phase.name)) {
 			helper.addDefectAnomaly(result, d, `Defect with an inactive DEV owner (${d.owner.full_name})`);
 		}
 	});

@@ -5,7 +5,7 @@ const helper = require('../helpers/defects-helper');
 const check = async (defects, options) => {
 	const result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
-		if (!options.phasesToIgnore.includes(d.phase.logical_name) && false/*replace with real conditions...*/) {
+		if (!options.phasesToIgnore.includes(d.phase.name) && false/*replace with real conditions...*/) {
 			helper.addDefectAnomaly(result, d, `Defect with my anomaly (...)`);
 		}
 	});

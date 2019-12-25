@@ -7,10 +7,10 @@ const check = async (defects, options) => {
 	defects.forEach(d => {
 		if (d.phase
 		&& d.severity
-		&& !options.phasesToIgnore.includes(d.phase.logical_name)
+		&& !options.phasesToIgnore.includes(d.phase.name)
 		&& d['time_in_current_phase']) {
 			const severityItem = options.phasesMaxDays[d.severity.logical_name] || options.phasesMaxDays['_DEFAULT'];
-			const maxDays = severityItem[d.phase.logical_name.toLowerCase()] || severityItem['_DEFAULT'];
+			const maxDays = severityItem[d.phase.name] || severityItem['_DEFAULT'];
 			const daysInCurrentPhase = Math.floor(d['time_in_current_phase'] / 1000 / 60 / 60 / 24);
 			if (daysInCurrentPhase > maxDays) {
 				helper.addDefectAnomaly(result, d, `Defect stuck in QA phase (${daysInCurrentPhase} days)`);

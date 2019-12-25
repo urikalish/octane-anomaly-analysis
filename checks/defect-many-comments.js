@@ -5,7 +5,7 @@ const helper = require('../helpers/defects-helper');
 const check = async (defects, options) => {
 	const result = helper.initCheckerResult(checkerName);
 	defects.forEach(d => {
-		if (!options.phasesToIgnore.includes(d.phase.logical_name)
+		if (!options.phasesToIgnore.includes(d.phase.name)
 		&& !options.defectTypesToIgnore.includes(d.defect_type.logical_name)
 		&& d.comments && d.comments['total_count']
 		&& d.comments['total_count'] >= options.manyCommentsCount) {
