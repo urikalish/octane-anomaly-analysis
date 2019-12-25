@@ -108,23 +108,6 @@ const settings = {
 			}
 		},
 		{
-			name: 'defect-large-attachments',
-			enabled: false,
-			tag: 'Anomaly: Large Attachments',
-			entity: 'defect',
-			options: {
-				phasesToIgnore: [
-					'Closed',
-					'Converted to Feature',
-					'Deferred',
-					'Duplicate',
-					'Rejected',
-				],
-				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
-				attachmentsLargeSizeMB: 10
-			}
-		},
-		{
 			name: 'defect-many-comments',
 			enabled: true,
 			tag: 'Anomaly: Many Comments',
