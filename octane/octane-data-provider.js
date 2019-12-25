@@ -84,49 +84,6 @@ const postToOctane = (uri, body) => {
 	});
 };
 
-// const putToOctane = (uri, body, defectId) => {
-// 	return new Promise((resolve, reject) => {
-// 		const options = {
-// 			method: 'PUT',
-// 			url: uri,
-// 			headers: getHeaders()
-// 		};
-// 		if (body) {
-// 			options.body = JSON.stringify(body);
-// 		}
-// 		request(options, (err, response, body) => {
-// 			if (err) {
-// 				return reject(err);
-// 			}
-// 			if (response.statusCode < 200 || response.statusCode > 299) {
-// 				let errObj = null;
-// 				try {
-// 					errObj = JSON.parse(body);
-// 				} catch (e) {
-// 				}
-// 				const errDesc = errObj ? (JSON.parse(body)).description.replace(/\r?\n|\r/g, ' ') : '';
-// 				logger.logWarning(`Unable to update defect #${defectId} - ${response.statusCode}. ${response.statusMessage}. ${errDesc}`);
-// 				return resolve(null);
-// 			}
-// 			if (response.headers['set-cookie']) {
-// 				response.headers['set-cookie'].forEach((cookie) => {
-// 					cookieJar.setCookie(Cookie.parse(cookie), process.env.SERVER_DOMAIN, {}, (error) => {
-// 						if (error) {
-// 							logger.logError(error);
-// 							return reject(error);
-// 						}
-// 					});
-// 				});
-// 			}
-// 			try {
-// 				resolve({response: response, body: JSON.parse(body)});
-// 			} catch (e) {
-// 				resolve(body);
-// 			}
-// 		});
-// 	});
-// };
-
 const putMultipleToOctane = (uri, body) => {
 	return new Promise((resolve /*, reject*/) => {
 		const options = {
@@ -171,62 +128,6 @@ const putMultipleToOctane = (uri, body) => {
 		});
 	});
 };
-
-// const getHistoryUri = (entityId, entityType) => {
-// 	return apiUrl +	`/historys?query="entity_id=${entityId};entity_type='${entityType || 'defect'}'"`
-// };
-//
-// const getHistory = (entityId) => {
-// 	return new Promise((resolve /*, reject*/) => {
-// 		const uri = getHistoryUri(entityId);
-// 		getFromOctane(uri).then(
-// 		(result) => {
-// 			resolve(result);
-// 		},
-// 		(err) => {
-// 			logger.logWarning(`Unable to get history for entity #${entityId} - ${(err.message || err)}`);
-// 			resolve(null);
-// 		}
-// 		);
-// 	});
-// };
-
-// const getHistoriesUri = (entityIds, entityType) => {
-// 	return apiUrl +	`/historys?query="entity_id IN ${entityIds.join()};entity_type='${entityType || 'defect'}'"`
-// };
-
-// const getHistories = async (entityIds) => {
-// 	const promises = [];
-// 	let counter = 0;
-// 	let ids = [];
-// 	entityIds.forEach(id => {
-// 		ids.push(id);
-// 		counter++;
-// 		if (counter % 10 === 0 || counter === entityIds.length) {
-// 			promises.push(getFromOctane(getHistoriesUri(ids)));
-// 			ids = [];
-// 		}
-// 	});
-// 	try {
-// 		const historyResults = await Promise.all(promises);
-// 		const result = {
-// 			data: []
-// 		};
-// 		historyResults.forEach(historyResult => {
-// 			if (historyResult.data) {
-// 				historyResult.data.forEach(d => {
-// 					result.data.push(d);
-// 				});
-// 			} else {
-// 				logger.logWarning(`Unable to get history for entities`);
-// 			}
-// 		});
-// 		return result;
-// 	} catch(err) {
-// 		logger.logWarning(`Unable to get history for some entities - ${(err.message || err)}`);
-// 		return null;
-// 	}
-// };
 
 const getAttachmentUri = (entityId) => {
 	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
@@ -274,23 +175,28 @@ const getQualityStoriesUri = (isAsc, offset, limit, querySuffix, fields) => {
 	`&fields=${fields || 'id,subtype,name,team,owner,qa_owner,phase,creation_time,time_in_current_phase,comments,attachments,user_tags'}`;
 };
 
+const getEntityUri = async (isAsc, offset, limit, querySuffix, fields, subtype) => {
+	let uri = '';
+	switch (subtype) {
+		case 'defect': {
+			uri = getDefectsUri(isAsc, offset, limit, querySuffix, fields);
+			break;
+		}
+		case 'story': {
+			uri = getStoriesUri(isAsc, offset, limit, querySuffix, fields);
+			break;
+		}
+		case 'quality_story': {
+			uri = getQualityStoriesUri(isAsc, offset, limit, querySuffix, fields);
+			break;
+		}
+	}
+	return uri;
+};
+
 const getTotalNumberOfEntities = async (subtype) => {
 	try {
-		let uri = '';
-		switch (subtype) {
-			case 'defect': {
-				uri = getDefectsUri(false, 0, 1, '', '');
-				break;
-			}
-			case 'story': {
-				uri = getStoriesUri(false, 0, 1, '', '');
-				break;
-			}
-			case 'quality_story': {
-				uri = getQualityStoriesUri(false, 0, 1, '', '');
-				break;
-			}
-		}
+		let uri = getEntityUri(false, 0, 1, '', '', subtype);
 		const result = await getFromOctane(uri);
 		return result['total_count'];
 	} catch(err) {
@@ -301,21 +207,7 @@ const getTotalNumberOfEntities = async (subtype) => {
 
 const getEntitiesBatch = async (offset, limit, total, subtype) => {
 	try {
-		let uri = '';
-		switch (subtype) {
-			case 'defect': {
-				uri = getDefectsUri(false, offset, limit, '', '');
-				break;
-			}
-			case 'story': {
-				uri = getStoriesUri(false, offset, limit, '', '');
-				break;
-			}
-			case 'quality_story': {
-				uri = getQualityStoriesUri(false, offset, limit, '', '');
-				break;
-			}
-		}
+		let uri = getEntityUri(false, offset, limit, '', '', subtype);
 		const result = await getFromOctane(uri);
 		loadedCount += limit;
 		const per = Math.round(100.0 * loadedCount / total);
@@ -379,21 +271,7 @@ const verifyUserTag = async (tagName) => {
 
 const getTaggedEntities = async (tagId1, tagId2, subtype) => {
 	try {
-		let uri = '';
-		switch (subtype) {
-			case 'defect': {
-				uri = getDefectsUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
-				break;
-			}
-			case 'story': {
-				uri = getStoriesUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
-				break;
-			}
-			case 'quality_story': {
-				uri = getQualityStoriesUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
-				break;
-			}
-		}
+		let uri = getEntityUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '', subtype);
 		return await getFromOctane(uri);
 	} catch(err) {
 		logger.logFuncError('getTaggedDefects', err);
