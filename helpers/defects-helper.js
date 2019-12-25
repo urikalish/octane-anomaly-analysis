@@ -13,12 +13,8 @@ const initCheckerResult = (checkerName) => {
 	return commonHelper.initCheckerResult(checkerName);
 };
 
-const addDefectAnomaly = (checkerResult, d, text) => {
-	checkerResult.anomalies[d.id] = {
-		e: d,
-		checkerName: checkerResult.checkerName,
-		text: `${text} | ${getDefectDetailsStr(d)}`
-	};
+const addDefectAnomaly = (checkerResult, e, text) => {
+	commonHelper.addAnomaly(checkerResult, e, `${text} | ${getDefectDetailsStr(e)}`);
 };
 
 const getEarliestTimestamp = (defects) => {

@@ -3,6 +3,7 @@ const settings = {
 	updateAlmOctane: false,
 	defectsRetrievalLimit: 5000,
 	storiesRetrievalLimit: 5000,
+	qualityStoriesRetrievalLimit: 5000,
 	historyLogs: {
 		manualTimeRange: false,
 		manualTimeRangeFrom: '2018-01-01T00:00:00Z',
@@ -51,6 +52,23 @@ const settings = {
 				phasesMaxDays: {
 					'Ready for QA': 30,
 					'In Testing': 30,
+					'_DEFAULT': 30 //every other non-specified phase
+				}
+			}
+		},
+		{
+			name: 'quality-story-stuck-qa-phase',
+			enabled: true,
+			tag: 'Anomaly: Stuck in QA Phase',
+			entity: 'quality_story',
+			options: {
+				phasesToIgnore: [
+					'Done',
+				],
+				phasesMaxDays: {
+					'New': 300,
+					'In Progress': 30,
+					'Postponed': 99,
 					'_DEFAULT': 30 //every other non-specified phase
 				}
 			}

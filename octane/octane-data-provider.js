@@ -264,6 +264,16 @@ const getStoriesUri = (isAsc, offset, limit, querySuffix, fields) => {
 	`&fields=${fields || 'id,subtype,name,team,owner,qa_owner,phase,creation_time,time_in_current_phase,comments,attachments,user_tags'}`;
 };
 
+const getQualityStoriesUri = (isAsc, offset, limit, querySuffix, fields) => {
+	return apiUrl +
+	`/work_items` +
+	`?order_by=${isAsc ? '' : '-'}id` +
+	`&offset=${offset || 0}` +
+	`&limit=${limit || 1}` +
+	`&query="((subtype='quality_story')${(querySuffix ? ';' + querySuffix : '')})"` +
+	`&fields=${fields || 'id,subtype,name,team,owner,qa_owner,phase,creation_time,time_in_current_phase,comments,attachments,user_tags'}`;
+};
+
 const getTotalNumberOfEntities = async (subtype) => {
 	try {
 		let uri = '';
@@ -274,6 +284,11 @@ const getTotalNumberOfEntities = async (subtype) => {
 			}
 			case 'story': {
 				uri = getStoriesUri(false, 0, 1, '', '');
+				break;
+			}
+			case 'quality_story': {
+				uri = getQualityStoriesUri(false, 0, 1, '', '');
+				break;
 			}
 		}
 		const result = await getFromOctane(uri);
@@ -294,6 +309,11 @@ const getEntitiesBatch = async (offset, limit, total, subtype) => {
 			}
 			case 'story': {
 				uri = getStoriesUri(false, offset, limit, '', '');
+				break;
+			}
+			case 'quality_story': {
+				uri = getQualityStoriesUri(false, offset, limit, '', '');
+				break;
 			}
 		}
 		const result = await getFromOctane(uri);
@@ -367,6 +387,11 @@ const getTaggedEntities = async (tagId1, tagId2, subtype) => {
 			}
 			case 'story': {
 				uri = getStoriesUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+				break;
+			}
+			case 'quality_story': {
+				uri = getQualityStoriesUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '');
+				break;
 			}
 		}
 		return await getFromOctane(uri);

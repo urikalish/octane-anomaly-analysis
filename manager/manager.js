@@ -6,8 +6,10 @@ const tagsManager = require('../tags/tags-manager');
 const octaneDataProvider = require('../octane/octane-data-provider');
 const defects = {};
 const stories = {};
+const qualityStories = {};
 const DEFECT_SUBTYPE = 'defect';
 const STORY_SUBTYPE = 'story';
+const QUALITY_STORY_SUBTYPE = 'quality_story';
 
 const getEntityKey = (subtype) => {
 	let key = '';
@@ -17,6 +19,9 @@ const getEntityKey = (subtype) => {
 			break;
 		case 'story':
 			key = 's';
+			break;
+		case 'quality_story':
+			key = 'qs';
 			break;
 	}
 	return key;
@@ -71,6 +76,9 @@ const checkForAnomalies = async (entities, subtype) => {
 				break;
 			case 'story':
 				retrievalLimit = settings.storiesRetrievalLimit;
+				break;
+			case 'quality_story':
+				retrievalLimit = settings.qualityStoriesRetrievalLimit;
 				break;
 		}
 		logger.logMessage(`checkForAnomalies() subtype: ${subtype}`);
@@ -236,6 +244,8 @@ const handleAllEntities  = async () => {
 		await handleEntities(defects, DEFECT_SUBTYPE);
 		logger.logDivider();
 		await handleEntities(stories, STORY_SUBTYPE);
+		logger.logDivider();
+		await handleEntities(qualityStories, QUALITY_STORY_SUBTYPE);
 		logger.logDivider();
 	} catch(err) {
 		logger.logFuncError('handleAllEntities', err);
