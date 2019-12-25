@@ -146,7 +146,7 @@ const settings = {
 					'Duplicate',
 					'Rejected',
 					'Deferred',
-					'phase.defect.rejected',
+					'Rejected',
 					'Fixed',
 				],
 				phasesMaxDays: {
@@ -198,27 +198,27 @@ const settings = {
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
 						'Fixed': 3,
-						'phase.defect.rejected': 3,
+						'Rejected': 3,
 						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'list_node.severity.very_high': {
 						'Fixed': 7,
-						'phase.defect.rejected': 7,
+						'Rejected': 7,
 						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'list_node.severity.high': {
 						'Fixed': 7,
-						'phase.defect.rejected': 7,
+						'Rejected': 7,
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'list_node.severity.medium': {
 						'Fixed': 7,
-						'phase.defect.rejected': 7,
+						'Rejected': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'list_node.severity.low': {
 						'Fixed': 7,
-						'phase.defect.rejected': 7,
+						'Rejected': 7,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
