@@ -1,6 +1,6 @@
 'use strict';
 const settings = {
-	updateAlmOctane: false,
+	updateAlmOctane: true,
 	defectsRetrievalLimit: 5000,
 	storiesRetrievalLimit: 5000,
 	qualityStoriesRetrievalLimit: 5000,
@@ -14,6 +14,9 @@ const settings = {
 	specificAnomalyTagPrefix: 'Anomaly: ',
 	ignoreAnomalyTag: 'Ignore Anomaly',
 	checkers: [
+
+		// Stories -----------------------------------------------------------------------------------------------------
+
 		{
 			name: 'story-stuck-dev-phase',
 			enabled: true,
@@ -56,6 +59,9 @@ const settings = {
 				}
 			}
 		},
+
+		// Quality Stories ---------------------------------------------------------------------------------------------
+
 		{
 			name: 'quality-story-stuck-qa-phase',
 			enabled: true,
@@ -73,83 +79,9 @@ const settings = {
 				}
 			}
 		},
-		{
-			name: 'defect-inactive-dev-owner',
-			enabled: true,
-			tag: 'Anomaly: Inactive DEV Owner',
-			entity: 'defect',
-			options: {
-				phasesToIgnore: [
-					'Closed',
-					'Converted to Feature',
-					'Deferred',
-					'Duplicate',
-					'Fixed',
-					'Planned',
-					'Proposed Rejected',
-					'Rejected',
-				]
-			}
-		},
-		{
-			name: 'defect-inactive-qa-owner',
-			enabled: true,
-			tag: 'Anomaly: Inactive QA Owner',
-			entity: 'defect',
-			options: {
-				phasesToIgnore: [
-					'Closed',
-					'Converted to Feature',
-					'Deferred',
-					'Duplicate',
-					'New',
-					'Opened',
-					'Pending Support',
-					'Planned',
-					'Rejected',
-				]
-			}
-		},
-		{
-			name: 'defect-many-comments',
-			enabled: true,
-			tag: 'Anomaly: Many Comments',
-			entity: 'defect',
-			options: {
-				phasesToIgnore: [
-					'Closed',
-					'Converted to Feature',
-					'Deferred',
-					'Duplicate',
-					'Fixed',
-					'Planned',
-					'Rejected',
-				],
-				defectTypesToIgnore: [
-					'list_node_defect_type_cpe_incident_ln'
-				],
-				manyCommentsCount: 7
-			}
-		},
-		{
-			name: 'defect-many-owners',
-			enabled: true,
-			tag: 'Anomaly: Many Owners',
-			entity: 'defect',
-			options: {
-				phasesToIgnore: [
-					'Closed',
-					'Converted to Feature',
-					'Deferred',
-					'Duplicate',
-					'Fixed',
-					'Planned',
-					'Proposed Rejected',
-					'Rejected',
-				],
-				manyOwnersCount: 5
-			}
-		},
+
+		// Defects -----------------------------------------------------------------------------------------------------
+
 		{
 			name: 'defect-stuck-dev-phase',
 			enabled: true,
@@ -242,6 +174,43 @@ const settings = {
 			}
 		},
 		{
+			name: 'defect-inactive-dev-owner',
+			enabled: true,
+			tag: 'Anomaly: Inactive DEV Owner',
+			entity: 'defect',
+			options: {
+				phasesToIgnore: [
+					'Closed',
+					'Converted to Feature',
+					'Deferred',
+					'Duplicate',
+					'Fixed',
+					'Planned',
+					'Proposed Rejected',
+					'Rejected',
+				]
+			}
+		},
+		{
+			name: 'defect-inactive-qa-owner',
+			enabled: true,
+			tag: 'Anomaly: Inactive QA Owner',
+			entity: 'defect',
+			options: {
+				phasesToIgnore: [
+					'Closed',
+					'Converted to Feature',
+					'Deferred',
+					'Duplicate',
+					'New',
+					'Opened',
+					'Pending Support',
+					'Planned',
+					'Rejected',
+				]
+			}
+		},
+		{
 			name: 'defect-unusual-dev-owner',
 			enabled: true,
 			tag: 'Anomaly: Unusual DEV Owner',
@@ -281,6 +250,49 @@ const settings = {
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
 		},
+		{
+			name: 'defect-many-owners',
+			enabled: true,
+			tag: 'Anomaly: Many Owners',
+			entity: 'defect',
+			options: {
+				phasesToIgnore: [
+					'Closed',
+					'Converted to Feature',
+					'Deferred',
+					'Duplicate',
+					'Fixed',
+					'Planned',
+					'Proposed Rejected',
+					'Rejected',
+				],
+				manyOwnersCount: 5
+			}
+		},
+		{
+			name: 'defect-many-comments',
+			enabled: true,
+			tag: 'Anomaly: Many Comments',
+			entity: 'defect',
+			options: {
+				phasesToIgnore: [
+					'Closed',
+					'Converted to Feature',
+					'Deferred',
+					'Duplicate',
+					'Fixed',
+					'Planned',
+					'Rejected',
+				],
+				defectTypesToIgnore: [
+					'list_node_defect_type_cpe_incident_ln'
+				],
+				manyCommentsCount: 7
+			}
+		},
+
+		// My Rule -----------------------------------------------------------------------------------------------------
+
 		{
 			name: 'defect-my-rule',
 			enabled: false,
