@@ -62,11 +62,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
-					'Duplicate',
-					'Rejected',
+					'Converted to Feature',
 					'Deferred',
-					'Fixed'
+					'Duplicate',
+					'Proposed Rejected',
+					'Rejected',
+					'Fixed',
+					'Closed',
 				]
 			}
 		},
@@ -77,10 +79,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
+					'Converted to Feature',
+					'Deferred',
 					'Duplicate',
 					'Rejected',
-					'Deferred'
+					'Closed',
 				]
 			}
 		},
@@ -91,10 +94,11 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
+					'Converted to Feature',
+					'Deferred',
 					'Duplicate',
 					'Rejected',
-					'Deferred'
+					'Closed',
 				],
 				fileExtensionsToIgnoreRegex: /(.png|.jpg)$/,
 				attachmentsLargeSizeMB: 10
@@ -107,11 +111,12 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
+					'Converted to Feature',
+					'Deferred',
 					'Duplicate',
 					'Rejected',
-					'Deferred',
-					'Fixed'
+					'Fixed',
+					'Closed',
 				],
 				defectTypesToIgnore: [
 					'list_node_defect_type_cpe_incident_ln'
@@ -126,11 +131,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
-					'Duplicate',
-					'Rejected',
+					'Converted to Feature',
 					'Deferred',
-					'Fixed'
+					'Duplicate',
+					'Proposed Rejected',
+					'Rejected',
+					'Fixed',
+					'Closed',
 				],
 				manyOwnersCount: 5
 			}
@@ -142,12 +149,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
-					'Duplicate',
-					'Rejected',
+					'Converted to Feature',
 					'Deferred',
+					'Duplicate',
+					'Proposed Rejected',
 					'Rejected',
 					'Fixed',
+					'Closed',
 				],
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
@@ -188,12 +196,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
+					'Converted to Feature',
+					'Deferred',
 					'Duplicate',
 					'Rejected',
-					'Deferred',
 					'New',
-					'Opened'
+					'Opened',
+					'Closed',
 				],
 				phasesMaxDays: {
 					'list_node.severity.urgent': {
@@ -234,11 +243,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
-					'Duplicate',
-					'Rejected',
+					'Converted to Feature',
 					'Deferred',
-					'Fixed'
+					'Duplicate',
+					'Proposed Rejected',
+					'Rejected',
+					'Fixed',
+					'Closed',
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
@@ -250,10 +261,13 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
+					'Converted to Feature',
+					'Deferred',
 					'Duplicate',
 					'Rejected',
-					'Deferred'
+					'New',
+					'Opened',
+					'Closed',
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
 			}
@@ -265,10 +279,6 @@ const settings = {
 			entity: 'defect',
 			options: {
 				phasesToIgnore: [
-					'Closed',
-					'Duplicate',
-					'Rejected',
-					'Deferred'
 				]
 			}
 		},
