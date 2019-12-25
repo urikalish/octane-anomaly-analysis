@@ -6,9 +6,9 @@ const check = async (stories, options) => {
 	const result = helper.initCheckerResult(checkerName);
 	stories.forEach(s => {
 		if (s.phase
-		&& !options.phasesToIgnore.includes(s.phase.logical_name)
+		&& !options.phasesToIgnore.includes(s.phase.name)
 		&& s['time_in_current_phase']) {
-			const maxDays = options.phasesMaxDays[s.phase.logical_name.toLowerCase()] || options.phasesMaxDays['_DEFAULT'];
+			const maxDays = options.phasesMaxDays[s.phase.name] || options.phasesMaxDays['_DEFAULT'];
 		 	const daysInCurrentPhase = Math.floor(s['time_in_current_phase'] / 1000 / 60 / 60 / 24);
 		 	if (daysInCurrentPhase > maxDays) {
 		 		helper.addStoryAnomaly(result, s, `Story stuck in QA phase (${daysInCurrentPhase} days)`);

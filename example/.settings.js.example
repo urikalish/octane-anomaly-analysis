@@ -21,16 +21,16 @@ const settings = {
             entity: 'story',
             options: {
                 phasesToIgnore: [
-                    '97z8n12ekrl2pbq05y093j5mr', /*cancelled*/
-                    'doy0kl5mev40ra61rz46q9q2j', /*ready for QA*/
-                    'phase.story.intesting',
-                    'phase.story.done',
+                    'Cancelled',
+                    'Ready for QA',
+                    'In Testing',
+                    'Done',
                 ],
                 phasesMaxDays: {
-                    'phase.story.new': 600,
-                    '2p9l7rp25mzjqa0m52n3owmed': 60, /*ready for R&D*/
-                    'phase.story.inprogress': 30,
-                    'm9nd7d9kdgvpebyqdmm214qyx': 30, /*fixing defects*/
+                    'New': 600,
+                    'Ready for R&D': 60,
+                    'In Progress': 30,
+                    'Fixing Defects': 30,
                     '_DEFAULT': 30, //every other non-specified phase
                 }
             }
@@ -42,16 +42,16 @@ const settings = {
             entity: 'story',
             options: {
                 phasesToIgnore: [
-                    'phase.story.new',
-                    '97z8n12ekrl2pbq05y093j5mr', /*cancelled*/
-                    '2p9l7rp25mzjqa0m52n3owmed', /*ready for R&D*/
-                    'phase.story.inprogress',
-                    'm9nd7d9kdgvpebyqdmm214qyx', /*fixing defects*/
-                    'phase.story.done',
+                    'New',
+                    'Cancelled',
+                    'Ready for R&D',
+                    'In Progress',
+                    'Fixing Defects',
+                    'Done',
                 ],
                 phasesMaxDays: {
-                    'doy0kl5mev40ra61rz46q9q2j': 30, /*ready for QA*/
-                    'phase.story.intesting': 30,
+                    'Ready for QA': 30,
+                    'In Testing': 30,
                     '_DEFAULT': 30 //every other non-specified phase
                 }
             }
