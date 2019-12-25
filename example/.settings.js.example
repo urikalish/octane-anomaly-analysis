@@ -1,6 +1,6 @@
 'use strict';
 const settings = {
-	updateAlmOctane: true,
+	updateAlmOctane: false,
 	defectsRetrievalLimit: 5000,
 	storiesRetrievalLimit: 5000,
 	qualityStoriesRetrievalLimit: 5000,
