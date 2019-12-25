@@ -85,6 +85,7 @@ const settings = {
 					'Deferred',
 					'Duplicate',
 					'Fixed',
+					'Planned',
 					'Proposed Rejected',
 					'Rejected',
 				]
@@ -103,6 +104,8 @@ const settings = {
 					'Duplicate',
 					'New',
 					'Opened',
+					'Pending Support',
+					'Planned',
 					'Rejected',
 				]
 			}
@@ -119,6 +122,7 @@ const settings = {
 					'Deferred',
 					'Duplicate',
 					'Fixed',
+					'Planned',
 					'Rejected',
 				],
 				defectTypesToIgnore: [
@@ -139,6 +143,7 @@ const settings = {
 					'Deferred',
 					'Duplicate',
 					'Fixed',
+					'Planned',
 					'Proposed Rejected',
 					'Rejected',
 				],
@@ -157,28 +162,33 @@ const settings = {
 					'Deferred',
 					'Duplicate',
 					'Fixed',
+					'Planned',
 					'Proposed Rejected',
 					'Rejected',
 				],
 				phasesMaxDays: {
 					'Critical': {
 						'New': 1,
-						'Opened': 3,
+						'Opened': 1,
+						'Pending Support': 1,
 						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'High': {
 						'New': 30,
 						'Opened': 7,
+						'Pending Support': 7,
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'Medium': {
 						'New': 99,
 						'Opened': 99,
+						'Pending Support': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'Low': {
 						'New': 99,
 						'Opened': 99,
+						'Pending Support': 99,
 						'_DEFAULT': 99 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
@@ -200,6 +210,8 @@ const settings = {
 					'Duplicate',
 					'New',
 					'Opened',
+					'Pending Support',
+					'Planned',
 					'Rejected',
 				],
 				phasesMaxDays: {
@@ -241,6 +253,8 @@ const settings = {
 					'Deferred',
 					'Duplicate',
 					'Fixed',
+					'Pending Support',
+					'Planned',
 					'Proposed Rejected',
 					'Rejected',
 				],
@@ -260,6 +274,8 @@ const settings = {
 					'Duplicate',
 					'New',
 					'Opened',
+					'Pending Support',
+					'Planned',
 					'Rejected',
 				],
 				dataSetSizes: [1000, 2000, 3000, 4000, 5000]
