@@ -175,7 +175,7 @@ const getQualityStoriesUri = (isAsc, offset, limit, querySuffix, fields) => {
 	`&fields=${fields || 'id,subtype,name,team,owner,qa_owner,phase,creation_time,time_in_current_phase,comments,attachments,user_tags'}`;
 };
 
-const getEntityUri = async (isAsc, offset, limit, querySuffix, fields, subtype) => {
+const getEntityUri = (isAsc, offset, limit, querySuffix, fields, subtype) => {
 	let uri = '';
 	switch (subtype) {
 		case 'defect': {
@@ -274,7 +274,7 @@ const getTaggedEntities = async (tagId1, tagId2, subtype) => {
 		let uri = getEntityUri(false, 0, 1000, `(user_tags={id IN '${tagId1}', '${tagId2}'})`, '', subtype);
 		return await getFromOctane(uri);
 	} catch(err) {
-		logger.logFuncError('getTaggedDefects', err);
+		logger.logFuncError('getTaggedEntities', err);
 		throw err;
 	}
 };
