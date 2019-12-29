@@ -4,6 +4,11 @@ const settings = {
 	defectsRetrievalLimit: 5000,
 	storiesRetrievalLimit: 5000,
 	qualityStoriesRetrievalLimit: 5000,
+	ignoredEntities: {
+    	'defect': ['933271'],
+    	'story': [],
+    	'quality_story': [],
+    },
 	historyLogs: {
 		manualTimeRange: false,
 		manualTimeRangeFrom: '2018-01-01T00:00:00Z',

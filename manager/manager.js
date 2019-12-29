@@ -54,8 +54,10 @@ const loadFromOctane = async (entities, subtype) => {
 		if (taggedEntities && taggedEntities['total_count'] > 0) {
 			logger.logMessage(`loadFromOctane() - ${taggedEntities.data.length} entities with "Anomaly" or "Ignore Anomaly" tags were loaded from Octane`);
 			taggedEntities.data.forEach(e => {
-				const entity = ensureEntity(e.id, e, entities, subtype);
-				entity.curTags = tagsManager.getAllAnomalyTagNames(e.user_tags);
+				if (!(settings.ignoredEntities && settings.ignoredEntities[subtype] && settings.ignoredEntities[subtype].includes(e.id))) {
+					const entity = ensureEntity(e.id, e, entities, subtype);
+					entity.curTags = tagsManager.getAllAnomalyTagNames(e.user_tags);
+				}
 			});
 		} else {
 			logger.logMessage(`loadFromOctane() - No entities with "Anomaly" or "Ignore Anomaly" tags were found in Octane`);
@@ -85,7 +87,8 @@ const checkForAnomalies = async (entities, subtype) => {
 		const totalNumberOfEntities = await octaneDataProvider.getTotalNumberOfEntities(subtype);
 		const numberOfEntitiesToRetrieve = Math.min(totalNumberOfEntities, retrievalLimit);
 		logger.logMessage(`checkForAnomalies() - Retrieving ${numberOfEntitiesToRetrieve} entities from Octane...`);
-		const lastEntities = await octaneDataProvider.getLastEntities(numberOfEntitiesToRetrieve, subtype);
+		let lastEntities = await octaneDataProvider.getLastEntities(numberOfEntitiesToRetrieve, subtype);
+		lastEntities = lastEntities.filter(e => !(settings.ignoredEntities && settings.ignoredEntities[subtype] && settings.ignoredEntities[subtype].includes(e.id)));
 		logger.logSuccess(`checkForAnomalies() - ${numberOfEntitiesToRetrieve} entities retrieved - OK`);
 		logger.logMessage('checkForAnomalies() - Checking for anomalies. Please wait...');
 		const promises = [];
