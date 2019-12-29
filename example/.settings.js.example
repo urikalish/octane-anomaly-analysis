@@ -5,10 +5,12 @@ const settings = {
 	storiesRetrievalLimit: 5000,
 	qualityStoriesRetrievalLimit: 5000,
 	ignoredEntities: {
-    	'defect': ['933271'],
-    	'story': [],
-    	'quality_story': [],
-    },
+		'defect': [
+			'933271' //fake defect with all anomaly tags for outsmarting the unused tags auto cleanup mechanism
+		],
+		'story': [],
+		'quality_story': [],
+	},
 	historyLogs: {
 		manualTimeRange: false,
 		manualTimeRangeFrom: '2018-01-01T00:00:00Z',
