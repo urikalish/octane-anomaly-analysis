@@ -129,22 +129,6 @@ const putMultipleToOctane = (uri, body) => {
 	});
 };
 
-const getAttachmentUri = (entityId) => {
-	return apiUrl +	`/attachments?query="id=${entityId}"&fields=id,name,size`
-};
-
-const getAttachment = async (entityId) => {
-	const uri = getAttachmentUri(entityId);
-	await getFromOctane(uri).then(
-	(result) => {
-		return result;
-	},
-	(err) => {
-		logger.logWarning(`Unable to get attachment for entity #${entityId} - ${(err.message || err)}`);
-		return null;
-	});
-};
-
 const getDefectsUri = (isAsc, offset, limit, querySuffix, fields) => {
 	return apiUrl +
 	`/work_items` +
@@ -321,6 +305,5 @@ module.exports = {
 	updateMultipleEntitiesUserTags,
 	getLastEntities,
 	getTaggedEntities,
-	getAttachment,
 	getHistoryLogsBatch,
 };
