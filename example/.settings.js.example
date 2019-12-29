@@ -1,6 +1,6 @@
 'use strict';
 const settings = {
-	updateAlmOctane: false,
+	updateAlmOctane: true,
 	defectsRetrievalLimit: 5000,
 	storiesRetrievalLimit: 5000,
 	qualityStoriesRetrievalLimit: 5000,
@@ -31,16 +31,15 @@ const settings = {
 			entity: 'story',
 			options: {
 				phasesToIgnore: [
+					'New',
+					'Ready for R&D',
 					'Cancelled',
 					'Done',
 					'In Testing',
 					'Ready for QA',
 				],
 				phasesMaxDays: {
-					'Fixing Defects': 30,
-					'In Progress': 30,
-					'New': 600,
-					'Ready for R&D': 60,
+					'In Progress': 20,
 					'_DEFAULT': 30, //every other non-specified phase
 				}
 			}
@@ -54,14 +53,14 @@ const settings = {
 				phasesToIgnore: [
 					'Cancelled',
 					'Done',
-					'Fixing Defects',
 					'In Progress',
 					'New',
 					'Ready for R&D',
 				],
 				phasesMaxDays: {
-					'In Testing': 30,
-					'Ready for QA': 30,
+					'In Testing': 20,
+					'Fixing Defects': 10,
+					'Ready for QA': 10,
 					'_DEFAULT': 30 //every other non-specified phase
 				}
 			}
@@ -79,9 +78,9 @@ const settings = {
 					'Done',
 				],
 				phasesMaxDays: {
-					'In Progress': 30,
-					'New': 300,
-					'Postponed': 99,
+					'In Progress': 20,
+					'New': 100,
+					'Postponed': 100,
 					'_DEFAULT': 30 //every other non-specified phase
 				}
 			}
@@ -108,8 +107,8 @@ const settings = {
 				phasesMaxDays: {
 					'Critical': {
 						'New': 1,
-						'Opened': 1,
-						'Pending Support': 1,
+						'Opened': 2,
+						'Pending Support': 3,
 						'_DEFAULT': 3 //every other non-specified phase
 					},
 					'High': {
@@ -119,16 +118,16 @@ const settings = {
 						'_DEFAULT': 30 //every other non-specified phase
 					},
 					'Medium': {
-						'New': 99,
-						'Opened': 99,
-						'Pending Support': 99,
-						'_DEFAULT': 99 //every other non-specified phase
+						'New': 100,
+						'Opened': 10,
+						'Pending Support': 10,
+						'_DEFAULT': 100 //every other non-specified phase
 					},
 					'Low': {
-						'New': 99,
-						'Opened': 99,
-						'Pending Support': 99,
-						'_DEFAULT': 99 //every other non-specified phase
+						'New': 100,
+						'Opened': 10,
+						'Pending Support': 10,
+						'_DEFAULT': 100 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
 						'_DEFAULT': 30 //every other non-specified phase
@@ -162,17 +161,17 @@ const settings = {
 					'High': {
 						'Fixed': 7,
 						'Proposed Rejected': 7,
-						'_DEFAULT': 30 //every other non-specified phase
+						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'Medium': {
 						'Fixed': 7,
 						'Proposed Rejected': 7,
-						'_DEFAULT': 99 //every other non-specified phase
+						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'Low': {
 						'Fixed': 7,
 						'Proposed Rejected': 7,
-						'_DEFAULT': 99 //every other non-specified phase
+						'_DEFAULT': 7 //every other non-specified phase
 					},
 					'_DEFAULT': { //every other non-specified severity
 						'_DEFAULT': 30 //every other non-specified phase
