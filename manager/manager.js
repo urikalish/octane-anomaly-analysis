@@ -10,6 +10,7 @@ const qualityStories = {};
 const DEFECT_SUBTYPE = 'defect';
 const STORY_SUBTYPE = 'story';
 const QUALITY_STORY_SUBTYPE = 'quality_story';
+let totalResults;
 
 const getEntityKey = (subtype) => {
 	let key = '';
@@ -181,7 +182,6 @@ const logUpdateResult = (countEntitiesNeedUpdate, countEntitiesUpdated) => {
 	if (countEntitiesUpdated === 0) {
 		logger.logWarning(`updateAlmOctane() - Octane was not updated`);
 	} else if (countEntitiesUpdated !== countEntitiesNeedUpdate) {
-		logger.logSuccess(`updateAlmOctane() - ${countEntitiesUpdated} entities successfully updated - OK`);
 		logger.logWarning(`updateAlmOctane() - Octane partially updated - ${countEntitiesUpdated}/${countEntitiesNeedUpdate}`);
 	} else {
 		logger.logSuccess(`updateAlmOctane() - ${countEntitiesUpdated} entities successfully updated - OK`);
@@ -217,7 +217,8 @@ const updateAlmOctaneByBatches = async (entities, subtype) => {
 		let countEntitiesUpdated = results.reduce((acc, cur) => {
 			return acc + cur;
 		}, 0);
-		logUpdateResult(countEntitiesNeedUpdate, countEntitiesUpdated);
+		logUpdateResult(subtype, countEntitiesNeedUpdate, countEntitiesUpdated);
+		totalResults[subtype] = `${countEntitiesUpdated}/${countEntitiesNeedUpdate}`;
 	} catch(err) {
 		logger.logFuncError('updateAlmOctane', err);
 		throw err;
@@ -242,6 +243,7 @@ const handleEntities  = async (entities, subtype) => {
 
 const handleAllEntities  = async () => {
 	try {
+		totalResults = {};
 		logger.logMessage('handleAllEntities()');
 		logger.logDivider();
 		await handleEntities(defects, DEFECT_SUBTYPE);
@@ -250,6 +252,7 @@ const handleAllEntities  = async () => {
 		logger.logDivider();
 		await handleEntities(qualityStories, QUALITY_STORY_SUBTYPE);
 		logger.logDivider();
+		logger.logMessage(JSON.stringify(totalResults));
 	} catch(err) {
 		logger.logFuncError('handleAllEntities', err);
 		throw err;
