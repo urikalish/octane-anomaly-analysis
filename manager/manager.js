@@ -182,7 +182,7 @@ const logUpdateResult = (countEntitiesNeedUpdate, countEntitiesUpdated) => {
 	if (countEntitiesUpdated === 0) {
 		logger.logWarning(`updateAlmOctane() - Octane was not updated`);
 	} else if (countEntitiesUpdated !== countEntitiesNeedUpdate) {
-		logger.logWarning(`updateAlmOctane() - Octane partially updated - ${countEntitiesUpdated}/${countEntitiesNeedUpdate}`);
+		logger.logWarning(`updateAlmOctane() - Octane partially updated - ${countEntitiesUpdated/countEntitiesNeedUpdate}`);
 	} else {
 		logger.logSuccess(`updateAlmOctane() - ${countEntitiesUpdated} entities successfully updated - OK`);
 	}
@@ -217,7 +217,7 @@ const updateAlmOctaneByBatches = async (entities, subtype) => {
 		let countEntitiesUpdated = results.reduce((acc, cur) => {
 			return acc + cur;
 		}, 0);
-		logUpdateResult(subtype, countEntitiesNeedUpdate, countEntitiesUpdated);
+		logUpdateResult(countEntitiesNeedUpdate, countEntitiesUpdated);
 		totalResults[subtype] = `${countEntitiesUpdated}/${countEntitiesNeedUpdate}`;
 	} catch(err) {
 		logger.logFuncError('updateAlmOctane', err);
