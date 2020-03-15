@@ -113,7 +113,7 @@ const putMultipleToOctane = (uri, body) => {
 						res['errors'].forEach(e => {
 							logger.logError(`defect #${e['properties']['entity_id']} - ${e['description'].replace(/\r?\n|\r/g,' ')}`);
 						});
-						resolve(0);
+						resolve(res['total_count']);
 					} else if (res['description_translated'] || res['description']) {
 						logger.logError(`${(res['description_translated'] || res['description']).replace(/\r?\n|\r/g,' ')}`);
 						resolve(0);
