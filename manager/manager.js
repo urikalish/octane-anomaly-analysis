@@ -173,7 +173,7 @@ const constructOneEntityRecord = (value, id, subtype) => {
 			});
 		});
 	} else {
-		logger.logMessage(`constructOneDefectRecord() - Entity #${id} skipped`);
+		//logger.logMessage(`constructOneDefectRecord() - Entity #${id} skipped`);
 	}
 	return result;
 };
