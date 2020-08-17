@@ -27,7 +27,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "dotenv": "^7.0.0",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.20",
     "request": "^2.85.0",
     "stringstream": "^0.0.6",
     "tough-cookie": "^2.3.4",
